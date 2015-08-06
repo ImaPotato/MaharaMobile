@@ -1,59 +1,3 @@
-if (window.openDatabase) {
-
-    var dbSize = 5 * 1024 * 1024; // 5MB
-
-    db = openDatabase("MaharaDB", "", "Mahara", dbSize);
-
-    db.transaction(function (t) {
-      /*
-        t.executeSql("CREATE TABLE IF NOT EXISTS user
-          (
-            id INTEGER UNIQUE ASC, 
-            username TEXT PRIMARY KEY, 
-            token TEXT, 
-            url TEXT,
-            sync_uri TEXT,
-            upload_uri TEXT,
-            connection_type
-            )"
-        );
-
-        t.executeSql("CREATE TABLE IF NOT EXISTS pending
-          (
-            id INTEGER UNIQUE ASC,
-            image_uri,
-            title TEXT,
-            description TEXT,
-            tags TEXT,
-            status BIT
-          )"
-        );
-
-        t.executeSql("CREATE TABLE IF NOT EXISTS history
-          (
-            id INTEGER UNIQUE ASC,
-            image_uri,
-            title TEXT,
-            description TEXT,
-            tags TEXT,
-            status BIT
-          )"
-        );
-
-        t.executeSQL("CREATE TABLE IF NOT EXISITS settings
-          (
-            id INTEGER UNIQUE ASC,
-            username TEXT
-          )"
-        );
-  */
-    });
-
-
-} else {
-    alert("WebSQL is not supported by your browser!");
-}
-
 var app = angular.module('tutorialWebApp', [
   'ngRoute', 'ngCordova'
 ]);
@@ -77,30 +21,48 @@ app.controller('PageCtrl', function (/* $scope, $location, $http */) {
 });
 
 app.controller('LoginCtrl', function($scope, $location){
-    $scope.master = {};
+  $scope.master = {};
 
-    db.transaction(function (t) {
+
+  function load(){
+    var user = JSON.parse(localStorage.getItem('user'));
+
+    if (user != null || user != ''){
+      $scope.connection = {uploaduri : user.connection.uploaduri, syncuri : user.connection.syncuri, connectiontype : user.connection.connectiontype};
+      $scope.login = {username : user.login.username, token : user.login.token, url : user.login.url};
+    } else {
+      $scope.connection = { uploaduri : '/api/mobile/upload.php', syncuri : '/api/mobile/sync.php', connectiontype : 'Default'};
+      $scope.login = {username : '', token : '', url : ''};
+    }
+  }
+
+  load();
+
+  $scope.update = function(login, connection) {
+    var user =  { 'login' : 
+                  {
+                    'username' : login.username, 'token' : login.token, 'url': login.url 
+                  },
+                  'connection' : {
+                    'uploaduri' : connection.uploaduri, 'syncuri' : connection.syncuri, 'connectiontype' : connection.connectiontype
+                  }
+                };
     
-      t.executeSql('SELECT TOP 1 * FROM user', [], function (tx, result) {
-        if(result.rows.length == 0){
-          
-        } else {
-          
-        }
-      };
-    });
+    localStorage.setItem('user', JSON.stringify(user));
 
-    $scope.update = function(login) {
-      if(db){
+    // validate
+  };
 
-      }
-    };
+  $scope.unlock = function(){
+    $(':disabled').prop('disabled', false);
+  }
 
-    $scope.reset = function() {
+  $scope.reset = function() {
+    load();
+  };
 
-    };
+  $scope.reset();
 
-    $scope.reset();
 });
 
 app.controller('JournalCtrl', function($scope, Camera){
