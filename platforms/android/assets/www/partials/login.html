@@ -1,0 +1,22 @@
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <form novalidate class="simple-form">
+                <div class="form-group">
+                    <h3>Login details</h3><br />
+                    Mahara User Name: <input type="text" class="form-control" ng-model="login.username" /><br />
+                    Mahara URL: <input type="text" class="form-control" ng-model="connection.url" /><br />
+                    Mahara Token: <input type="text" class="form-control" ng-model="login.token" /><br />
+
+                    <hr width="95%" noshade>
+                    <h3>Extra for experts</h3><br />
+                    <button class="btn btn-default">I need to change this.</button><br /><br />
+                    Upload URI: <input type="text" class="form-control" ng-model="connection.uploaduri" disabled/><br />
+                    Sync URI: <input type="text" class="form-control" ng-model="connection.syncuri" disabled/><br />
+                    Connection Type: <input type="text" class="form-control" ng-model="connection.connectiontype" disabled/><br />
+                </div>
+                <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
+                <input type="submit" class="btn btn-default" ng-click="update(login)" value="Save" />
+            </form>
+    </div>
+</div>

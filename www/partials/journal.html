@@ -1,0 +1,17 @@
+<div class="section">
+    <div class="container">
+        <div class="row">
+            <form novalidate class="simple-form" ng-repeat="obj in objects">
+                <div class="form-group">
+                    Title: <input type="text" class="form-control" ng-model="obj.title" /><br />
+                    Description: <textarea class="form-control" rows="3" ng-model="obj.desc" style="margin-bottom:20px"></textarea>
+                    Tags: <input type="text" class="form-control" ng-model="obj.tags" /><br />
+                </div>
+                <button class="btn btn-default" ng-click="removeObject($index)" >Remove Journal</button>
+                <hr width="95%" noshade>
+            </form>
+            <input type="submit" class="btn btn-default" ng-click="" value="Save" />
+            <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
+            <button class="btn btn-default" ng-click="addObject()" >Add Another Journal</button>
+    </div>
+</div>
