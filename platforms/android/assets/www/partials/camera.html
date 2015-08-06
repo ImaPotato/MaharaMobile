@@ -3,10 +3,10 @@
         <div class="row">
             <form novalidate class="simple-form" ng-repeat="obj in objects">
                 <div style="border-top:100px">
-                    <button class="btn btn-default" ng-click="getPicture($index);" style="margin-bottom:20px;">Capture Photo</button>
+                    <button class="btn btn-default" ng-click="getPicture(obj.uuid);" style="margin-bottom:20px;">Capture Photo</button>
                     <button class="btn btn-default" ng-click="getPictureFromLibrary($index);" style="margin-bottom:20px;">From Library</button>
                     <br>
-                    <img id="{{ 'image' + $index }}" src="" class="img-rounded" style="display:none;width:100%;margin-bottom:20px;"> 
+                    <img id="{{obj.uuid}}" src="" class="img-rounded" style="display:none;width:100%;margin-bottom:20px;"> 
                 </div>
 
                 <div class="form-group">
@@ -20,6 +20,7 @@
                 <hr width="95%" noshade>
 
             </form>
+
             <input type="submit" class="btn btn-default" ng-click="" value="Save" />
             <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
             <button class="btn btn-default" ng-click="addObject()" >Add Another Image</button><br />

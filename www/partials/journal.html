@@ -7,10 +7,10 @@
                     Description: <textarea class="form-control" rows="3" ng-model="obj.desc" style="margin-bottom:20px"></textarea>
                     Tags: <input type="text" class="form-control" ng-model="obj.tags" /><br />
                 </div>
-                <button class="btn btn-default" ng-click="removeObject($index)" >Remove Journal</button>
+                <button class="btn btn-default" ng-click="removeObject(obj.uuid)" >Remove Journal</button>
                 <hr width="95%" noshade>
             </form>
-            <input type="submit" class="btn btn-default" ng-click="" value="Save" />
+            <input type="submit" class="btn btn-default" ng-click="update(objects)" value="Save" />
             <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
             <button class="btn btn-default" ng-click="addObject()" >Add Another Journal</button>
     </div>

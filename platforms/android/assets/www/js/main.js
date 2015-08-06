@@ -1,18 +1,5 @@
-if (window.openDatabase) {
-
-    var dbSize = 5 * 1024 * 1024; // 5MB
-    db = openDatabase("MaharaDB", "", "Mahara", dbSize);
-    db.transaction(function (t) {
-        t.executeSql("CREATE TABLE IF NOT EXISTS user(ID INTEGER PRIMARY KEY ASC, username TEXT, token TEXT, url TEXT)");
-        t.executeSql("CREATE TABLE IF NOT EXISTS images(ID INTEGER PRIMARY KEY ASC, uri TEXT, title TEXT, desc TEXT, tags TEXT, uploaded INTEGER)");
-    });
-
-} else {
-    alert("WebSQL is not supported by your browser!");
-}
-
 var app = angular.module('tutorialWebApp', [
-  'ngRoute', 'ngCordova'
+  'ngRoute', 'ngCordova', 'uuid4'
 ]);
 
 app.config(['$routeProvider', function ($routeProvider) {
@@ -26,6 +13,15 @@ app.config(['$routeProvider', function ($routeProvider) {
     .otherwise("/404", {templateUrl: "partials/404.html", controller: "PageCtrl"});
 }]);
 
+
+app.factory('UuidGenerator', function(uuid4){
+  return {
+    generate: function() {
+      return  uuid4.generate();
+    }
+  };
+});
+
 /**
  * Controls all other Pages
  */
@@ -34,19 +30,48 @@ app.controller('PageCtrl', function (/* $scope, $location, $http */) {
 });
 
 app.controller('LoginCtrl', function($scope, $location){
-    $scope.master = {};
+  $scope.master = {};
 
-    $scope.update = function(login) {
-      if(db){
 
-      }
-    };
+  function load(){
+    var user = JSON.parse(localStorage.getItem('user'));
 
-    $scope.reset = function() {
+    if (user != null && user != ''){
+      $scope.connection = {uploaduri : user.connection.uploaduri, syncuri : user.connection.syncuri, connectiontype : user.connection.connectiontype};
+      $scope.login = {username : user.login.username, token : user.login.token, url : user.login.url};
+    } else {
+      $scope.connection = { uploaduri : '/api/mobile/upload.php', syncuri : '/api/mobile/sync.php', connectiontype : 'Default'};
+      $scope.login = {username : '', token : '', url : ''};
+    }
+  }
 
-    };
+  load();
 
-    $scope.reset();
+  $scope.update = function(login, connection) {
+    var user =  { 'login' : 
+                  {
+                    'username' : login.username, 'token' : login.token, 'url': login.url 
+                  },
+                  'connection' : {
+                    'uploaduri' : connection.uploaduri, 'syncuri' : connection.syncuri, 'connectiontype' : connection.connectiontype
+                  }
+                };
+    
+    localStorage.setItem('user', JSON.stringify(user));
+
+    // validate
+  };
+
+  $scope.unlock = function(){
+    $(':disabled').prop('disabled', false);
+  }
+
+  $scope.reset = function() {
+    load();
+  };
+
+  $scope.reset();
+
 });
 
 app.controller('JournalCtrl', function($scope, Camera){
@@ -77,29 +102,35 @@ app.controller('JournalCtrl', function($scope, Camera){
     };
 });
 
-app.controller('CameraCtrl', function($scope, $cordovaCamera){
+app.controller('CameraCtrl', function($scope, $cordovaCamera, UuidGenerator){
 
     $scope.objects = [];
 
     var obj = {
-            uri: '',
+            uuid: UuidGenerator.generate(),
+            uri: '//:0',
             title:'',
             tags:'',
             desc:''
         };
+
         $scope.objects.push(obj);
 
     $scope.addObject = function () {
         var obj = {
-            uri: '',
+            uuid: UuidGenerator.generate(),
+            uri: '//:0',
             title:'',
             tags:'',
             desc:''
         };
+
         $scope.objects.push(obj);
     };
 
     $scope.getPicture = function (id) {
+
+      console.log(id);
 
       var options = {
         destinationType: Camera.DestinationType.FILE_URL,
@@ -107,9 +138,17 @@ app.controller('CameraCtrl', function($scope, $cordovaCamera){
       };
 
       $cordovaCamera.getPicture(options).then(function(imageData) {
-        var image = document.getElementById('image'+id);
-        image.src = "" + imageData;
+
+        $.each($scope.objects, function(index, value){
+          if (value.uuid == id){
+            value.src = imageData;
+          }
+        });
+
+        var image = document.getElementById(id);
+        image.src = imageData;
         image.style.display = 'block';
+
       }, function(err) {
 
       });
@@ -129,15 +168,25 @@ app.controller('CameraCtrl', function($scope, $cordovaCamera){
           imageData="content://media/external/images/media/"+photo_split[1];
         }
 
+        $.each($scope.objects, function(index, value){
+          if (value.uuid == id){
+            value.src = imageData;
+          }
+        });
+
         var image = document.getElementById('image'+id);
         image.src = imageData;
         image.style.display = 'block';
+
       }, function(err) {
 
       });
-      
+
     };
 
+    $scope.update = function(){
+
+    }
 
     $scope.removeObject = function (id) {
         $scope.objects.splice(id, 1);

@@ -40,6 +40,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/templates \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/main.css \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/main.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/angular-uuid4.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/angular.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bower-angular-route-master \
