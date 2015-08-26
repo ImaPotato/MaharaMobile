@@ -92,6 +92,16 @@
                         }
                     ]
                 }
+            },
+            "config.xml": {
+                "parents": {
+                    "/*": [
+                        {
+                            "xml": "<feature name=\"VideoEditor\"><param name=\"android-package\" value=\"org.apache.cordova.videoeditor.VideoEditor\" /></feature>",
+                            "count": 1
+                        }
+                    ]
+                }
             }
         }
     },
@@ -112,6 +122,9 @@
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-console": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "org.apache.cordova.videoeditor": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

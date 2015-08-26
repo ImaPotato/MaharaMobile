@@ -17,6 +17,9 @@
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
+    <feature name="VideoEditor">
+        <param name="android-package" value="org.apache.cordova.videoeditor.VideoEditor" />
+    </feature>
     <name>Mahara</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

@@ -54,6 +54,8 @@
 		6704C34A25334029AAC7AC18 /* CDVReachability.m in Sources */ = {isa = PBXBuildFile; fileRef = 78D0B8AAC98D45F3BF18A3FB /* CDVReachability.m */; };
 		56C8A42033F44359929DF753 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0085D906161C452EA66922A7 /* SystemConfiguration.framework */; settings = {ATTRIBUTES = (Weak, ); }; };
 		EC8EBA7C78CE42338CB47D50 /* CDVLogger.m in Sources */ = {isa = PBXBuildFile; fileRef = A112A466E5A84D33961B3DB8 /* CDVLogger.m */; };
+		09223738F50046A68E35FC5F /* VideoEditor.m in Sources */ = {isa = PBXBuildFile; fileRef = 0CA0D68579234A46B44E42C4 /* VideoEditor.m */; };
+		FCFFDF26FB454F6A942E80EC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02672D1AB29543729BDF0F0B /* MediaPlayer.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -147,6 +149,9 @@
 		0085D906161C452EA66922A7 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "SystemConfiguration.framework"; path = "System/Library/Frameworks/SystemConfiguration.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 		A112A466E5A84D33961B3DB8 /* CDVLogger.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVLogger.m"; path = "cordova-plugin-console/CDVLogger.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		58BC0E049D844725BF2335D0 /* CDVLogger.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVLogger.h"; path = "cordova-plugin-console/CDVLogger.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		0CA0D68579234A46B44E42C4 /* VideoEditor.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "VideoEditor.m"; path = "org.apache.cordova.videoeditor/VideoEditor.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		277E82C1DBDB48BDB0A31851 /* VideoEditor.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "VideoEditor.h"; path = "org.apache.cordova.videoeditor/VideoEditor.h"; sourceTree = "<group>"; fileEncoding = 4; };
+		02672D1AB29543729BDF0F0B /* MediaPlayer.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = "MediaPlayer.framework"; path = "System/Library/Frameworks/MediaPlayer.framework"; sourceTree = SDKROOT; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -162,6 +167,7 @@
 				C422E52704CF4236B686412C /* CoreLocation.framework in Frameworks */,
 				1E3933568754496491E4A839 /* AVFoundation.framework in Frameworks */,
 				56C8A42033F44359929DF753 /* SystemConfiguration.framework in Frameworks */,
+				FCFFDF26FB454F6A942E80EC /* MediaPlayer.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -259,6 +265,7 @@
 				EE8CB1E52B254D1597CDDE94 /* CoreLocation.framework */,
 				F73E9E5C18294202A689FAB5 /* AVFoundation.framework */,
 				0085D906161C452EA66922A7 /* SystemConfiguration.framework */,
+				02672D1AB29543729BDF0F0B /* MediaPlayer.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -299,6 +306,8 @@
 				1FF02768C491418593057835 /* CDVReachability.h */,
 				A112A466E5A84D33961B3DB8 /* CDVLogger.m */,
 				58BC0E049D844725BF2335D0 /* CDVLogger.h */,
+				0CA0D68579234A46B44E42C4 /* VideoEditor.m */,
+				277E82C1DBDB48BDB0A31851 /* VideoEditor.h */,
 			);
 			name = Plugins;
 			path = "Mahara/Plugins";
@@ -506,6 +515,7 @@
 				CFB4AFF4EA12462BBC236A8C /* CDVConnection.m in Sources */,
 				6704C34A25334029AAC7AC18 /* CDVReachability.m in Sources */,
 				EC8EBA7C78CE42338CB47D50 /* CDVLogger.m in Sources */,
+				09223738F50046A68E35FC5F /* VideoEditor.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

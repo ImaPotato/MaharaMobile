@@ -76,6 +76,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/org.apache.cordova.videoeditor/www/VideoEditor.js",
+        "id": "org.apache.cordova.videoeditor.VideoEditor",
+        "clobbers": [
+            "VideoEditor"
+        ]
+    },
+    {
+        "file": "plugins/org.apache.cordova.videoeditor/www/VideoEditorOptions.js",
+        "id": "org.apache.cordova.videoeditor.VideoEditorOptions",
+        "clobbers": [
+            "VideoEditorOptions"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -92,6 +106,7 @@ module.exports.metadata =
     "de.appplant.cordova.plugin.background-mode": "0.6.4",
     "cordova-plugin-network-information": "1.0.2-dev",
     "cordova-plugin-console": "1.0.2-dev",
+    "org.apache.cordova.videoeditor": "0.0.3",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

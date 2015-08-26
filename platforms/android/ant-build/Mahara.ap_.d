@@ -1,5 +1,23 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/Mahara.ap_ \
- : /Users/Potato/Desktop/Project/MaharaProject/platforms/android/res/drawable/icon.png \
+ : /Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-hdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-hdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-mdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-mdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-xhdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/drawable-xhdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/raw/ffmpeg \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/raw/sox \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/values/strings.xml \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/values/styles.xml \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/values-v11/styles.xml \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/res/values-v14/styles.xml \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-hdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-hdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-mdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-mdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-xhdpi/ic_action_search.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/org.apache.cordova.videoeditor/android-ffmpeg-java/bin/res/drawable-xhdpi/ic_launcher.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/res/drawable/icon.png \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/res/drawable-hdpi/icon.png \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/res/drawable-land-hdpi/screen.png \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/res/drawable-land-ldpi/screen.png \
@@ -39,7 +57,12 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/templates \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/main.css \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/main.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/cameractrl.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/journalctrl.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/loginctrl.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/settingsctrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/angular-uuid4.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/angular.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap \
@@ -50,6 +73,9 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ng-cordova-mocks.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ng-cordova.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ng-cordova.min.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ui-bootstrap-tpls-0.13.3.min.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ui-bootstrap.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/xdomain.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap/css \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap/fonts \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap/js \
@@ -125,6 +151,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.background-mode \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-camera/www \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-camera/www/Camera.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-camera/www/CameraConstants.js \
@@ -141,6 +168,9 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device/www \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor/www \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor/www/VideoEditor.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor/www/VideoEditorOptions.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/templates/footer.html \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/templates/header.html \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/AndroidManifest.xml \

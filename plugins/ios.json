@@ -28,7 +28,7 @@
                     "AssetsLibrary.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "MobileCoreServices.framework": [
@@ -40,12 +40,18 @@
                     "AVFoundation.framework": [
                         {
                             "xml": "false",
-                            "count": 1
+                            "count": 2
                         }
                     ],
                     "SystemConfiguration.framework": [
                         {
                             "xml": "true",
+                            "count": 1
+                        }
+                    ],
+                    "MediaPlayer.framework": [
+                        {
+                            "xml": "false",
                             "count": 1
                         }
                     ]
@@ -80,6 +86,10 @@
                         },
                         {
                             "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"VideoEditor\"><param name=\"ios-package\" value=\"VideoEditor\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -120,6 +130,9 @@
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-console": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "org.apache.cordova.videoeditor": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

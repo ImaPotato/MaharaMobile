@@ -4,7 +4,7 @@
             <form novalidate class="simple-form" ng-repeat="obj in objects">
                 <div style="border-top:100px">
                     <button class="btn btn-default" ng-click="getPicture(obj.uuid);" style="margin-bottom:20px;">Capture Photo</button>
-                    <button class="btn btn-default" ng-click="getPictureFromLibrary($index);" style="margin-bottom:20px;">From Library</button>
+                    <button class="btn btn-default" ng-click="getPictureFromLibrary(obj.uuid);" style="margin-bottom:20px;">From Library</button>
                     <br>
                     <img id="{{obj.uuid}}" src="" class="img-rounded" style="display:none;width:100%;margin-bottom:20px;"> 
                 </div>
@@ -20,6 +20,8 @@
                 <hr width="95%" noshade>
 
             </form>
+
+            {{postStatus}}
 
             <input type="submit" class="btn btn-default" ng-click="update(objects)" value="Save" />
             <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
