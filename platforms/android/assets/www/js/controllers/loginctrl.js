@@ -1,4 +1,4 @@
-angular.module('Mahara').controller('LoginCtrl', function($scope, $location, SyncService){
+angular.module('Mahara').controller('LoginCtrl', function($scope, $location, SyncService, AlertGenerator){
 
   $scope.load = function(){
 
@@ -62,6 +62,13 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
 
     // sync notifications
     SyncService.sync();
+
+    // create a new alert, this will be displayed on the next page and then removed
+    var alert = { type: "success", msg: "Settings successfully updated." };
+    AlertGenerator.addAlert(alert);
+
+    // redirect back to main page when ready
+    _.defer( function(){ $scope.$apply(function() { $location.path("/"); });});
 
   };
 

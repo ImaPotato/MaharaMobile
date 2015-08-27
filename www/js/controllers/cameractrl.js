@@ -79,8 +79,6 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
     pending = (pending != null && pending != '') ? pending : [];
 
-    console.log(pending);
-
     // might need to load settings as well
     $.each(objects, function(index, value) {
       pending.push({
@@ -92,10 +90,10 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
       });
     });
 
-    console.log(pending);
     // update list of pending uploads
     localStorage.setItem('pending', JSON.stringify(pending));
-    console.log(SyncService.sync(UuidGenerator, MimeGenerator));
+
+    SyncService.sync();
 
   };
 

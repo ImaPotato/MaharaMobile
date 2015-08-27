@@ -6,7 +6,7 @@ app.config(['$routeProvider', function($routeProvider) {
   $routeProvider
     .when("/", {
       templateUrl: "partials/home.html",
-      controller: "LoginCtrl"
+      controller: "HomeCtrl"
     })
     .when("/login", {
       templateUrl: "partials/login.html",
@@ -77,6 +77,29 @@ app.factory('VideoEditor', ['$q', function($q) {
 
 }]);
 
+app.factory('AlertGenerator', function() {
+
+  return {
+    addAlert: function(alert) {
+      var alerts = JSON.parse(localStorage.getItem('alerts'));
+      if (alerts == null || alerts == '') {
+        alerts = [];
+      }
+      alerts.push(alert);
+      localStorage.setItem('alerts', JSON.stringify(alerts));
+    },
+    getAlerts: function() {
+      var alerts = JSON.parse(localStorage.getItem('alerts'));
+      alerts = alerts != null ? alerts : [];
+      return alerts;
+    },
+    removeAllAlerts: function() {
+      var alerts = [];
+      localStorage.setItem('alerts', JSON.stringify(alerts));
+    }
+  }
+});
+
 app.factory('MimeGenerator', function() {
   return {
     generateForm: function(data, uuid) {
@@ -95,7 +118,34 @@ app.factory('MimeGenerator', function() {
   };
 });
 
-app.factory('SyncService',['UuidGenerator', 'MimeGenerator', function(UuidGenerator, MimeGenerator) {
+app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', function(UuidGenerator, MimeGenerator) {
+
+  function parseSync(response, user) {
+
+    response = response.substring(1, response.length - 1);
+
+    var res = JSON.parse(response);
+
+    // update token
+    user.login.token = res.success;
+
+    // activity
+    var activity = JSON.stringify(res.sync.activity);
+    localStorage.setItem('activity', activity);
+
+    // blogs
+    var blogs = JSON.stringify(res.sync.blogs);
+    localStorage.setItem('blogs', blogs);
+
+    // tags
+    var tags = JSON.stringify(res.sync.tags);
+    localStorage.setItem('tags', tags);
+
+    // time
+    user.login.lastsync = res.sync.lastsync
+
+    localStorage.setItem('user', JSON.stringify(user));
+  }
 
   return {
     sync: function() {
@@ -104,7 +154,9 @@ app.factory('SyncService',['UuidGenerator', 'MimeGenerator', function(UuidGenera
 
       xhr.onreadystatechange = function() {
         if (xhr.readyState == 4 && xhr.status == 200) {
-          console.log(xhr.responseText);
+
+          parseSync(xhr.responseText, user);
+
           return xhr.responseText;
         } else {
           return xhr.responseText;
@@ -148,6 +200,10 @@ app.factory('SyncService',['UuidGenerator', 'MimeGenerator', function(UuidGenera
       xhr.open("POST", user.login.url + user.connection.syncuri, true);
       xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
       xhr.send(res);
+    },
+    sendImages: function(){
+      // for each image in image log
+      
     }
   }
 }]);

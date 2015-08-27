@@ -60,6 +60,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/main.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/cameractrl.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/homectrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/journalctrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/loginctrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/settingsctrl.js \
@@ -75,6 +76,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ng-cordova.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ui-bootstrap-tpls-0.13.3.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/ui-bootstrap.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/underscore-min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/xdomain.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap/css \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/library/bootstrap/fonts \
