@@ -17,9 +17,18 @@
     <feature name="NetworkStatus">
         <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="FilePath">
+        <param name="android-package" value="com.hiddentao.cordova.filepath.FilePath" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="VideoEditor">
         <param name="android-package" value="org.apache.cordova.videoeditor.VideoEditor" />
     </feature>
+    <preference name="AndroidPersistentFileLocation" value="Internal" />
     <name>Mahara</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

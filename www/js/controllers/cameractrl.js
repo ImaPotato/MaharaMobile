@@ -1,10 +1,13 @@
-angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamera, $cordovaLocalNotification, UuidGenerator, MimeGenerator, VideoEditor, SyncService) {
+angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamera, $cordovaLocalNotification, $q, UuidGenerator, MimeGenerator, VideoEditor, SyncService) {
 
   $scope.objects = [];
 
   $scope.postStatus = '';
 
   $scope.addObject = function() {
+
+    console.log('dsafasdf');
+
     var obj = {
       uuid: UuidGenerator.generate(),
       uri: '//:0',
@@ -19,24 +22,60 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   //this is the default object
   $scope.addObject();
 
+  /*
+  Will need to come up with a better solution that will work with both ios and android
+  but I guess i'll cross that bridge when I come to it...
+  */
+  $scope.getFileUri = function(imageData) {
+    var q = $q.defer();
+
+    // android seems to like to give us content url's instead of file urls, this should fix that.
+    if (imageData.substring(0, 10) == "content://") {
+      window.FilePath.resolveNativePath(imageData,
+        function(result) {
+          q.resolve('file://' + result);
+        },
+        function() {
+          q.reject('something went wrong');
+        }
+      );
+    } else {
+      q.resolve(imageData);
+    }
+
+    return q.promise;
+  }
+
   $scope.getPicture = function(id) {
 
     var options = {
-      destinationType: Camera.DestinationType.FILE_URL,
+      destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
 
-      $.each($scope.objects, function(index, value) {
-        if (value.uuid == id) {
-          value.src = imageData;
-        }
-      });
+      $scope.getFileUri(imageData).then(
+        function(fileUri) {
 
-      var image = document.getElementById(id);
-      image.src = imageData;
-      image.style.display = 'block';
+          console.log(fileUri);
+
+          imageData = fileUri;
+
+          for (var i = 0; i < $scope.objects.length; i++) {
+            if ($scope.objects[i].uuid == id) {
+              $scope.objects[i].uri = imageData;
+            }
+          }
+
+          var image = document.getElementById(id);
+          image.src = imageData;
+          image.style.display = 'block';
+
+        },
+        function() {
+          console.log('error');
+        });
 
     }, function(err) {
 
@@ -46,67 +85,77 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   $scope.getPictureFromLibrary = function(id) {
 
     var options = {
-      destinationType: Camera.DestinationType.FILE_URL,
+      destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.PHOTOLIBRARY
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
 
-      if (imageData.substring(0, 21) == "content://com.android") {
-        var photo_split = imageData.split("%3A");
-        imageData = "content://media/external/images/media/" + photo_split[1];
-      }
+          $scope.getFileUri(imageData).then(
+            function(fileUri) {
 
-      $.each($scope.objects, function(index, value) {
-        if (value.uuid == id) {
-          value.src = imageData;
-        }
+              imageData = fileUri;
+
+              for (var i = 0; i < $scope.objects.length; i++) {
+                if ($scope.objects[i].uuid == id) {
+                  $scope.objects[i].uri = imageData;
+                }
+              }
+
+              var image = document.getElementById(id);
+              image.src = imageData;
+              image.style.display = 'block';
+
+            },
+            function() {
+              console.log('error');
+            });
+
+      },
+      function(err) {
+        console.log('fuck fuck');
       });
 
-      var image = document.getElementById(id);
-      image.src = imageData;
-      image.style.display = 'block';
+};
 
-    }, function(err) {
+$scope.update = function(objects) {
 
-    });
+  var pending = localStorage.getItem('pending');
 
-  };
+  pending = (pending != null && pending != '') ? JSON.parse(pending) : [];
 
-  $scope.update = function(objects) {
+  for (var i = 0; i < $scope.objects.length; i++) {
 
-    var pending = JSON.parse(localStorage.getItem('pending'));
-
-    pending = (pending != null && pending != '') ? pending : [];
-
-    // might need to load settings as well
-    $.each(objects, function(index, value) {
+    if ($scope.objects[i].uri != '//:0') {
       pending.push({
-        'uuid': value.uuid,
-        'title': value.title,
-        'desc': value.desc,
-        'tags': value.tags,
-        'uri': value.uri
+        'uuid': $scope.objects[i].uuid,
+        'title': $scope.objects[i].title,
+        'desc': $scope.objects[i].desc,
+        'tags': $scope.objects[i].tags,
+        'uri': $scope.objects[i].uri
       });
-    });
+    }
+  }
 
-    // update list of pending uploads
-    localStorage.setItem('pending', JSON.stringify(pending));
+  // update list of pending uploads
+  localStorage.setItem('pending', JSON.stringify(pending));
 
-    SyncService.sync();
+  //SyncService.sync();
 
-  };
+  SyncService.sendImages();
 
-  $scope.removeObject = function(id) {
-    $.each($scope.objects, function(index, value) {
-      if (value.uuid == id) {
-        $scope.objects.splice(index, 1);
-      }
-    });
-  };
+};
 
-  $scope.reset = function() {
-    $scope.objects = [];
-  };
+$scope.removeObject = function(id) {
+  $.each($scope.objects, function(index, value) {
+    if (value.uuid == id) {
+      $scope.objects.splice(index, 1);
+    }
+  });
+};
+
+$scope.reset = function() {
+  $scope.objects = [];
+};
 
 });

@@ -1,4 +1,5 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes.dex : \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/com/hiddentao/cordova/filepath/FilePath.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$1.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$2.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$3.class \
@@ -77,6 +78,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils$FileOp.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/FileUtils.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/InvalidModificationException.class \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystem.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/LocalFilesystemURL.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/NoModificationAllowedException.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/apache/cordova/file/TypeMismatchException.class \

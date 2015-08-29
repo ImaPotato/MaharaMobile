@@ -3,7 +3,7 @@ angular.module('Mahara').controller('HomeCtrl', function($scope, AlertGenerator)
   $scope.load = function(){
 
     var user = JSON.parse(localStorage.getItem('user'));
-
+    localStorage.setItem('pending', []);
     if (user == null || user == ''){
 
       // we should redirect them to the login page

@@ -13,6 +13,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
       $scope.connection = { uploaduri : '/api/mobile/upload.php', syncuri : '/api/mobile/sync.php', connectiontype : 'Default'};
       $scope.login = {username : '', token : '', url : ''};
     }
+
   }
 
   $scope.load();
@@ -32,7 +33,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
 
     } else {
       // remove http:// | https:// if it exists, we will add this back on later.
-      //login.url = login.url.replace(/^https?:\/\//,'')
+      // login.url = login.url.replace(/^https?:\/\//,'')
     }
 
     if (connection.uploaduri == ''){
@@ -50,7 +51,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
     // cool, we can now update the users login settings
     var user =  { 'login' :
                   {
-                    'username' : login.username, 'token' : login.token, 'url': login.url
+                    'username' : login.username, 'token' : login.token.toLowerCase(), 'url': login.url
                   },
                   'connection' : {
                     'uploaduri' : connection.uploaduri, 'syncuri' : connection.syncuri, 'connectiontype' : connection.connectiontype
