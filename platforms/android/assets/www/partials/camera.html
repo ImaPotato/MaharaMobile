@@ -33,12 +33,10 @@
         </div>
       </div>
 
-
       <button id="toggel-options" ng-click="toggle(obj.uuid)" class="waves-effect waves-light btn"> Options </button>
 
-
       <!-- Dropdown Structure -->
-      <ul id='options-{{obj.uuid}}' +  class='dropdown-content'>
+      <ul id='options-{{obj.uuid}}' + class='dropdown-content'>
         <li><a ng-click="getPicture(obj.uuid);">Capture Photo</a></li>
         <li><a ng-click="getPictureFromLibrary(obj.uuid);">From Library</a></li>
         <li class="divider"></li>
@@ -47,24 +45,14 @@
 
     </div>
   </div>
-
-  <div class="row">
-
-
-  </div>
-
-  <div class="row">
-
-  </div>
-
 </form>
 
+<div class="row">
+  <button class="waves-effect waves-light btn" ng-click="addObject()">Add Another Image</button>
+</div>
 <div class="row">
   <button class="waves-effect waves-light btn" ng-click="update(objects)"> Save </button>
 </div>
 <div class="row">
   <button class="waves-effect waves-light btn" ng-click="reset()">Reset</button>
-</div>
-<div class="row">
-  <button class="waves-effect waves-light btn" ng-click="addObject()">Add Another Image</button>
 </div>
