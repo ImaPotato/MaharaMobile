@@ -1,31 +1,70 @@
-<div class="section">
-    <div class="container">
-        <div class="row">
-            <form novalidate class="simple-form" ng-repeat="obj in objects">
-                <div style="border-top:100px">
-                    <button class="btn btn-default" ng-click="getPicture(obj.uuid);" style="margin-bottom:20px;">Capture Photo</button>
-                    <button class="btn btn-default" ng-click="getPictureFromLibrary(obj.uuid);" style="margin-bottom:20px;">From Library</button>
-                    <br>
-                    <img id="{{obj.uuid}}" src="" class="img-rounded" style="display:none;width:100%;margin-bottom:20px;">
-                </div>
+<form novalidate class="col s12" ng-repeat="obj in objects">
+  <div class="card large">
 
-                <div class="form-group">
-                    Title: <input type="text" class="form-control" ng-model="obj.title" /><br />
-                    Description: <input type="text" class="form-control" ng-model="obj.description" /><br />
-                    Tags: <input type="text" class="form-control" ng-model="obj.tags" /><br />
-                </div>
 
-                <button class="btn btn-default" ng-click="removeObject(obj.uuid)" >Remove Photo</button>
+    <div class="card-image waves-effect waves-block waves-light">
+      <!-- Don't judge, #noragrets -->
+      <img id="{{obj.uuid}}" src="css/white.jpg" class="activator">
+    </div>
 
-                <hr width="95%" noshade>
+    <div class="card-content">
+      <span class="card-title activator grey-text text-darken-4">{{obj.title == '' ? 'Enter a image title' : obj.title}}</span>
+      <p class="flow-text">{{obj.description == '' ? 'Enter a description' : obj.description}}</p>
+    </div>
 
-            </form>
+    <div class="card-reveal">
+      <span class="card-title grey-text text-darken-4">{{obj.title == '' ? 'Enter a image title' : obj.title}}</span>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
+          <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Description" type="text" class="form-control" ng-model="obj.description" ng-class="{true: 'active', false: ''}[obj.description != '']" class="validate">
+          <label ng-class="{true: 'active', false: ''}[obj.description != '']">Description</label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="input-field col s12">
+          <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
+          <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
+        </div>
+      </div>
 
-            {{postStatus}}
 
-            <input type="button" class="btn btn-default" ng-click="update(objects)" value="Save" />
-            <input type="button" class="btn btn-default" ng-click="reset()" value="Reset" />
-            <button class="btn btn-default" ng-click="addObject()" >Add Another Image</button><br />
+      <button id="toggel-options" ng-click="toggle(obj.uuid)" class="waves-effect waves-light btn"> Options </button>
+
+
+      <!-- Dropdown Structure -->
+      <ul id='options-{{obj.uuid}}' +  class='dropdown-content'>
+        <li><a ng-click="getPicture(obj.uuid);">Capture Photo</a></li>
+        <li><a ng-click="getPictureFromLibrary(obj.uuid);">From Library</a></li>
+        <li class="divider"></li>
+        <li><a ng-click="removeObject(obj.uuid)">Remove Photo</a></li>
+      </ul>
 
     </div>
+  </div>
+
+  <div class="row">
+
+
+  </div>
+
+  <div class="row">
+
+  </div>
+
+</form>
+
+<div class="row">
+  <button class="waves-effect waves-light btn" ng-click="update(objects)"> Save </button>
+</div>
+<div class="row">
+  <button class="waves-effect waves-light btn" ng-click="reset()">Reset</button>
+</div>
+<div class="row">
+  <button class="waves-effect waves-light btn" ng-click="addObject()">Add Another Image</button>
 </div>

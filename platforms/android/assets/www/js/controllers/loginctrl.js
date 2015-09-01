@@ -66,6 +66,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
 
     // create a new alert, this will be displayed on the next page and then removed
     var alert = { type: "success", msg: "Settings successfully updated." };
+
     AlertGenerator.addAlert(alert);
 
     // redirect back to main page when ready
@@ -82,5 +83,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $location, Syn
   $scope.reset = function() {
     load();
   };
+
+  $('select').material_select();
 
 });

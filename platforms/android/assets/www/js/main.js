@@ -1,5 +1,5 @@
 var app = angular.module('Mahara', [
-  'ngRoute', 'ngCordova', 'uuid4', 'ui.bootstrap'
+  'ngRoute', 'ngCordova', 'uuid4'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -118,216 +118,299 @@ app.factory('MimeGenerator', function() {
   };
 });
 
-app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$q', function(UuidGenerator, MimeGenerator, $cordovaFile, $q) {
+app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$q', '$cordovaFileTransfer', function(UuidGenerator, MimeGenerator, $cordovaFile, $q, $cordovaFileTransfer) {
 
-      function parseSync(response, user) {
+  function parseSync(response, user) {
 
-        response = response.substring(1, response.length - 1);
+    response = response.substring(1, response.length - 1);
 
-        var res = JSON.parse(response);
+    var res = JSON.parse(response);
 
-        // update token
-        user.login.token = res.success;
-        /*
-        // activity
-        var activity = JSON.stringify(res.sync.activity);
-        localStorage.setItem('activity', activity);
+    // update token
+    user.login.token = res.success;
+    /*
+    // activity
+    var activity = JSON.stringify(res.sync.activity);
+    localStorage.setItem('activity', activity);
 
-        // blogs
-        var blogs = JSON.stringify(res.sync.blogs);
-        localStorage.setItem('blogs', blogs);
+    // blogs
+    var blogs = JSON.stringify(res.sync.blogs);
+    localStorage.setItem('blogs', blogs);
 
-        // tags
-        var tags = JSON.stringify(res.sync.tags);
-        localStorage.setItem('tags', tags);
+    // tags
+    var tags = JSON.stringify(res.sync.tags);
+    localStorage.setItem('tags', tags);
 
-        // time
-        user.login.lastsync = res.sync.lastsync
-        */
-        localStorage.setItem('user', JSON.stringify(user));
+    // time
+    user.login.lastsync = res.sync.lastsync
+    */
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  function getDataUri(path, name, image) {
+    var q = $q.defer();
+
+    $cordovaFile.readAsDataURL(path, name)
+      .then(function(success) {
+        console.log(image);
+        image.uri = success;
+        image.filename = name;
+        q.resolve(image);
+      }, function(error) {
+        console.log('failure');
+        q.reject('error');
+      });
+
+    return q.promise;
+  }
+
+  return {
+    sync: function() {
+
+      var user = JSON.parse(localStorage.getItem('user'));
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        if (xhr.readyState == 4 && xhr.status == 200) {
+
+          parseSync(xhr.responseText, user);
+
+          return xhr.responseText;
+        } else {
+          return xhr.responseText;
+        }
       }
 
-      function getDataUri(path, name, image) {
-        var q = $q.defer();
+      var data = [];
 
-        $cordovaFile.readAsArrayBuffer(path, name)
-          .then(function(success) {
-            console.log(image);
-            image.uri = success;
-            image.filename = name;
-            q.resolve(image);
-          }, function(error) {
-            console.log('failure');
-            q.reject('error');
-          });
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.username
+      });
 
-        return q.promise;
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.token
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: 'feedback,newpost,maharamessage,usermessages'
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="lastsync"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: '1439259919620'
+      });
+
+      var bound = UuidGenerator.generate()
+
+      var res = MimeGenerator.generateForm(data, '--' + bound);
+
+      xhr.open("POST", user.login.url + user.connection.syncuri, true);
+      xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
+      xhr.send(res);
+    },
+    sendImages: function() {
+        var pending = JSON.parse(localStorage.getItem('pending'));
+        var user = JSON.parse(localStorage.getItem('user'));
+
+        for (var i = 0; i < pending.length; i++) {
+
+      $cordovaFileTransfer.upload('http://10.140.120.25/~potato/mahara/htdocs/api/mobile/upload.php', pending[i].uri, {
+        params: {
+          framework: 'Ionic' // <<<<< This is sent
+        },
+        headers: {
+          Connection: "close"
+        },
+        chunkedMode: false,
+        fileKey: "file",
+        fileName: pending[i].uri.substr(pending[i].uri.lastIndexOf('/')+1),
+        mimeType: "image/jpeg"
+
+      }).then(function(result) {
+        alert('success?');
+        // Success!
+      }, function(error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+        // Error
+      }, function (progress) {
+        console.log(progress);
+        // constant progress updates
+      });
+
+
+
+
+          /*
+          function win(r) {
+            console.log("Code = " + r.responseCode);
+            console.log("Response = " + r.response);
+            console.log("Sent = " + r.bytesSent);
+          }
+
+          function fail(error) {
+            alert("An error has occurred: Code = " + error.code);
+            console.log("upload error source " + error.source);
+            console.log("upload error target " + error.target);
+          }
+
+          //var uri = user.login.url + user.connection.uploaduri;
+
+          var lastIndex = pending[i].uri.lastIndexOf('/');
+          var options = new FileUploadOptions();
+          options.fileKey = "file";
+          options.fileName = pending[i].uri.substring(0, lastIndex + 1);
+          options.mimeType = "application/octet-stream";
+          options.chunkedMode = false;
+
+
+          var headers = {
+            'headerParam': 'headerValue',
+            Connection: "close"
+
+          };
+
+          options.headers = headers;
+
+          var ft = new FileTransfer();
+
+          console.log(pending[i].uri);
+
+
+          ft.onprogress = function(progressEvent) {
+            if (progressEvent.lengthComputable) {
+              loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
+            } else {
+              loadingStatus.increment();
+            }
+          };
+
+
+          ft.upload(pending[i].uri, "http://172.17.19.19/~potato/mahara/htdocs/api/mobile/upload.php", win, fail, options);
+          */
+        }
       }
+      /*
+      sendImages: function() {
+        // for each image in image log
+        var pending = JSON.parse(localStorage.getItem('pending'));
 
-      return {
-        sync: function() {
+        var user = JSON.parse(localStorage.getItem('user'));
 
-          var user = JSON.parse(localStorage.getItem('user'));
+        // this wont work...
+        // need to have it so that only when an image is sent the next one gets triggered.
+
+        for (var i = 0; i < pending.length; i++) {
+
           var xhr = new XMLHttpRequest();
 
           xhr.onreadystatechange = function() {
             if (xhr.readyState == 4 && xhr.status == 200) {
-
               parseSync(xhr.responseText, user);
-
-              return xhr.responseText;
+              // if success we need to update the status of the image
+              //return xhr.responseText;
             } else {
-              return xhr.responseText;
+              //return xhr.responseText;
             }
           }
 
           var data = [];
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: user.login.username
-          });
+          var lastIndex = pending[i].uri.lastIndexOf('/');
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: user.login.token
-          });
+          // this ended up being a little gross, concurrency is hard.
+          var uri = getDataUri(pending[i].uri.substring(0, lastIndex + 1), pending[i].uri.substring(lastIndex + 1, pending[i].uri.length), pending[i])
+            .then(
+              function(image) {
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: 'feedback,newpost,maharamessage,usermessages'
-          });
-
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="lastsync"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: '1439259919620'
-          });
-
-          var bound = UuidGenerator.generate()
-
-          var res = MimeGenerator.generateForm(data, '--' + bound);
-
-          xhr.open("POST", user.login.url + user.connection.syncuri, true);
-          xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
-          xhr.send(res);
-        },
-
-        sendImages: function() {
-          // for each image in image log
-          var pending = JSON.parse(localStorage.getItem('pending'));
-
-          var user = JSON.parse(localStorage.getItem('user'));
-
-          // this wont work...
-          // need to have it so that only when an image is sent the next one gets triggered.
-
-          for (var i = 0; i < pending.length; i++) {
-
-            var xhr = new XMLHttpRequest();
-
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState == 4 && xhr.status == 200) {
-                parseSync(xhr.responseText, user);
-                // if success we need to update the status of the image
-                //return xhr.responseText;
-              } else {
-                //return xhr.responseText;
-              }
-            }
-
-            var data = [];
-
-            var lastIndex = pending[i].uri.lastIndexOf('/');
-
-            // this ended up being a little gross, concurrency is hard.
-            var uri = getDataUri(pending[i].uri.substring(0, lastIndex + 1), pending[i].uri.substring(lastIndex + 1, pending[i].uri.length), pending[i])
-              .then(
-                function(image) {
-                  console.log(image.uri);
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; filename="' + image.filename + '"; name="userfile"',
-                  contenttype: "Content-Type: application/octet-stream;",
-                  contenttransfer: "Content-Transfer-Encoding: binary",
-                  value: image.uri.split(/,(.+)?/)[1] //remove 'data:image/png;base64,'
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: 'true'
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.desc
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: ''
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.tags
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.title
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: user.login.username
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: user.login.token
-                });
-
-                var bound = UuidGenerator.generate()
-
-                var res = MimeGenerator.generateForm(data, '--' + bound);
-
-                xhr.open("POST", user.login.url + user.connection.uploaduri, true);
-                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
-                xhr.send(res);
-
-              }, function() {
-                console.log('error');
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; filename="' + image.filename + '"; name="userfile"',
+                contenttype: "Content-Type: application/octet-stream;",
+                contenttransfer: "Content-Transfer-Encoding: binary",
+                value: image.uri.split(/,(.+)?/)[1] //remove 'data:image/png;base64,'
               });
 
-            }
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: 'true'
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: image.desc
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: ''
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: image.tags
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: image.title
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: user.login.username
+              });
+
+              data.push({
+                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
+                contenttype: "Content-Type: text/plain; charset=UTF-8",
+                contenttransfer: "Content-Transfer-Encoding: 8bit",
+                value: user.login.token
+              });
+
+              var bound = UuidGenerator.generate()
+
+              var res = MimeGenerator.generateForm(data, '--' + bound);
+
+              xhr.open("POST", user.login.url + user.connection.uploaduri, true);
+              xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
+              xhr.send(res);
+
+            }, function() {
+              console.log('error');
+            });
+
           }
-        }
-      }]);
+        } */
+  }
+}]);
 
-    /**
-     * Controls all other Pages
-     */
-    app.controller('PageCtrl', function( /* $scope, $location, $http */ ) {
+/**
+ * Controls all other Pages
+ */
+app.controller('PageCtrl', function( /* $scope, $location, $http */ ) {
 
-    });
+});

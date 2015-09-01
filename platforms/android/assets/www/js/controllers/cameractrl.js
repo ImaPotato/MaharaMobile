@@ -6,8 +6,6 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
   $scope.addObject = function() {
 
-    console.log('dsafasdf');
-
     var obj = {
       uuid: UuidGenerator.generate(),
       uri: '//:0',
@@ -17,6 +15,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     };
 
     $scope.objects.push(obj);
+
   };
 
   //this is the default object
@@ -33,14 +32,14 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     if (imageData.substring(0, 10) == "content://") {
       window.FilePath.resolveNativePath(imageData,
         function(result) {
-          q.resolve('file://' + result);
+          q.resolve(result);
         },
         function() {
           q.reject('something went wrong');
         }
       );
     } else {
-      q.resolve(imageData);
+      q.resolve(imageData.replace('content://', ''));
     }
 
     return q.promise;
@@ -91,71 +90,94 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
 
-          $scope.getFileUri(imageData).then(
-            function(fileUri) {
+        $scope.getFileUri(imageData).then(
+          function(fileUri) {
 
-              imageData = fileUri;
+            imageData = fileUri;
 
-              for (var i = 0; i < $scope.objects.length; i++) {
-                if ($scope.objects[i].uuid == id) {
-                  $scope.objects[i].uri = imageData;
-                }
+            for (var i = 0; i < $scope.objects.length; i++) {
+              if ($scope.objects[i].uuid == id) {
+                $scope.objects[i].uri = imageData;
               }
+            }
 
-              var image = document.getElementById(id);
-              image.src = imageData;
-              image.style.display = 'block';
+            var image = document.getElementById(id);
+            image.src = imageData;
+            image.style.display = 'block';
 
-            },
-            function() {
-              console.log('error');
-            });
+          },
+          function() {
+            console.log('error');
+          });
 
       },
       function(err) {
         console.log('fuck fuck');
       });
+  };
 
-};
+  $scope.update = function(objects) {
 
-$scope.update = function(objects) {
+    var pending = localStorage.getItem('pending');
 
-  var pending = localStorage.getItem('pending');
+    pending = (pending != null && pending != '') ? JSON.parse(pending) : [];
 
-  pending = (pending != null && pending != '') ? JSON.parse(pending) : [];
+    for (var i = 0; i < $scope.objects.length; i++) {
 
-  for (var i = 0; i < $scope.objects.length; i++) {
+      if ($scope.objects[i].uri != '//:0') {
+        pending.push({
+          'uuid': $scope.objects[i].uuid,
+          'title': $scope.objects[i].title,
+          'desc': $scope.objects[i].desc,
+          'tags': $scope.objects[i].tags,
+          'uri': $scope.objects[i].uri
+        });
+      }
+    }
 
-    if ($scope.objects[i].uri != '//:0') {
-      pending.push({
-        'uuid': $scope.objects[i].uuid,
-        'title': $scope.objects[i].title,
-        'desc': $scope.objects[i].desc,
-        'tags': $scope.objects[i].tags,
-        'uri': $scope.objects[i].uri
-      });
+    // update list of pending uploads
+    localStorage.setItem('pending', JSON.stringify(pending));
+
+    //SyncService.sync();
+
+    SyncService.sendImages();
+
+  };
+
+  $scope.removeObject = function(id) {
+    $.each($scope.objects, function(index, value) {
+      if (value.uuid == id) {
+        $scope.objects.splice(index, 1);
+      }
+    });
+  };
+
+  $scope.reset = function() {
+    $scope.objects = [];
+  };
+
+  $('.dropdown-button').dropdown({
+    inDuration: 300,
+    outDuration: 225,
+    constrain_width: false, // Does not change width of dropdown to that of the activator
+    hover: true, // Activate on hover
+    gutter: 0, // Spacing from edge
+    belowOrigin: false // Displays dropdown below the button
+  });
+
+  // let bit hacky but was the only way to get it to work with angular
+  var dropdownVisible = true;
+
+  $scope.toggle = function(id){
+    var element = document.getElementById('options-' + id);
+    if (!dropdownVisible) {
+      element.style.opacity = "0";
+      element.style.display = "none";
+      dropdownVisible = true;
+    } else {
+      element.style.opacity = "1";
+      element.style.display = "inline";
+      dropdownVisible = false;
     }
   }
-
-  // update list of pending uploads
-  localStorage.setItem('pending', JSON.stringify(pending));
-
-  //SyncService.sync();
-
-  SyncService.sendImages();
-
-};
-
-$scope.removeObject = function(id) {
-  $.each($scope.objects, function(index, value) {
-    if (value.uuid == id) {
-      $scope.objects.splice(index, 1);
-    }
-  });
-};
-
-$scope.reset = function() {
-  $scope.objects = [];
-};
-
 });
