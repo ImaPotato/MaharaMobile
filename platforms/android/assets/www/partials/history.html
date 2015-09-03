@@ -1,0 +1,24 @@
+<div class="section">
+  <h3>History</h3>
+  <div class="col s12" ng-repeat="pen in pending">
+    <div class="card">
+      <div class="card-image waves-effect waves-block waves-light">
+        <img ng-src="{{pen.uri}}" class="activator">
+      </div>
+
+      <div class="card-content">
+
+        <h3>
+          <span class="card-title activator grey-text text-darken-4 truncate"><i>{{pen.title == '' ? 'No title' : pen.title}}</i>
+          </span>
+        </h3>
+
+        <p class="truncate"><i>{{pen.desc == '' ? 'No description' : pen.desc}}</i></p>
+        <div class="divider"></div>
+        <div class="section">
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

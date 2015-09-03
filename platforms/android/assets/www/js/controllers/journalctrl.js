@@ -60,6 +60,7 @@ angular.module('Mahara').controller('JournalCtrl', function($scope, UuidGenerato
 
     $scope.reset = function () {
         $scope.objects = [];
+        $scope.addObject();
     };
 
 });

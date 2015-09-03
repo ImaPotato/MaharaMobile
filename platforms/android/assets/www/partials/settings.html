@@ -2,57 +2,141 @@
   <div class="container">
     <div class="row">
       <form novalidate class="simple-form">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title grey-text text-darken-4">Login details</span>
+            <a href="#/login" class="waves-effect waves-light btn right">Update</a>
+        </div>
 
-        <button class="btn btn-default"> Update login or connection details </button>
-
-        <hr width="95%" noshade>
-
-        <accordion>
-          <accordion-group heading="Default Post Settings">
-            <div class="form-group">
-              Journal post by default:
-              <input type="checkbox" ng-model="settings.defaultjournalset" />
-              <br /> Default journal:
+      </div>
+        <div class="card">
+          <div class="card-content">
+            <div class="row">
+              <span class="card-title grey-text text-darken-4">Post settings</span>
+            </div>
+            <div class="row">
+              Journal post by default
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.defaultjournalset" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row" ng-show="settings.defaultjournalset">
+              Default journal
               <input type="text" class="form-control disabled" ng-model="settings.defaultjournal" />
-              <br /> Upload to a default folder:
-              <input type="checkbox" ng-model="settings.uploadfolderset" />
-              <br /> Upload folder:
+            </div>
+            <div class="row">
+              Upload to a default folder
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.uploadfolderset" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row" ng-show="settings.uploadfolderset">
+              Upload folder
               <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
-              <br /> Set tags be default:
-              <input type="checkbox" ng-model="settings.uploadtagsset" />
-              <br /> Tags:
+            </div>
+
+            <div class="row">
+              Set tags be default
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.uploadtagsset" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row" ng-show="settings.uploadtagsset">
+              Tags:
               <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
-              <br />
             </div>
-          </accordion-group>
-          <accordion-group heading="Default Notification Settings">
-            <div class="form-group">
-              User messages:
-              <input type="checkbox" ng-model="settings.notification.user" />
-              <br /> Feedback:
-              <input type="checkbox" ng-model="settings.notification.feedback" />
-              <br /> New posts:
-              <input type="checkbox" ng-model="settings.notification.posts" />
-              <br /> Mahara messages:
-              <input type="checkbox" ng-model="settings.notification.mahara" />
-              <br />
+
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-content">
+
+            <div class="row">
+              <span class="card-title grey-text text-darken-4">Notfication settings</span>
             </div>
-          </accordion-group>
-          <accordion-group heading="Advanced Settings">
-            <div class="form-group">
+
+            <div class="row">
+              User messages
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.notification.user" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              Feedback
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.notification.feedback" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              New posts
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.notification.posts" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+            <div class="row">
+              Mahara messages
+              <div class="switch">
+                <label>
+                  Off
+                  <input type="checkbox" ng-model="settings.notification.mahara" />
+                  <span class="lever"></span>
+                  On
+                </label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="card">
+          <div class="card-content">
+            <div class="row">
+              <span class="card-title grey-text text-darken-4">Advanced settings</span>
+            </div>
+            <div class="row">
               Periodic Sync:
-              <input type="text" class="form-control" ng-model="settings.advanced.periodicsync" />
-              <br /> Last Sync Time:
-              <input type="text" class="form-control" ng-model="settings.advanced.lastsynctime" />
-              <br />
+              <input type="text" ng-model="settings.advanced.periodicsync " />
             </div>
-          </accordion-group>
-        </accordion>
+            <div class="row">
+              Last Sync Time:
+              <input type="text" ng-model="settings.advanced.lastsynctime " />
+            </div>
+          </div>
+        </div>
 
       </form>
 
-      <input type="submit" class="btn btn-default" ng-click="save(settings)" value="Save" />
-      <input type="button" class="btn btn-default" ng-click="reset()" value="Reset to default" />
+      <input type="submit " class="btn btn-default col s5 right" ng-click="save(settings) " value="Save" style="margin-left:5px"/>
+      <input type="button " class="btn btn-default col s5 right" ng-click="reset() " value="Reset" />
+
 
     </div>
-  </div>

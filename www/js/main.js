@@ -1,5 +1,5 @@
 var app = angular.module('Mahara', [
-  'ngRoute', 'ngCordova', 'uuid4', 'ui.bootstrap'
+  'ngRoute', 'ngCordova', 'uuid4'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -23,6 +23,10 @@ app.config(['$routeProvider', function($routeProvider) {
     .when("/settings", {
       templateUrl: "partials/settings.html",
       controller: "SettingsCtrl"
+    })
+    .when("/history", {
+      templateUrl: "partials/history.html",
+      controller: "HistoryCtrl"
     })
     .otherwise("/404", {
       templateUrl: "partials/404.html",
@@ -118,216 +122,192 @@ app.factory('MimeGenerator', function() {
   };
 });
 
-app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$q', function(UuidGenerator, MimeGenerator, $cordovaFile, $q) {
+app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$q', '$cordovaFileTransfer', function(UuidGenerator, MimeGenerator, $cordovaFile, $q, $cordovaFileTransfer) {
 
-      function parseSync(response, user) {
+  function parseSync(response, user) {
 
-        response = response.substring(1, response.length - 1);
+    response = response.substring(1, response.length - 1);
 
-        var res = JSON.parse(response);
+    var res = JSON.parse(response);
 
-        // update token
-        user.login.token = res.success;
-        /*
-        // activity
-        var activity = JSON.stringify(res.sync.activity);
-        localStorage.setItem('activity', activity);
+    if (res.error != null && res.error != '') {
+      //somethings gone wrong, show an error and return.
+      return;
+    }
 
-        // blogs
-        var blogs = JSON.stringify(res.sync.blogs);
-        localStorage.setItem('blogs', blogs);
+    // update token
+    user.login.token = res.success;
 
-        // tags
-        var tags = JSON.stringify(res.sync.tags);
-        localStorage.setItem('tags', tags);
+    // if sync we also need to update a few other things.
+    /*
+    // activity
+    var activity = JSON.stringify(res.sync.activity);
+    localStorage.setItem('activity', activity);
 
-        // time
-        user.login.lastsync = res.sync.lastsync
-        */
-        localStorage.setItem('user', JSON.stringify(user));
+    // blogs
+    var blogs = JSON.stringify(res.sync.blogs);
+    localStorage.setItem('blogs', blogs);
+
+    // tags
+    var tags = JSON.stringify(res.sync.tags);
+    localStorage.setItem('tags', tags);
+
+    // time
+    user.login.lastsync = res.sync.lastsync
+    */
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
+  function getDataUri(path, name, image) {
+    var q = $q.defer();
+
+    $cordovaFile.readAsDataURL(path, name)
+      .then(function(success) {
+        console.log(image);
+        image.uri = success;
+        image.filename = name;
+        q.resolve(image);
+      }, function(error) {
+        console.log('failure');
+        q.reject('error');
+      });
+
+    return q.promise;
+  }
+
+  return {
+
+    sync: function() {
+
+      var user = JSON.parse(localStorage.getItem('user'));
+
+      // need to make sure this is populated...
+      var settings = JSON.parse(localStorage.getItem('settings'));
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        console.log(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          parseSync(xhr.responseText, user);
+          return xhr.responseText;
+        } else {
+          return xhr.responseText;
+        }
       }
 
-      function getDataUri(path, name, image) {
-        var q = $q.defer();
+      var data = [];
 
-        $cordovaFile.readAsDataURL(path, name)
-          .then(function(success) {
-            console.log(image);
-            image.uri = success;
-            image.filename = name;
-            q.resolve(image);
-          }, function(error) {
-            console.log('failure');
-            q.reject('error');
-          });
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.username
+      });
 
-        return q.promise;
-      }
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.token
+      });
 
-      return {
-        sync: function() {
+      var notifications = [];
+      if (settings.notification.user) notifications.push('usermessages');
+      if (settings.notification.feedback) notifications.push('feedback');
+      if (settings.notification.posts) notifications.push('newpost');
+      if (settings.notification.mahara) notifications.push('maharamessage');
 
-          var user = JSON.parse(localStorage.getItem('user'));
-          var xhr = new XMLHttpRequest();
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: notifications.join(", ")
+      });
 
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="lastsync"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: (settings.advanced.lastsynctime == '' || settings.advanced.lastsynctime == null) ? 0 : settings.advanced.lastsynctime
+      });
 
-              parseSync(xhr.responseText, user);
+      var bound = UuidGenerator.generate()
 
-              return xhr.responseText;
-            } else {
-              return xhr.responseText;
-            }
-          }
+      var res = MimeGenerator.generateForm(data, '--' + bound);
 
-          var data = [];
+      xhr.open("POST", user.login.url + user.connection.syncuri, true);
+      xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
+      xhr.send(res);
+    },
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: user.login.username
-          });
+    sendImage: function(image) {
+      var q = $q.defer();
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: user.login.token
-          });
+      var user = JSON.parse(localStorage.getItem('user'));
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: 'feedback,newpost,maharamessage,usermessages'
-          });
+      image.uri = image.uri.replace('file://', '');
 
-          data.push({
-            contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="lastsync"',
-            contenttype: "Content-Type: text/plain; charset=UTF-8",
-            contenttransfer: "Content-Transfer-Encoding: 8bit",
-            value: '1439259919620'
-          });
+      console.log(image.uri);
 
-          var bound = UuidGenerator.generate()
+      $cordovaFileTransfer.upload(/*user.login.url + user.connection.uploaduri*/ 'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', image.uri, {
 
-          var res = MimeGenerator.generateForm(data, '--' + bound);
-
-          xhr.open("POST", user.login.url + user.connection.syncuri, true);
-          xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
-          xhr.send(res);
+        params: {
+          allowcomments: 'true',
+          description: image.desc,
+          foldername: '',
+          tags: image.tags,
+          title: image.title,
+          username: user.login.username,
+          token: user.login.token
         },
 
-        sendImages: function() {
-          // for each image in image log
-          var pending = JSON.parse(localStorage.getItem('pending'));
+        headers: {
+          Connection: "Keep-Alive"
+        },
 
-          var user = JSON.parse(localStorage.getItem('user'));
+        chunkedMode: false,
+        fileKey: "userfile",
+        fileName: image.uri.substr(image.uri.lastIndexOf('/') + 1),
+        mimeType: "application/octet-stream"
 
-          // this wont work...
-          // need to have it so that only when an image is sent the next one gets triggered.
+      }).then(function(r) {
 
-          for (var i = 0; i < pending.length; i++) {
+        var response = r.response.substring(1, r.response.length - 1);
+        var res = JSON.parse(response);
 
-            var xhr = new XMLHttpRequest();
+        if (res.error != null && res.error != '') {
+          console.log('error sending');
+          //somethings gone wrong, show an error and return.
+          q.reject();
+        } else {
 
-            xhr.onreadystatechange = function() {
-              if (xhr.readyState == 4 && xhr.status == 200) {
-                parseSync(xhr.responseText, user);
-                // if success we need to update the status of the image
-                //return xhr.responseText;
-              } else {
-                //return xhr.responseText;
-              }
-            }
+          console.log('sent successfully');
+          parseSync(r.response, user);
+          q.resolve();
 
-            var data = [];
-
-            var lastIndex = pending[i].uri.lastIndexOf('/');
-
-            // this ended up being a little gross, concurrency is hard.
-            var uri = getDataUri(pending[i].uri.substring(0, lastIndex + 1), pending[i].uri.substring(lastIndex + 1, pending[i].uri.length), pending[i])
-              .then(
-                function(image) {
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; filename="' + image.filename + '"; name="userfile"',
-                  contenttype: "Content-Type: application/octet-stream;",
-                  contenttransfer: "Content-Transfer-Encoding: binary",
-                  value: image.uri.split(/,(.+)?/)[1] //remove 'data:image/png;base64,'
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: 'true'
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.desc
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: ''
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.tags
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: image.title
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: user.login.username
-                });
-
-                data.push({
-                  contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
-                  contenttype: "Content-Type: text/plain; charset=UTF-8",
-                  contenttransfer: "Content-Transfer-Encoding: 8bit",
-                  value: user.login.token
-                });
-
-                var bound = UuidGenerator.generate()
-
-                var res = MimeGenerator.generateForm(data, '--' + bound);
-
-                xhr.open("POST", user.login.url + user.connection.uploaduri, true);
-                xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
-                xhr.send(res);
-
-              }, function() {
-                console.log('error');
-              });
-
-            }
-          }
         }
-      }]);
 
-    /**
-     * Controls all other Pages
-     */
-    app.controller('PageCtrl', function( /* $scope, $location, $http */ ) {
+      }, function(error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+        q.reject();
+      }, function(progress) {
+        console.log(progress);
+      });
 
-    });
+      return q.promise;
+
+    }
+  }
+}]);
+
+/**
+ * Controls all other Pages
+ */
+app.controller('PageCtrl', function( /* $scope, $location, $http */ ) {
+
+});
+
+FastClick.attach(document.body);

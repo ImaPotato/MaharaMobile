@@ -28,7 +28,7 @@
                     "AssetsLibrary.framework": [
                         {
                             "xml": "false",
-                            "count": 3
+                            "count": 4
                         }
                     ],
                     "MobileCoreServices.framework": [
@@ -73,10 +73,6 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"LocalNotification\"><param name=\"ios-package\" onload=\"true\" value=\"APPLocalNotification\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
                             "count": 1
                         },
@@ -98,6 +94,10 @@
                         },
                         {
                             "xml": "<feature name=\"File\"><param name=\"ios-package\" value=\"CDVFile\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -128,9 +128,6 @@
         "cordova-plugin-websql": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "de.appplant.cordova.plugin.local-notification": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
         "de.appplant.cordova.plugin.background-mode": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
@@ -147,6 +144,9 @@
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "com.hiddentao.cordova.filepath": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

@@ -24,6 +24,10 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: "partials/settings.html",
       controller: "SettingsCtrl"
     })
+    .when("/history", {
+      templateUrl: "partials/history.html",
+      controller: "HistoryCtrl"
+    })
     .otherwise("/404", {
       templateUrl: "partials/404.html",
       controller: "PageCtrl"
@@ -126,8 +130,15 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
     var res = JSON.parse(response);
 
+    if (res.error != null && res.error != '') {
+      //somethings gone wrong, show an error and return.
+      return;
+    }
+
     // update token
     user.login.token = res.success;
+
+    // if sync we also need to update a few other things.
     /*
     // activity
     var activity = JSON.stringify(res.sync.activity);
@@ -165,16 +176,20 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
   }
 
   return {
+
     sync: function() {
 
       var user = JSON.parse(localStorage.getItem('user'));
+
+      // need to make sure this is populated...
+      var settings = JSON.parse(localStorage.getItem('settings'));
+
       var xhr = new XMLHttpRequest();
 
       xhr.onreadystatechange = function() {
+        console.log(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == 200) {
-
           parseSync(xhr.responseText, user);
-
           return xhr.responseText;
         } else {
           return xhr.responseText;
@@ -197,18 +212,24 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
         value: user.login.token
       });
 
+      var notifications = [];
+      if (settings.notification.user) notifications.push('usermessages');
+      if (settings.notification.feedback) notifications.push('feedback');
+      if (settings.notification.posts) notifications.push('newpost');
+      if (settings.notification.mahara) notifications.push('maharamessage');
+
       data.push({
         contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
         contenttype: "Content-Type: text/plain; charset=UTF-8",
         contenttransfer: "Content-Transfer-Encoding: 8bit",
-        value: 'feedback,newpost,maharamessage,usermessages'
+        value: notifications.join(", ")
       });
 
       data.push({
         contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="lastsync"',
         contenttype: "Content-Type: text/plain; charset=UTF-8",
         contenttransfer: "Content-Transfer-Encoding: 8bit",
-        value: '1439259919620'
+        value: (settings.advanced.lastsynctime == '' || settings.advanced.lastsynctime == null) ? 0 : settings.advanced.lastsynctime
       });
 
       var bound = UuidGenerator.generate()
@@ -219,192 +240,66 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
       xhr.send(res);
     },
-    sendImages: function() {
-        var pending = JSON.parse(localStorage.getItem('pending'));
-        var user = JSON.parse(localStorage.getItem('user'));
 
-        for (var i = 0; i < pending.length; i++) {
+    sendImage: function(image) {
+      var q = $q.defer();
 
-      $cordovaFileTransfer.upload('http://10.140.120.25/~potato/mahara/htdocs/api/mobile/upload.php', pending[i].uri, {
+      var user = JSON.parse(localStorage.getItem('user'));
+
+      image.uri = image.uri.replace('file://', '');
+
+      console.log(image.uri);
+
+      $cordovaFileTransfer.upload(/*user.login.url + user.connection.uploaduri*/ 'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', image.uri, {
+
         params: {
-          framework: 'Ionic' // <<<<< This is sent
+          allowcomments: 'true',
+          description: image.desc,
+          foldername: '',
+          tags: image.tags,
+          title: image.title,
+          username: user.login.username,
+          token: user.login.token
         },
-        headers: {
-          Connection: "close"
-        },
-        chunkedMode: false,
-        fileKey: "file",
-        fileName: pending[i].uri.substr(pending[i].uri.lastIndexOf('/')+1),
-        mimeType: "image/jpeg"
 
-      }).then(function(result) {
-        alert('success?');
-        // Success!
+        headers: {
+          Connection: "Keep-Alive"
+        },
+
+        chunkedMode: false,
+        fileKey: "userfile",
+        fileName: image.uri.substr(image.uri.lastIndexOf('/') + 1),
+        mimeType: "application/octet-stream"
+
+      }).then(function(r) {
+
+        var response = r.response.substring(1, r.response.length - 1);
+        var res = JSON.parse(response);
+
+        if (res.error != null && res.error != '') {
+          console.log('error sending');
+          //somethings gone wrong, show an error and return.
+          q.reject();
+        } else {
+
+          console.log('sent successfully');
+          parseSync(r.response, user);
+          q.resolve();
+
+        }
+
       }, function(error) {
         alert("An error has occurred: Code = " + error.code);
         console.log("upload error source " + error.source);
         console.log("upload error target " + error.target);
-        // Error
-      }, function (progress) {
+        q.reject();
+      }, function(progress) {
         console.log(progress);
-        // constant progress updates
       });
 
+      return q.promise;
 
-
-
-          /*
-          function win(r) {
-            console.log("Code = " + r.responseCode);
-            console.log("Response = " + r.response);
-            console.log("Sent = " + r.bytesSent);
-          }
-
-          function fail(error) {
-            alert("An error has occurred: Code = " + error.code);
-            console.log("upload error source " + error.source);
-            console.log("upload error target " + error.target);
-          }
-
-          //var uri = user.login.url + user.connection.uploaduri;
-
-          var lastIndex = pending[i].uri.lastIndexOf('/');
-          var options = new FileUploadOptions();
-          options.fileKey = "file";
-          options.fileName = pending[i].uri.substring(0, lastIndex + 1);
-          options.mimeType = "application/octet-stream";
-          options.chunkedMode = false;
-
-
-          var headers = {
-            'headerParam': 'headerValue',
-            Connection: "close"
-
-          };
-
-          options.headers = headers;
-
-          var ft = new FileTransfer();
-
-          console.log(pending[i].uri);
-
-
-          ft.onprogress = function(progressEvent) {
-            if (progressEvent.lengthComputable) {
-              loadingStatus.setPercentage(progressEvent.loaded / progressEvent.total);
-            } else {
-              loadingStatus.increment();
-            }
-          };
-
-
-          ft.upload(pending[i].uri, "http://172.17.19.19/~potato/mahara/htdocs/api/mobile/upload.php", win, fail, options);
-          */
-        }
-      }
-      /*
-      sendImages: function() {
-        // for each image in image log
-        var pending = JSON.parse(localStorage.getItem('pending'));
-
-        var user = JSON.parse(localStorage.getItem('user'));
-
-        // this wont work...
-        // need to have it so that only when an image is sent the next one gets triggered.
-
-        for (var i = 0; i < pending.length; i++) {
-
-          var xhr = new XMLHttpRequest();
-
-          xhr.onreadystatechange = function() {
-            if (xhr.readyState == 4 && xhr.status == 200) {
-              parseSync(xhr.responseText, user);
-              // if success we need to update the status of the image
-              //return xhr.responseText;
-            } else {
-              //return xhr.responseText;
-            }
-          }
-
-          var data = [];
-
-          var lastIndex = pending[i].uri.lastIndexOf('/');
-
-          // this ended up being a little gross, concurrency is hard.
-          var uri = getDataUri(pending[i].uri.substring(0, lastIndex + 1), pending[i].uri.substring(lastIndex + 1, pending[i].uri.length), pending[i])
-            .then(
-              function(image) {
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; filename="' + image.filename + '"; name="userfile"',
-                contenttype: "Content-Type: application/octet-stream;",
-                contenttransfer: "Content-Transfer-Encoding: binary",
-                value: image.uri.split(/,(.+)?/)[1] //remove 'data:image/png;base64,'
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: 'true'
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: image.desc
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: ''
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: image.tags
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: image.title
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: user.login.username
-              });
-
-              data.push({
-                contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
-                contenttype: "Content-Type: text/plain; charset=UTF-8",
-                contenttransfer: "Content-Transfer-Encoding: 8bit",
-                value: user.login.token
-              });
-
-              var bound = UuidGenerator.generate()
-
-              var res = MimeGenerator.generateForm(data, '--' + bound);
-
-              xhr.open("POST", user.login.url + user.connection.uploaduri, true);
-              xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
-              xhr.send(res);
-
-            }, function() {
-              console.log('error');
-            });
-
-          }
-        } */
+    }
   }
 }]);
 
@@ -414,3 +309,5 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 app.controller('PageCtrl', function( /* $scope, $location, $http */ ) {
 
 });
+
+FastClick.attach(document.body);

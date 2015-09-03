@@ -107,4 +107,3 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/ffmpeg/android/R.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/classes-932613ba143aa0860aabeb34c94c5bbe.jar \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/classes-56d42e27a161b977e0dc21f980f65659.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/android-support-v4-a14a6be55618999d305fbc933ab00864.jar \

@@ -87,6 +87,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/main.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/materialize.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/cameractrl.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/historyctrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/homectrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/journalctrl.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/controllers/loginctrl.js \
@@ -95,6 +96,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/angular-route.min.js.map \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/angular-uuid4.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/angular.min.js \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/fastclick.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/jquery-2.1.4.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/materialize.min.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/js/library/ng-cordova-mocks.min.js \
@@ -113,7 +115,6 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-file-transfer \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-network-information \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.background-mode \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/com.hiddentao.cordova.filepath/www \
@@ -154,10 +155,6 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/cordova-plugin-network-information/www/network.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.background-mode/www \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-core.js \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-util.js \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device/www \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.device/www/device.js \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins/org.apache.cordova.videoeditor/www \

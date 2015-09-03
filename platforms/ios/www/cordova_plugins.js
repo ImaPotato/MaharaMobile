@@ -29,30 +29,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification.js",
-        "id": "de.appplant.cordova.plugin.local-notification.LocalNotification",
-        "clobbers": [
-            "cordova.plugins.notification.local",
-            "plugin.notification.local"
-        ]
-    },
-    {
-        "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-core.js",
-        "id": "de.appplant.cordova.plugin.local-notification.LocalNotification.Core",
-        "clobbers": [
-            "cordova.plugins.notification.local.core",
-            "plugin.notification.local.core"
-        ]
-    },
-    {
-        "file": "plugins/de.appplant.cordova.plugin.local-notification/www/local-notification-util.js",
-        "id": "de.appplant.cordova.plugin.local-notification.LocalNotification.Util",
-        "merges": [
-            "cordova.plugins.notification.local.core",
-            "plugin.notification.local.core"
-        ]
-    },
-    {
         "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
         "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
         "clobbers": [
@@ -257,6 +233,20 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
+        "id": "cordova-plugin-file-transfer.FileTransferError",
+        "clobbers": [
+            "window.FileTransferError"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-file-transfer/www/FileTransfer.js",
+        "id": "cordova-plugin-file-transfer.FileTransfer",
+        "clobbers": [
+            "window.FileTransfer"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -269,13 +259,13 @@ module.exports.metadata =
 {
     "cordova-plugin-camera": "1.2.1-dev",
     "cordova-plugin-websql": "0.0.9",
-    "de.appplant.cordova.plugin.local-notification": "0.8.2dev",
     "de.appplant.cordova.plugin.background-mode": "0.6.4",
     "cordova-plugin-network-information": "1.0.2-dev",
     "cordova-plugin-console": "1.0.2-dev",
     "org.apache.cordova.videoeditor": "0.0.3",
     "cordova-plugin-file": "3.0.1-dev",
     "com.hiddentao.cordova.filepath": "1.0.0",
+    "cordova-plugin-file-transfer": "1.2.2-dev",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

@@ -1,4 +1,4 @@
-angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamera, $cordovaLocalNotification, $q, UuidGenerator, MimeGenerator, VideoEditor, SyncService) {
+angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamera, $cordovaLocalNotification, $q, $location, UuidGenerator, MimeGenerator, VideoEditor, SyncService) {
 
   $scope.objects = [];
 
@@ -61,6 +61,8 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
           imageData = fileUri;
 
+          console.log(fileUri);
+
           for (var i = 0; i < $scope.objects.length; i++) {
             if ($scope.objects[i].uuid == id) {
               $scope.objects[i].uri = imageData;
@@ -95,24 +97,28 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
             imageData = fileUri;
 
-            for (var i = 0; i < $scope.objects.length; i++) {
-              if ($scope.objects[i].uuid == id) {
-                $scope.objects[i].uri = imageData;
-              }
-            }
+            console.log(fileUri);
 
             var image = document.getElementById(id);
             image.src = imageData;
             image.style.display = 'block';
 
+            for (var i = 0; i < $scope.objects.length; i++) {
+              if ($scope.objects[i].uuid == id) {
+                $scope.objects[i].uri = image.src;
+              }
+            }
+
+            console.log(image.src);
+
           },
           function() {
-            console.log('error');
+            console.log('Failed to get file uri');
           });
 
       },
       function(err) {
-        console.log('fuck fuck');
+        console.log('Failed to take picture');
       });
   };
 
@@ -140,7 +146,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
     //SyncService.sync();
 
-    SyncService.sendImages();
+    //SyncService.sendImages();
+
+    _.defer( function(){ $scope.$apply(function() { $location.path("/history"); });});
 
   };
 
@@ -154,30 +162,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
   $scope.reset = function() {
     $scope.objects = [];
+    $scope.addObject();
   };
 
-  $('.dropdown-button').dropdown({
-    inDuration: 300,
-    outDuration: 225,
-    constrain_width: false, // Does not change width of dropdown to that of the activator
-    hover: true, // Activate on hover
-    gutter: 0, // Spacing from edge
-    belowOrigin: false // Displays dropdown below the button
-  });
-
-  // let bit hacky but was the only way to get it to work with angular
-  var dropdownVisible = true;
-
-  $scope.toggle = function(id){
-    var element = document.getElementById('options-' + id);
-    if (!dropdownVisible) {
-      element.style.opacity = "0";
-      element.style.display = "none";
-      dropdownVisible = true;
-    } else {
-      element.style.opacity = "1";
-      element.style.display = "inline";
-      dropdownVisible = false;
-    }
-  }
 });

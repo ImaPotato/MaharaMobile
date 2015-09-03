@@ -69,7 +69,7 @@ angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, 
         },
         'advanced': {
           'periodicsync': settings.advanced.periodicsync,
-          'lastsynctime': settings.advanced.lastsynctim
+          'lastsynctime': settings.advanced.lastsynctime
         }
     };
 
