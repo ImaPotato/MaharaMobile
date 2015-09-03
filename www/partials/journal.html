@@ -1,40 +1,64 @@
 <div class="section">
-<form novalidate class="simple-form" ng-repeat="obj in objects">
-  <div class="card">
-    <div class="card-content">
-      <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal' : obj.title}}</span>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+  <div class="container">
+    <form novalidate class="simple-form" ng-repeat="obj in objects">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal' : obj.title}}</span>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Description</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
+            </div>
+          </div>
+          <div class="row">
+            Allow comments?
+            <div class="switch">
+              <label>
+                No
+                <input type="checkbox" ng-model="obj.comments" />
+                <span class="lever"></span>
+                Yes
+              </label>
+            </div>
+          </div>
+          <div class="row">
+            Is draft?
+            <div class="switch">
+              <label>
+                No
+                <input type="checkbox" ng-model="obj.draft" />
+                <span class="lever"></span>
+                Yes
+              </label>
+            </div>
+          </div>
+          <div class="card-action">
+            <button class="btn btn-default" ng-click="removeObject(obj.uuid)" ng-hide="objects.length == 1">Remove Journal</button>
+          </div>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Description</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
-        </div>
-      </div>
-      <div class="card-action">
-        <button class="btn btn-default" ng-click="removeObject(obj.uuid)" ng-hide="objects.length == 1">Remove Journal</button>
-      </div>
+    </form>
+
+    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
+      <button class="btn-floating btn-large red" ng-click="addObject()">
+        <i class="material-icons">add</i>
+      </button>
     </div>
+
+    <a class="waves-effect waves-light btn col s5 right" ng-click="update()" style="margin-left:5px; margin-bottom:15px;">Save</a>
+    <a class="waves-effect waves-light btn col s5 right" ng-click="reset()">Reset</a>
+    
   </div>
-</form>
-
-<div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-  <button class="btn-floating btn-large red" ng-click="addObject()">
-    <i class="material-icons">add</i>
-  </button>
-</div>
-
-<a class="waves-effect waves-light btn col s5 right" ng-click="update(login, connection)" style="margin-left:5px; margin-bottom:15px;">Save</a>
-<a class="waves-effect waves-light btn col s5 right" ng-click="reset()">Reset</a>
-
 </div>

@@ -46,6 +46,9 @@
     <feature name="FileTransfer">
         <param name="ios-package" value="CDVFileTransfer" />
     </feature>
+    <feature name="InAppBrowser">
+        <param name="ios-package" value="CDVInAppBrowser" />
+    </feature>
     <name>Mahara</name>
     <description>
         A sample Apache Cordova application that responds to the deviceready event.

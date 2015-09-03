@@ -247,6 +247,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
+        "id": "org.apache.cordova.inappbrowser.inappbrowser",
+        "clobbers": [
+            "window.open"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -266,6 +273,7 @@ module.exports.metadata =
     "cordova-plugin-file": "3.0.1-dev",
     "com.hiddentao.cordova.filepath": "1.0.0",
     "cordova-plugin-file-transfer": "1.2.2-dev",
+    "org.apache.cordova.inappbrowser": "0.6.0",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

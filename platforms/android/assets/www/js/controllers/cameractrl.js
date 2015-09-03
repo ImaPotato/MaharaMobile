@@ -5,6 +5,8 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   $scope.postStatus = '';
 
   $scope.addObject = function() {
+    
+    $scope.pageClass = 'camera';
 
     var obj = {
       uuid: UuidGenerator.generate(),
@@ -122,7 +124,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
       });
   };
 
-  $scope.update = function(objects) {
+  $scope.update = function() {
 
     var pending = localStorage.getItem('pending');
 
@@ -133,6 +135,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
       if ($scope.objects[i].uri != '//:0') {
         pending.push({
           'uuid': $scope.objects[i].uuid,
+          'type' : 'image',
           'title': $scope.objects[i].title,
           'desc': $scope.objects[i].desc,
           'tags': $scope.objects[i].tags,
@@ -143,10 +146,6 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
     // update list of pending uploads
     localStorage.setItem('pending', JSON.stringify(pending));
-
-    //SyncService.sync();
-
-    //SyncService.sendImages();
 
     _.defer( function(){ $scope.$apply(function() { $location.path("/history"); });});
 

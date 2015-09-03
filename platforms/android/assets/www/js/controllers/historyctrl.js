@@ -3,6 +3,8 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
   $scope.pending = [];
   $scope.history = [];
 
+  $scope.pageClass = 'history';
+
   function checkAllFiles(currentIndex, q) {
     if ($scope.pending.length > currentIndex) {
       checkFileURI($scope.pending[currentIndex]).then(function() {
@@ -18,22 +20,27 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
     }
   }
 
-  function checkFileURI(image) {
+  function checkFileURI(pending) {
     var q = $q.defer();
-    if (image.uri == 'css/white.jpg') {
-      // change this dude.
-      q.reject();
-    }
 
-    window.resolveLocalFileSystemURL(image.uri, function(fileEntry) {
-      console.log('File exists');
+    console.log(pending.type);
+
+    if (pending.type == 'journal') {
+      //journals don't have files attached so we good.
       q.resolve();
-
-    }, function(error) {
-      console.log('File does not exist');
+    } else if (pending.uri == 'css/white.jpg') {
+      // change this dude. This is not good...
       q.reject();
-    });
+    } else {
+      window.resolveLocalFileSystemURL(pending.uri, function(fileEntry) {
+        console.log('File exists');
+        q.resolve();
 
+      }, function(error) {
+        console.log('File does not exist');
+        q.reject();
+      });
+    }
     return q.promise;
   }
 
@@ -52,11 +59,10 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
         console.log('we have a valid file');
 
-        var promise = SyncService.sendImage(pending[0]);
+        var promise = (pending[0].type == 'image') ? SyncService.sendImage(pending[0]) : SyncService.sendJournal(pending[0]);
+
         promise.then(function() {
-
-            console.log('sent image');
-
+            console.log('Sent');
             // remove first element as it was successfully sent.
             var first = pending.shift();
             // save
@@ -68,9 +74,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
             uploadPendingImages();
           },
           function() {
-            console.log('Could not send image');
-            //fail
-            // and stop because we probably have lost the network connection
+            console.log('Could not send file');
           });
 
       }, function() {

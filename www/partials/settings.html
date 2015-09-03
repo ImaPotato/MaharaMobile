@@ -6,9 +6,8 @@
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Login details</span>
             <a href="#/login" class="waves-effect waves-light btn right">Update</a>
+          </div>
         </div>
-
-      </div>
         <div class="card">
           <div class="card-content">
             <div class="row">
@@ -44,7 +43,6 @@
               Upload folder
               <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
             </div>
-
             <div class="row">
               Set tags be default
               <div class="switch">
@@ -60,16 +58,13 @@
               Tags:
               <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
             </div>
-
           </div>
         </div>
         <div class="card">
           <div class="card-content">
-
             <div class="row">
               <span class="card-title grey-text text-darken-4">Notfication settings</span>
             </div>
-
             <div class="row">
               User messages
               <div class="switch">
@@ -116,7 +111,6 @@
             </div>
           </div>
         </div>
-
         <div class="card">
           <div class="card-content">
             <div class="row">
@@ -132,11 +126,7 @@
             </div>
           </div>
         </div>
-
       </form>
-
-      <input type="submit " class="btn btn-default col s5 right" ng-click="save(settings) " value="Save" style="margin-left:5px"/>
-      <input type="button " class="btn btn-default col s5 right" ng-click="reset() " value="Reset" />
-
-
+      <input type="submit " class="waves-effect waves-light btn right" ng-click="save(settings) " value="Save" style="margin-left:5px" />
+      <input type="button " class="waves-effect waves-light btn right" ng-click="reset() " value="Reset" />
     </div>

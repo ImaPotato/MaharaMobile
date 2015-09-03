@@ -15,7 +15,7 @@
 
 <!-- Our Website Content Goes Here -->
 <div ng-include='"templates/header.html"'></div>
-<div ng-view class="container"></div>
+<div class="page {{pageClass}}" ng-view><div class="container"></div></div>
 <div ng-include='"templates/footer.html"'></div>
 
 <!-- Vendor: Javascripts -->
@@ -23,6 +23,7 @@
 <script src="js/materialize.min.js"></script>
 
 <script src="js/library/angular.min.js"></script>
+<script src="js/library/angular-animate.min.js"></script>
 <script src="js/library/angular-route.min.js"></script>
 
 <script src="js/library/ng-cordova.min.js"></script>
@@ -32,6 +33,7 @@
 <script src="js/library/underscore-min.js"></script>
 
 <script src="js/library/fastclick.js"></script>
+
 
 <!-- Our Website Javascripts -->
 <script src="cordova.js"></script>

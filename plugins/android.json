@@ -39,6 +39,10 @@
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -106,6 +110,9 @@
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-file-transfer": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

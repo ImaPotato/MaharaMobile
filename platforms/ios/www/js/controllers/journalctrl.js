@@ -1,26 +1,23 @@
-angular.module('Mahara').controller('JournalCtrl', function($scope, UuidGenerator){
-    $scope.objects = [];
-    //$scope.networkstate = navigator.connection.type;
-    var obj = {
-            uuid: UuidGenerator.generate(),
-            title:'',
-            tags:'',
-            desc:''
-        };
-    // automatially create the first image
-    $scope.objects.push(obj);
+angular.module('Mahara').controller('JournalCtrl', function($scope, $location, UuidGenerator){
 
-    // add another photo
+    $scope.objects = [];
+
+    $scope.pageClass = 'journal';
+
     $scope.addObject = function () {
         var obj = {
             uuid: UuidGenerator.generate(),
             title:'',
             tags:'',
-            desc:''
+            desc:'',
+            draft: false,
+            comments: true
         };
 
         $scope.objects.push(obj);
     };
+
+    $scope.addObject();
 
     $scope.removeObject = function (id) {
         $.each($scope.objects, function(index, value){
@@ -30,22 +27,25 @@ angular.module('Mahara').controller('JournalCtrl', function($scope, UuidGenerato
         });
     };
 
-    $scope.update = function(objects){
+    $scope.update = function(){
 
-      var pending = JSON.parse(localStorage.getItem('pending'));
+      var pending = localStorage.getItem('pending');
 
-      pending = (pending != null && pending != '') ? pending : [];
+      pending = (pending != null && pending != '') ? JSON.parse(pending) : [];
 
       console.log(pending);
 
       // might need to load settings as well
       // add each journal the list of pending posts
-      $.each(objects, function(index, value){
+      $.each($scope.objects, function(index, value){
         pending.push({
           'uuid' : value.uuid,
+          'type' : 'journal',
           'title' : value.title,
           'desc' : value.desc,
-          'tags' : value.tags
+          'tags' : value.tags,
+          'draft' : value.draft,
+          'comments' : value.comments
         });
       });
 
@@ -54,7 +54,7 @@ angular.module('Mahara').controller('JournalCtrl', function($scope, UuidGenerato
       // update list of pending uploads
       localStorage.setItem('pending', JSON.stringify(pending));
 
-      // trigger upload
+      _.defer( function(){ $scope.$apply(function() { $location.path("/history"); });});
 
     }
 

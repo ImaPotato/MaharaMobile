@@ -1,5 +1,5 @@
 var app = angular.module('Mahara', [
-  'ngRoute', 'ngCordova', 'uuid4'
+  'ngRoute', 'ngCordova', 'uuid4', 'ngAnimate'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -29,10 +29,11 @@ app.config(['$routeProvider', function($routeProvider) {
       controller: "HistoryCtrl"
     })
     .otherwise("/404", {
-      templateUrl: "partials/404.html",
-      controller: "PageCtrl"
+      templateUrl: "partials/404.html"
     });
 }]);
+
+
 
 // so we can generate a unique uuid for each image and journal
 app.factory('UuidGenerator', function(uuid4) {
@@ -241,6 +242,104 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       xhr.send(res);
     },
 
+    sendJournal: function(journal) {
+
+      var q = $q.defer();
+
+      var user = JSON.parse(localStorage.getItem('user'));
+      // need to make sure this is populated...
+      var settings = JSON.parse(localStorage.getItem('settings'));
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        console.log(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          parseSync(xhr.responseText, user);
+          q.resolve();
+        } else {
+          q.reject();
+        }
+      }
+
+      var data = [];
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.comments
+      });
+
+      // count number of blogs that have been sent so far.
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="blog"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: 0
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.desc
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="draft"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.draft
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: ''
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.tags
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.title
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.username
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.token
+      });
+
+      var bound = UuidGenerator.generate()
+
+      var res = MimeGenerator.generateForm(data, '--' + bound);
+
+      xhr.open("POST",  'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', true);
+      xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
+      xhr.send(res);
+
+      return q.promise;
+
+    },
     sendImage: function(image) {
       var q = $q.defer();
 
@@ -250,7 +349,7 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
       console.log(image.uri);
 
-      $cordovaFileTransfer.upload(/*user.login.url + user.connection.uploaduri*/ 'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', image.uri, {
+      $cordovaFileTransfer.upload( /*user.login.url + user.connection.uploaduri*/ 'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', image.uri, {
 
         params: {
           allowcomments: 'true',

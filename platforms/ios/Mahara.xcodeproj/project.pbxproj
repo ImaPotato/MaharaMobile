@@ -56,6 +56,7 @@
 		EEB770FCE9154327ADEEA2FB /* appbeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = EEF792203FD744F1BDB7AC16 /* appbeep.wav */; };
 		FB85EA8D7AF147CBA70F15CA /* CDVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E83A5F5D3E043CD9973484D /* CDVCamera.m */; };
 		FCFFDF26FB454F6A942E80EC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02672D1AB29543729BDF0F0B /* MediaPlayer.framework */; };
+		5C6AF99F884F4DE8B8B350F0 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -152,6 +153,8 @@
 		F73E9E5C18294202A689FAB5 /* AVFoundation.framework */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		F840E1F0165FE0F500CFE078 /* config.xml */ = {isa = PBXFileReference; lastKnownFileType = text.xml; name = config.xml; path = Mahara/config.xml; sourceTree = "<group>"; };
 		FBFF4F8427C04AF8BFAE738A /* CDVCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVCamera.h; path = "cordova-plugin-camera/CDVCamera.h"; sourceTree = "<group>"; };
+		28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
+		F220190348CD4E058C31F920 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -308,6 +311,8 @@
 				283273E009564FD8B7ED8C38 /* CDVAssetLibraryFilesystem.h */,
 				C6492CD9669843698DCE1A47 /* CDVFileTransfer.m */,
 				BA5E560579A44012B041A54F /* CDVFileTransfer.h */,
+				28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */,
+				F220190348CD4E058C31F920 /* CDVInAppBrowser.h */,
 			);
 			name = Plugins;
 			path = Mahara/Plugins;
@@ -521,6 +526,7 @@
 				E511916B231241EC8511BFCE /* CDVLocalFilesystem.m in Sources */,
 				8678C7A74B284AA9B695F5B4 /* CDVAssetLibraryFilesystem.m in Sources */,
 				54F66656F80B45F28C198236 /* CDVFileTransfer.m in Sources */,
+				5C6AF99F884F4DE8B8B350F0 /* CDVInAppBrowser.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

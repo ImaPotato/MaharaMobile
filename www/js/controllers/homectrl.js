@@ -2,6 +2,8 @@ angular.module('Mahara').controller('HomeCtrl', function($scope, AlertGenerator)
 
   $scope.load = function(){
 
+    $scope.pageClass = 'home';
+
     var user = JSON.parse(localStorage.getItem('user'));
     localStorage.setItem('pending', []);
     if (user == null || user == ''){

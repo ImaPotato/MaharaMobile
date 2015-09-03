@@ -1,5 +1,5 @@
 angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, SyncService) {
-
+  $scope.pageClass = 'settings';
   $scope.load = function(){
     var settings = JSON.parse(localStorage.getItem('settings'));
     //localStorage.setItem('settings', JSON.stringify(''));

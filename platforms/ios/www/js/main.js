@@ -1,5 +1,5 @@
 var app = angular.module('Mahara', [
-  'ngRoute', 'ngCordova', 'uuid4'
+  'ngRoute', 'ngCordova', 'uuid4', 'ngAnimate'
 ]);
 
 app.config(['$routeProvider', function($routeProvider) {
@@ -24,11 +24,16 @@ app.config(['$routeProvider', function($routeProvider) {
       templateUrl: "partials/settings.html",
       controller: "SettingsCtrl"
     })
+    .when("/history", {
+      templateUrl: "partials/history.html",
+      controller: "HistoryCtrl"
+    })
     .otherwise("/404", {
-      templateUrl: "partials/404.html",
-      controller: "PageCtrl"
+      templateUrl: "partials/404.html"
     });
 }]);
+
+
 
 // so we can generate a unique uuid for each image and journal
 app.factory('UuidGenerator', function(uuid4) {
@@ -126,7 +131,7 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
     var res = JSON.parse(response);
 
-    if (res.error != null && res.error != ''){
+    if (res.error != null && res.error != '') {
       //somethings gone wrong, show an error and return.
       return;
     }
@@ -185,9 +190,7 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       xhr.onreadystatechange = function() {
         console.log(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == 200) {
-
           parseSync(xhr.responseText, user);
-
           return xhr.responseText;
         } else {
           return xhr.responseText;
@@ -211,10 +214,10 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       });
 
       var notifications = [];
-      if(settings.notification.user) notifications.push('usermessages');
-      if(settings.notification.feedback) notifications.push('feedback');
-      if(settings.notification.posts) notifications.push('newpost');
-      if(settings.notification.mahara) notifications.push('maharamessage');
+      if (settings.notification.user) notifications.push('usermessages');
+      if (settings.notification.feedback) notifications.push('feedback');
+      if (settings.notification.posts) notifications.push('newpost');
+      if (settings.notification.mahara) notifications.push('maharamessage');
 
       data.push({
         contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="notifications"',
@@ -239,42 +242,162 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       xhr.send(res);
     },
 
-    sendImages: function() {
+    sendJournal: function(journal) {
 
-      var pending = JSON.parse(localStorage.getItem('pending'));
+      var q = $q.defer();
+
+      var user = JSON.parse(localStorage.getItem('user'));
+      // need to make sure this is populated...
+      var settings = JSON.parse(localStorage.getItem('settings'));
+
+      var xhr = new XMLHttpRequest();
+
+      xhr.onreadystatechange = function() {
+        console.log(xhr.responseText);
+        if (xhr.readyState == 4 && xhr.status == 200) {
+          parseSync(xhr.responseText, user);
+          q.resolve();
+        } else {
+          q.reject();
+        }
+      }
+
+      var data = [];
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="allowcomments"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.comments
+      });
+
+      // count number of blogs that have been sent so far.
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="blog"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: 0
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="description"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.desc
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="draft"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.draft
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="foldername"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: ''
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="tags"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.tags
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="title"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: journal.title
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="username"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.username
+      });
+
+      data.push({
+        contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="token"',
+        contenttype: "Content-Type: text/plain; charset=UTF-8",
+        contenttransfer: "Content-Transfer-Encoding: 8bit",
+        value: user.login.token
+      });
+
+      var bound = UuidGenerator.generate()
+
+      var res = MimeGenerator.generateForm(data, '--' + bound);
+
+      xhr.open("POST",  'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', true);
+      xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
+      xhr.send(res);
+
+      return q.promise;
+
+    },
+    sendImage: function(image) {
+      var q = $q.defer();
+
       var user = JSON.parse(localStorage.getItem('user'));
 
-      for (var i = 0; i < pending.length && i < 1; i++) {
+      image.uri = image.uri.replace('file://', '');
 
-        $cordovaFileTransfer.upload('http://192.168.1.16/~potato/mahara/htdocs/api/mobile/upload.php', pending[i].uri, {
-          params: {
-            allowcomments: 'true',
-            description: pending[i].desc,
-            foldername: '',
-            tags: pending[i].tags,
-            title: pending[i].title,
-            username: user.login.username,
-            token: user.login.token
-          },
-          headers: {
-            Connection: "Keep-Alive"
-          },
+      console.log(image.uri);
 
-          chunkedMode: false,
-          fileKey: "userfile",
-          fileName: pending[i].uri.substr(pending[i].uri.lastIndexOf('/') + 1),
-          mimeType: "application/octet-stream"
+      $cordovaFileTransfer.upload( /*user.login.url + user.connection.uploaduri*/ 'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', image.uri, {
 
-        }).then(function(r) {
+        params: {
+          allowcomments: 'true',
+          description: image.desc,
+          foldername: '',
+          tags: image.tags,
+          title: image.title,
+          username: user.login.username,
+          token: user.login.token
+        },
+
+        headers: {
+          Connection: "Keep-Alive"
+        },
+
+        chunkedMode: false,
+        fileKey: "userfile",
+        fileName: image.uri.substr(image.uri.lastIndexOf('/') + 1),
+        mimeType: "application/octet-stream"
+
+      }).then(function(r) {
+
+        var response = r.response.substring(1, r.response.length - 1);
+        var res = JSON.parse(response);
+
+        if (res.error != null && res.error != '') {
+          console.log('error sending');
+          //somethings gone wrong, show an error and return.
+          q.reject();
+        } else {
+
+          console.log('sent successfully');
           parseSync(r.response, user);
-          console.log("Response = " + r.response);
-        }, function(error) {
-          console.log("upload error source " + error.source);
-          console.log("upload error target " + error.target);
-        }, function(progress) {
-          console.log(progress);
-        });
-      }
+          q.resolve();
+
+        }
+
+      }, function(error) {
+        alert("An error has occurred: Code = " + error.code);
+        console.log("upload error source " + error.source);
+        console.log("upload error target " + error.target);
+        q.reject();
+      }, function(progress) {
+        console.log(progress);
+      });
+
+      return q.promise;
+
     }
   }
 }]);
