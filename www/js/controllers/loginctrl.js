@@ -1,4 +1,5 @@
 angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService, AlertGenerator) {
+
   $scope.pageClass = 'login';
   $scope.load = function() {
     var user = JSON.parse(localStorage.getItem('user'));
@@ -79,11 +80,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     // sync notifications
     SyncService.sync();
     // create a new alert, this will be displayed on the next page and then removed
-    var alert = {
-      type: "success",
-      msg: "Settings successfully updated."
-    };
-    AlertGenerator.addAlert(alert);
+
+    Materialize.toast('Updated settings', 4000);
+
     // redirect back to main page when ready
     _.defer(function() {
       $scope.$apply(function() {

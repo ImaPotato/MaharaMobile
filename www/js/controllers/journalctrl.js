@@ -1,5 +1,6 @@
 angular.module('Mahara').controller('JournalCtrl', function($scope, $location, UuidGenerator){
 
+
     $scope.objects = [];
 
     $scope.pageClass = 'journal';

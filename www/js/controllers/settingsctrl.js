@@ -1,4 +1,5 @@
 angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, SyncService) {
+
   $scope.pageClass = 'settings';
   $scope.load = function(){
     var settings = JSON.parse(localStorage.getItem('settings'));
@@ -78,6 +79,15 @@ angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, 
 
     // sync notifications
     SyncService.sync();
+
+    Materialize.toast('Updated settings', 4000);
+
+    // redirect back to main page when ready
+    _.defer(function() {
+      $scope.$apply(function() {
+        $location.path("/");
+      });
+    });
 
   }
 

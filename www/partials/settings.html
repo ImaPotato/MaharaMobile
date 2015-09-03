@@ -10,10 +10,8 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Post settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Post settings</span>
+            <div style="margin-bottom:15px">
               Journal post by default
               <div class="switch">
                 <label>
@@ -24,11 +22,11 @@
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.defaultjournalset">
+            <div ng-show="settings.defaultjournalset">
               Default journal
               <input type="text" class="form-control disabled" ng-model="settings.defaultjournal" />
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Upload to a default folder
               <div class="switch">
                 <label>
@@ -39,11 +37,11 @@
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.uploadfolderset">
+            <div ng-show="settings.uploadfolderset">
               Upload folder
               <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Set tags be default
               <div class="switch">
                 <label>
@@ -54,7 +52,7 @@
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.uploadtagsset">
+            <div ng-show="settings.uploadtagsset">
               Tags:
               <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
             </div>
@@ -62,10 +60,8 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Notfication settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Notfication settings</span>
+            <div style="margin-bottom:15px">
               User messages
               <div class="switch">
                 <label>
@@ -76,7 +72,7 @@
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Feedback
               <div class="switch">
                 <label>
@@ -87,7 +83,7 @@
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               New posts
               <div class="switch">
                 <label>
@@ -98,7 +94,7 @@
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Mahara messages
               <div class="switch">
                 <label>
@@ -113,17 +109,12 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Advanced settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Advanced settings</span>
+            <div>
               Periodic Sync:
-              <input type="text" ng-model="settings.advanced.periodicsync " />
             </div>
-            <div class="row">
-              Last Sync Time:
-              <input type="text" ng-model="settings.advanced.lastsynctime " />
-            </div>
+            <input type="text" ng-model="settings.advanced.periodicsync " /> Last Sync Time:
+            <input type="text" ng-model="settings.advanced.lastsynctime " />
           </div>
         </div>
       </form>

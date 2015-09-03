@@ -20,6 +20,21 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
     }
   }
 
+  function checkAllHistory(currentIndex, q) {
+    if ($scope.history.length > currentIndex) {
+      checkFileURI($scope.history[currentIndex]).then(function() {
+        //nothing to do
+        checkAllHistory(currentIndex + 1, q);
+      }, function() {
+        // might as well just set the src to jpg/white for now
+        $scope.history[currentIndex].uri = 'css/white.jpg';
+        checkAllHistory(currentIndex + 1, q);
+      });
+    } else {
+      q.resolve();
+    }
+  }
+
   function checkFileURI(pending) {
     var q = $q.defer();
 
@@ -46,6 +61,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
   function uploadPendingImages() {
     var pending = localStorage.getItem('pending');
+
     if (pending == null || pending == '') {
       return;
     }
@@ -57,11 +73,10 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
       filePromise.then(function() {
 
-        console.log('we have a valid file');
-
         var promise = (pending[0].type == 'image') ? SyncService.sendImage(pending[0]) : SyncService.sendJournal(pending[0]);
-
+        Materialize.toast('Uploading ' + pending[0].type, 4000);
         promise.then(function() {
+            Materialize.toast('Finished uploading ' + pending[0].type, 4000);
             console.log('Sent');
             // remove first element as it was successfully sent.
             var first = pending.shift();
@@ -78,6 +93,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
           });
 
       }, function() {
+        Materialize.toast('Failed to upload ' + pending[0].type, 4000);
         // don't upload as the file does not exists anymore.
         var first = pending.shift();
         console.log('failed to find file');
@@ -88,6 +104,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
         $scope.history.push(first);
         localStorage.setItem('history', JSON.stringify($scope.history));
         uploadPendingImages();
+
       });
     }
   }
@@ -104,6 +121,8 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
     if (history == null || history == '') {
       history = [];
+    } else {
+      history = JSON.parse(history);
     }
 
     $scope.pending = pending;

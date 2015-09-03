@@ -127,13 +127,15 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
   function parseSync(response, user) {
 
+    Materialize.toast('Updating', 4000);
+
     response = response.substring(1, response.length - 1);
 
     var res = JSON.parse(response);
 
     if (res.error != null && res.error != '') {
       //somethings gone wrong, show an error and return.
-      return;
+      return false;
     }
 
     // update token
@@ -157,6 +159,8 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
     user.login.lastsync = res.sync.lastsync
     */
     localStorage.setItem('user', JSON.stringify(user));
+
+    return true;
   }
 
   function getDataUri(path, name, image) {
@@ -191,9 +195,8 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
         console.log(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == 200) {
           parseSync(xhr.responseText, user);
-          return xhr.responseText;
         } else {
-          return xhr.responseText;
+
         }
       }
 
@@ -255,10 +258,13 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
       xhr.onreadystatechange = function() {
         console.log(xhr.responseText);
         if (xhr.readyState == 4 && xhr.status == 200) {
-          parseSync(xhr.responseText, user);
+          console.log('success?');
+          if (!parseSync(xhr.responseText, user)){
+            q.reject();
+          }
           q.resolve();
         } else {
-          q.reject();
+          console.log('failed?');
         }
       }
 
@@ -273,12 +279,12 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
       // count number of blogs that have been sent so far.
       // this means we should probably do a sync before we start...
-      
+
       data.push({
         contentdisposition: 'Content-Disposition: form-data; charset=UTF-8; name="blog"',
         contenttype: "Content-Type: text/plain; charset=UTF-8",
         contenttransfer: "Content-Transfer-Encoding: 8bit",
-        value: 0
+        value: 3
       });
 
       data.push({
@@ -334,7 +340,7 @@ app.factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$
 
       var res = MimeGenerator.generateForm(data, '--' + bound);
 
-      xhr.open("POST",  'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php', true);
+      xhr.open("POST",  'http://192.168.1.16/~potato/mahara/htdocs/api/mobile/upload.php', true);
       xhr.setRequestHeader("Content-Type", "multipart/form-data; boundary=" + bound);
       xhr.send(res);
 
