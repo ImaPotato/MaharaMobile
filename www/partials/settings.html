@@ -8,53 +8,104 @@
             <a href="#/login" class="waves-effect waves-light btn right">Update</a>
           </div>
         </div>
-        <div class="card">
+        <div class="card show-overflow">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Post settings</span>
             <div style="margin-bottom:15px">
               Journal post by default
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.defaultjournalset" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.defaultjournalset">
-              Default journal
-              <input type="text" class="form-control disabled" ng-model="settings.defaultjournal" />
+              <div>
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="journal-dropdown" data-activates='journal-dropdown-content'>Select journal</a>
+                          <ul id='journal-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in blogs" ng-click="setDefaultJournal(i);"><a href="">{{i.blog}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.defaultjournal}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div style="margin-bottom:15px">
               Upload to a default folder
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.uploadfolderset" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.uploadfolderset">
-              Upload folder
-              <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
+              <div style="margin-bottom: 20px">
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="upload-dropdown" data-activates='upload-dropdown-content'>Select folder</a>
+                          <ul id='upload-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in folder" ng-click="setUploadFolder(i);"><a href="">{{i}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.uploadfolder}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div style="margin-bottom:15px">
-              Set tags be default
-              <div class="switch">
+              Set default tag
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.uploadtagsset" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.uploadtagsset">
-              Tags:
-              <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
+              <div style="margin-bottom: 20px">
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="tag-dropdown" data-activates='tag-dropdown-content'>Select tag</a>
+                          <ul id='tag-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in tags" ng-click="setDefaultTag(i);"><a href="">{{i.tag}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.uploadtags}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -63,45 +114,45 @@
             <span class="card-title grey-text text-darken-4">Notfication settings</span>
             <div style="margin-bottom:15px">
               User messages
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.user" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div style="margin-bottom:15px">
               Feedback
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.feedback" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div style="margin-bottom:15px">
               New posts
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.posts" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
             <div style="margin-bottom:15px">
               Mahara messages
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.mahara" />
                   <span class="lever"></span>
-                  On
+                  Yes
                 </label>
               </div>
             </div>
@@ -118,6 +169,6 @@
           </div>
         </div>
       </form>
-      <input type="submit " class="waves-effect waves-light btn right" ng-click="save(settings) " value="Save" style="margin-left:5px" />
-      <input type="button " class="waves-effect waves-light btn right" ng-click="reset() " value="Reset" />
+      <button class="waves-effect waves-light btn right" ng-click="save(settings) " style="margin-left:5px">Save</button>
+      <button class="waves-effect waves-light btn red right" ng-click="reset()">Reset</button>
     </div>

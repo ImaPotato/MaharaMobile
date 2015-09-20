@@ -1,9 +1,12 @@
-angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService, AlertGenerator) {
+angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService) {
 
   $scope.pageClass = 'login';
+//    if(cordova != null)
+//      $scope.device = cordova.platformId;
   $scope.load = function() {
     var user = JSON.parse(localStorage.getItem('user'));
     if (user != null && user != '') {
+
       // load user from memory
       $scope.connection = {
         uploaduri: user.connection.uploaduri,
@@ -15,12 +18,13 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
         token: user.login.token,
         url: user.login.url
       };
+
     } else {
       // default values
       $scope.connection = {
         uploaduri: '/api/mobile/upload.php',
         syncuri: '/api/mobile/sync.php',
-        connectiontype: 'Default'
+        connectiontype: 'Mobile and Wifi'
       };
       $scope.login = {
         username: '',
@@ -36,30 +40,30 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
 
     // error checking
     if (login.username == '') {
-
+      return;
     }
 
     if (login.token == '') {
-
+      return;
     }
 
     if (login.url == '') {
-
+      return;
     } else {
       // remove http:// | https:// if it exists, we will add this back on later.
       // login.url = login.url.replace(/^https?:\/\//,'')
     }
 
     if (connection.uploaduri == '') {
-
+      return;
     }
 
     if (connection.syncuri == '') {
-
+      return;
     }
 
     if (connection.connectiontype == '') {
-
+      return;
     }
 
     // cool, we can now update the users login settings
@@ -67,7 +71,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
       'login': {
         'username': login.username,
         'token': login.token.toLowerCase(),
-        'url': login.url
+        'url': login.url.toLowerCase()
       },
       'connection': {
         'uploaduri': connection.uploaduri,
@@ -75,13 +79,12 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
         'connectiontype': connection.connectiontype
       }
     };
+
     // store everything
     localStorage.setItem('user', JSON.stringify(user));
+
     // sync notifications
     SyncService.sync();
-    // create a new alert, this will be displayed on the next page and then removed
-
-    Materialize.toast('Updated settings', 4000);
 
     // redirect back to main page when ready
     _.defer(function() {
@@ -97,67 +100,113 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
   }
 
   $scope.maharaLogin = function() {
-    var options = {
-      location: 'yes',
-      clearcache: 'yes',
-      location: 'no',
-      toolbar: 'no'
-    };
 
-    $cordovaInAppBrowser.open('http://10.22.33.121/~potato/mahara/htdocs/api/mobile/login.php', '_blank', options);
+    if ($scope.login.url == null || $scope.login.url == '')
+      return;
 
-    $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event) {
-      console.log('started loading');
+    // test url to make sure it's valid...
+
+    var q = $q.defer();
+    $.ajax({
+      type: "GET",
+      url: $scope.login.url + "/api/mobile/test.php",
+      crossDomain: true,
+      dataType: 'jsonp',
+      success: function(msg) {
+        if (msg.valid == 'true') {
+          q.resolve();
+        }
+        q.reject();
+        Materialize.toast('Enter a valid URL', 4000);
+      },
+      error: function() {
+        q.reject();
+        Materialize.toast('Enter a valid URL', 4000);
+      }
     });
 
-    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event) {
-      console.log('finished loading');
+    q.promise.then(function() {
 
-      var q = $q.defer();
+      var win = window.open($scope.login.url + "/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=no,clearcache=yes, clearsessioncache=yes");
 
-      $.ajax({
-        type: "GET",
-        url: "js/controllers/inject/login.js",
-        dataType: "text",
-        success: function(msg) {
-          $cordovaInAppBrowser.executeScript({
-            code: msg
+      win.addEventListener("loadstop", function() {
+
+        var q = $q.defer();
+
+        $.ajax({
+          type: "GET",
+          url: "js/controllers/inject/login.js",
+          dataType: "text",
+          success: function(msg) {
+            win.executeScript({
+              code: msg
+            });
+            console.log('Injected code');
+            q.resolve();
+          },
+          error: function() {
+            console.log("Ajax Error");
+            q.reject();
+          }
+        });
+
+        q.promise.then(function() {
+          win.executeScript({
+            code: "getLoginStatus();"
+          }, function(values) {
+            if (values[0].loggedin == 1) {
+              $scope.login.token = JSON.parse(values[0].token).token;
+              console.log($scope.login.token);
+              $('#token').scope().$apply();
+              win.close();
+            }
           });
-
-          console.log('Injected code');
-
-          q.resolve();
-        },
-        error: function() {
-          console.log("Ajax Error");
-
-          q.reject();
-        }
-      });
-
-      q.promise.then(function() {
-        $cordovaInAppBrowser.executeScript({
-          code: 'getLoginStatus()'
-        }, function(values) {
-          var result = values[0];
-          alert(result);
-        }, function() {
-          alert('failed');
         });
       });
     });
-
-    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event) {
-      alert('closed');
-    });
-
-
   }
 
   // reload the user, angular will do the rest for us
   $scope.reset = function() {
     load();
   };
+
+  $scope.setConnectionType = function(type) {
+    $scope.connection.connectiontype = type.text;
+  }
+
+  registerDropdown('connection-dropdown', 'connection-dropdown-content');
+
+  // Sorry.
+  function registerDropdown(dropdown1, dropdown2) {
+    $('#' + dropdown1).on('click', function() {
+      // get the button
+      var button = document.getElementById(dropdown1);
+      var rect = button.getBoundingClientRect();
+      // make the dropdown content visible, and then shift it up the hight of the button that was pressed
+      $('#' + dropdown2).addClass('active');
+      $('#' + dropdown2).css({
+        opacity: '1',
+        display: 'block',
+        position: 'absolute',
+        overflow: 'block',
+        'width': (button.offsetWidth + 1),
+        marginTop: ('-' + (button.offsetHeight) + 'px')
+      });
+      //wait a fraction of a second before add new click handler.
+      setTimeout(function() {
+        $(document.body).click(function() {
+          // hide the things, hopefully the click event triggered and everything is going swimingly.
+          $('#' + dropdown2).removeClass('active');
+          $('#' + dropdown2).css({
+            opacity: '0',
+            display: 'none'
+          });
+          $(document.body).unbind("click");
+        });
+      }, 50);
+    });
+  }
 
   $('select').material_select();
 

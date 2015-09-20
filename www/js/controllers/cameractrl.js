@@ -4,6 +4,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
   $scope.postStatus = '';
 
+//  if (cordova != null)
+//    $scope.device = cordova.platformId;
+
   $scope.addObject = function() {
 
     $scope.pageClass = 'camera';
@@ -13,11 +16,10 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
       uri: '//:0',
       title: '',
       tags: '',
-      desc: ''
+      desc: '',
+      edit: false
     };
-
     $scope.objects.push(obj);
-
   };
 
   //this is the default object
@@ -27,9 +29,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   Will need to come up with a better solution that will work with both ios and android
   but I guess i'll cross that bridge when I come to it...
   */
+
   $scope.getFileUri = function(imageData) {
     var q = $q.defer();
-
     // android seems to like to give us content url's instead of file urls, this should fix that.
     if (imageData.substring(0, 10) == "content://") {
       window.FilePath.resolveNativePath(imageData,
@@ -47,6 +49,33 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     return q.promise;
   }
 
+  $scope.editObject = function(image) {
+    //  var tools = cordova.plugins.Aviary.Tools;
+
+    cordova.plugins.Aviary.show({
+      imageURI: imageURI,
+      outputFormat: "JPEG",
+      quality: 90,
+      toolList: [
+        "CROP", "ENHANCE",
+      ],
+      hideExitUnsaveConfirmation: false,
+      enableEffectsPacks: true,
+      enableFramesPacks: true,
+      enableStickersPacks: true,
+      disableVibration: false,
+      folderName: "MyApp",
+      success: function(result) {
+        var editedImageFileName = result.name;
+        var editedImageURI = result.src;
+        alert("File name: " + editedImageFileName + ", Image URI: " + editedImageURI);
+      },
+      error: function(message) {
+        alert(message);
+      }
+    });
+  }
+
   $scope.getPicture = function(id) {
 
     var options = {
@@ -58,16 +87,12 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
       $scope.getFileUri(imageData).then(
         function(fileUri) {
-
-          console.log(fileUri);
-
           imageData = fileUri;
-
-          console.log(fileUri);
 
           for (var i = 0; i < $scope.objects.length; i++) {
             if ($scope.objects[i].uuid == id) {
               $scope.objects[i].uri = imageData;
+              $scope.objects[i].edit = true;
             }
           }
 
@@ -77,7 +102,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
         },
         function() {
-          console.log('error');
+          Materialize.toast('Error getting image', 4000);
         });
 
     }, function(err) {
@@ -89,7 +114,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
     var options = {
       destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY //,
+        //mediaType: Camera.MediaType.ALLMEDIA
+        // we will worry about video at a later date.
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
@@ -108,11 +135,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
             for (var i = 0; i < $scope.objects.length; i++) {
               if ($scope.objects[i].uuid == id) {
                 $scope.objects[i].uri = image.src;
+                $scope.objects[i].edit = true;
               }
             }
-
-            console.log(image.src);
-
           },
           function() {
             console.log('Failed to get file uri');
@@ -135,7 +160,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
       if ($scope.objects[i].uri != '//:0') {
         pending.push({
           'uuid': $scope.objects[i].uuid,
-          'type' : 'image',
+          'type': 'image',
           'title': $scope.objects[i].title,
           'desc': $scope.objects[i].desc,
           'tags': $scope.objects[i].tags,
@@ -147,13 +172,17 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     // update list of pending uploads
     localStorage.setItem('pending', JSON.stringify(pending));
 
-    _.defer( function(){ $scope.$apply(function() { $location.path("/history"); });});
+    _.defer(function() {
+      $scope.$apply(function() {
+        $location.path("/history");
+      });
+    });
 
   };
 
   $scope.removeObject = function(id) {
     $.each($scope.objects, function(index, value) {
-      if (value.uuid == id) {
+      if (value != null && value.uuid == id) {
         $scope.objects.splice(index, 1);
       }
     });

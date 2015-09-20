@@ -4,52 +4,52 @@
       <div class="form-group">
         <div class="card">
           <div class="card-content">
-            <span class="card-title grey-text text-darken-4">Login details</span>
-            <div class="row">
-              <div class="input-field col s12">
-                <input placeholder="Username" type="text" class="form-control" ng-model="login.username" ng-class="{true: 'active', false: ''}[login.username != '']" class="validate">
-                <label ng-class="{true: 'active', false: ''}[login.username != '']">Username</label>
-              </div>
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Login details</span>
+            <div class="input-field col s12">
+              <input placeholder="Username" type="text" class="form-control" ng-model="login.username" ng-class="{true: 'active', false: ''}[login.username != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[login.username != '']">Username</label>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <input placeholder="URL" type="text" class="form-control" ng-model="login.url" ng-class="{true: 'active', false: ''}[login.url != '']" class="validate">
-                <label ng-class="{true: 'active', false: ''}[login.url != '']">URL</label>
-              </div>
+            <div class="input-field col s12">
+              <input placeholder="URL" type="text" class="form-control" ng-model="login.url" ng-class="{true: 'active', false: ''}[login.url != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[login.url != '']">URL</label>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <input placeholder="Token" type="text" class="form-control" ng-model="login.token" ng-class="{true: 'active', false: ''}[login.token != '']" class="validate">
-                <label ng-class="{true: 'active', false: ''}[login.token != '']">Token</label>
-              </div>
+            <div class="input-field col s12">
+              <input id="token" placeholder="Token" type="text" class="form-control" ng-model="login.token" ng-class="{true: 'active', false: ''}[login.token != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[login.token != '']">Token</label>
             </div>
             <button class="waves-effect waves-light btn" ng-click="maharaLogin()">Web Login</button>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
-            <span class="card-title grey-text text-darken-4">Advanced</span>
-            <div class="row">
-              <div class="input-field col s12">
-                <input placeholder="Upload URI" type="text" class="form-control" ng-model="connection.uploaduri" ng-class="{true: 'active', false: ''}[connection.uploaduri != '']" class="validate" disabled>
-                <label ng-class="{true: 'active', false: ''}[connection.uploaduri != '']">Username</label>
-              </div>
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Advanced</span>
+            <div class="input-field col s12">
+              <input placeholder="Upload URI" type="text" class="form-control" ng-model="connection.uploaduri" ng-class="{true: 'active', false: ''}[connection.uploaduri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[connection.uploaduri != '']">Username</label>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <input placeholder="Sync URI" type="text" class="form-control" ng-model="connection.syncuri" ng-class="{true: 'active', false: ''}[connection.syncuri != '']" class="validate" disabled>
-                <label ng-class="{true: 'active', false: ''}[connection.syncuri != '']">URL</label>
-              </div>
+            <div class="input-field col s12">
+              <input placeholder="Sync URI" type="text" class="form-control" ng-model="connection.syncuri" ng-class="{true: 'active', false: ''}[connection.syncuri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[connection.syncuri != '']">URL</label>
             </div>
-            <div class="row">
-              <div class="input-field col s12">
-                <select ng-model="connection.connectiontype" disabled>
-                  <option value="Default">Mobile and Wifi</option>
-                  <option value="Wifi Only">Wifi Only</option>
-                  <option value="Default">Mobile Only</option>
-                </select>
-                <label>Upload preferences</label>
+            <div>
+              <div class="truncate">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a class='dropdown-button btn' href='javascript:void(0)' id="connection-dropdown" data-activates='connection-dropdown-content'>Connection Type</a>
+                        <ul id='connection-dropdown-content' class='dropdown-content'>
+                          <li ng-repeat="i in [{text:'Mobile and Wifi', id: 1}, {text: 'Wifi only', id: 2}]" ng-click="setConnectionType(i);"><a href="">{{i.text}}</a></li>
+                        </ul>
+                      </td>
+                      <td class="flow-text right">
+                        <p>{{connection.connectiontype}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
+              <div class="divider" style="margin-bottom: 15px"></div>
             </div>
             <button ng-click="unlock()" class="waves-effect waves-light btn right" style="margin-bottom:15px">Unlock</button>
           </div>

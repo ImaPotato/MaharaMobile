@@ -9,6 +9,18 @@ For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap
 
 /* Global Styles */
 
+.show-overflow {
+  overflow: visible !important;
+}
+
+.ellipsis {
+  text-overflow: ellipsis;
+
+  /* Required for text-overflow to do anything */
+  white-space: nowrap;
+  overflow: hidden;
+}
+
 .nav-wrapper img {
   margin-left: 10px;
 }
@@ -25,6 +37,25 @@ For more info and more free Bootstrap 3 HTML themes, visit http://startbootstrap
 }
 .ng-enter {
   z-index: 1;
+}
+
+
+/* Add animation */
+.my-repeat-animation.ng-enter.ng-enter-active,
+.my-repeat-animation.ng-leave {
+    opacity: 1;
+    -webkit-transition: opacity 1000ms linear;
+    -moz-transition: opacity 1000ms linear;
+    transition: opacity 1000ms linear;
+}
+
+/* Remove animation */
+.my-repeat-animation.ng-leave.ng-leave-active,
+.my-repeat-animation.ng-enter {
+    opacity: 0;
+    -webkit-transition: opacity 1000ms linear;
+    -moz-transition: opacity 1000ms linear;
+    transition: opacity 1000ms linear;
 }
 
 /* page specific animations ------------------------ */

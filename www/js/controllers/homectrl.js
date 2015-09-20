@@ -1,34 +1,40 @@
-angular.module('Mahara').controller('HomeCtrl', function($scope, AlertGenerator){
-
-  $scope.load = function(){
-
+angular.module('Mahara').controller('HomeCtrl', function($scope, $location) {
+  $scope.load = function() {
     $scope.pageClass = 'home';
 
     var user = JSON.parse(localStorage.getItem('user'));
-    localStorage.setItem('pending', []);
-    if (user == null || user == ''){
-
-      // we should redirect them to the login page
-
-      // maybe add an alert telling them to login :)
-      // create a new alert, this will be displayed on the next page and then removed
-      var alert = { type: "danger", msg: "Please log in" };
-      AlertGenerator.addAlert(alert);
-
+    if (user == null || user == '') {
       // redirect back to the login page
-      _.defer( function(){ $scope.$apply(function() { $location.path("/login"); });});
-
-    } else {
-      $scope.alerts = AlertGenerator.getAlerts();
-      AlertGenerator.removeAllAlerts();
+      // sorry...
+      // this is really bad but uh, on first login we redirect to the settings page to initialise the default settings before moving on to the login page
+      // guess you could argue that is shows people how to get to the login page
+      // sort of grasping at straws though
+      // swear i'll make this better later... probably
+      _.defer(function() {
+        $scope.$apply(function() {
+          $location.path("/settings");
+        });
+      });
     }
-  };
 
-  $scope.closeAlert = function(index) {
-    $scope.alerts.splice(index, 1);
+    /*
+        // Android customization
+            cordova.plugins.backgroundMode.setDefaults({ text:'Doing heavy tasks.'});
+            // Enable background mode
+            cordova.plugins.backgroundMode.enable();
+
+            // Called when background mode has been activated
+            cordova.plugins.backgroundMode.onactivate = function () {
+                setTimeout(function () {
+                    // Modify the currently displayed notification
+                    cordova.plugins.backgroundMode.configure({
+                        text:'Running in background for more than 5s now.'
+                    });
+                }, 5000);
+            }
+        */
   };
 
   $scope.load();
-
 
 });

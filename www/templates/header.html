@@ -7,29 +7,39 @@
 -->
 
 <script>
+
   $('.button-collapse').sideNav({
-      menuWidth: 300, // Default is 240
-      edge: 'left', // Choose the horizontal origin
-      closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
-    }
-  );
+    menuWidth: 300, // Default is 240
+    edge: 'left', // Choose the horizontal origin
+    closeOnClick: true // Closes side-nav on <a> clicks, useful for Angular/Meteor
+  });
+
 </script>
-<div class="navbar-fixed">
-<nav class="teal">
-  <ul class="right hide-on-med-and-down">
-    <li><a class="" href="#/">Home</a></li>
-    <li><a class="" href="#/camera">Camera</a></li>
-    <li><a class="" href="#/journal">Journal</a></li>
-    <li><a class="" href="#/settings">Settings</a></li>
-    <li><a class="" href="#/history">History</a></li>
-  </ul>
-  <ul id="slide-out" class="side-nav">
-    <li><a class="" href="#/">Home</a></li>
-    <li><a class="" href="#/camera">Camera</a></li>
-    <li><a class="" href="#/journal">Journal</a></li>
-    <li><a class="" href="#/settings">Settings</a></li>
-    <li><a class="" href="#/history">History</a></li>
-  </ul>
-  <a data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
-</nav>
+
+<div class="navbar-fixed" style="position: relative; z-index:9999">
+  <nav class="teal">
+
+    <a href="#/" id="ios-back" class="valign waves-effect waves-light btn teal lighten-3 right" ng-show="device == 'ios'" style="margin:13px 13px 0px 13px;">back</a>
+
+    <ul class="right hide-on-med-and-down">
+      <li><a class="" href="#/">Home</a></li>
+      <li><a class="" href="#/camera">Camera</a></li>
+      <li><a class="" href="#/journal">Journal</a></li>
+      <li><a class="" href="#/history">Pending & History</a></li>
+      <li><a class="" href="#/settings">Settings</a></li>
+    </ul>
+    <ul id="slide-out" class="side-nav">
+      <li><a class="" href="#/">Home</a></li>
+      <li><a class="" href="#/camera">Camera</a></li>
+      <li><a class="" href="#/journal">Journal</a></li>
+      <li><a class="" href="#/history">Pending & History</a></li>
+      <li><a class="" href="#/settings">Settings</a></li>
+    </ul>
+
+    <a data-activates="slide-out" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+
+
+
+  </nav>
+
 </div>

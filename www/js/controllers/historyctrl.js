@@ -4,6 +4,8 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
   $scope.history = [];
 
   $scope.pageClass = 'history';
+//  if(cordova != null)
+//    $scope.device = cordova.platformId;
 
   function checkAllFiles(currentIndex, q) {
     if ($scope.pending.length > currentIndex) {
@@ -37,9 +39,6 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
   function checkFileURI(pending) {
     var q = $q.defer();
-
-    console.log(pending.type);
-
     if (pending.type == 'journal') {
       //journals don't have files attached so we good.
       q.resolve();
@@ -48,11 +47,11 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
       q.reject();
     } else {
       window.resolveLocalFileSystemURL(pending.uri, function(fileEntry) {
-        console.log('File exists');
+        // file exists
         q.resolve();
 
       }, function(error) {
-        console.log('File does not exist');
+        //file does not exist
         q.reject();
       });
     }
@@ -65,6 +64,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
     if (pending == null || pending == '') {
       return;
     }
+
     pending = JSON.parse(pending);
 
     if (pending.length >= 1) {
@@ -73,43 +73,56 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
       filePromise.then(function() {
 
+        // need to check if we're sending a journal or an image
         var promise = (pending[0].type == 'image') ? SyncService.sendImage(pending[0]) : SyncService.sendJournal(pending[0]);
+
+        // tell user we've started to upload something.
         Materialize.toast('Uploading ' + pending[0].type, 4000);
+
         promise.then(function() {
+
+            // we're done.
             Materialize.toast('Finished uploading ' + pending[0].type, 4000);
-            console.log('Sent');
+
             // remove first element as it was successfully sent.
             var first = pending.shift();
+
+            // update UI
+            $scope.history.push(first);
+            $scope.pending = pending;
             // save
             localStorage.setItem('pending', JSON.stringify(pending));
-            $scope.pending = pending;
-            $scope.history.push(first);
             localStorage.setItem('history', JSON.stringify($scope.history));
+
             // keep going untill there is no more images to process.
             uploadPendingImages();
           },
           function() {
-            console.log('Could not send file');
+            Materialize.toast('Failed to upload ' + pending[0].type, 4000);
           });
 
       }, function() {
-        Materialize.toast('Failed to upload ' + pending[0].type, 4000);
-        // don't upload as the file does not exists anymore.
+
+        Materialize.toast(pending[0].type + ' does not exist', 4000);
+        // remove item from pending
         var first = pending.shift();
-        console.log('failed to find file');
-        // remove from pending
-        console.log(first);
-        localStorage.setItem('pending', JSON.stringify(pending));
+
+        // update ui
         $scope.pending = pending;
         $scope.history.push(first);
-        localStorage.setItem('history', JSON.stringify($scope.history));
-        uploadPendingImages();
 
+        // save
+        localStorage.setItem('pending', JSON.stringify(pending));
+        localStorage.setItem('history', JSON.stringify($scope.history));
+
+        // try next file
+        uploadPendingImages();
       });
     }
   }
 
   $scope.init = function() {
+
     var pending = localStorage.getItem('pending');
     var history = localStorage.getItem('history');
 
@@ -126,8 +139,10 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
     }
 
     $scope.pending = pending;
+    $scope.history = history;
 
     var q = $q.defer();
+
     var check = q.promise;
 
     checkAllFiles(0, q);
@@ -136,6 +151,18 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
     check.then(function() {
       uploadPendingImages();
     });
+
+    var user = JSON.parse(localStorage.getItem('user'));
+    /*
+        if (user != null && user != '') {
+          if (user.connection.connectiontype == 'Mobile and Wifi' || (user.connection.connectiontype == 'Wifi only' && true device connetion  )) {
+            // this is going to be a little gross but we need to check every image in pending to make sure the file still exists
+            check.then(function() {
+              uploadPendingImages();
+            });
+          }
+        }
+    */
   }
 
   $scope.init();
