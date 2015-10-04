@@ -4,9 +4,6 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
 
   $scope.postStatus = '';
 
-//  if (cordova != null)
-//    $scope.device = cordova.platformId;
-
   $scope.addObject = function() {
 
     $scope.pageClass = 'camera';
@@ -50,10 +47,9 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   }
 
   $scope.editObject = function(image) {
-    //  var tools = cordova.plugins.Aviary.Tools;
-
+    var tools = cordova.plugins.Aviary.Tools;
     cordova.plugins.Aviary.show({
-      imageURI: imageURI,
+      imageURI: image.uri,
       outputFormat: "JPEG",
       quality: 90,
       toolList: [
@@ -74,6 +70,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
         alert(message);
       }
     });
+
   }
 
   $scope.getPicture = function(id) {

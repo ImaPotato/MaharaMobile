@@ -254,6 +254,13 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/com.m1is.aviary/www/Aviary.js",
+        "id": "com.m1is.aviary.Aviary",
+        "clobbers": [
+            "cordova.plugins.Aviary"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.device/www/device.js",
         "id": "org.apache.cordova.device.device",
         "clobbers": [
@@ -274,6 +281,7 @@ module.exports.metadata =
     "com.hiddentao.cordova.filepath": "1.0.0",
     "cordova-plugin-file-transfer": "1.2.2-dev",
     "org.apache.cordova.inappbrowser": "0.6.0",
+    "com.m1is.aviary": "1.0.0",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

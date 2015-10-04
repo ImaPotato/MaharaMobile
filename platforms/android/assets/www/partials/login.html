@@ -1,68 +1,62 @@
 <div class="section">
-    <div class="container">
-  <form novalidate class="col s12">
-    <div class="form-group">
-      <div class="card">
-        <div class="card-content">
-          <div class="row">
-            <span class="card-title grey-text text-darken-4">Login details</span>
-          </div>
-          <div class="row">
+  <div class="container">
+    <form novalidate class="col s12">
+      <div class="form-group">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Login details</span>
             <div class="input-field col s12">
               <input placeholder="Username" type="text" class="form-control" ng-model="login.username" ng-class="{true: 'active', false: ''}[login.username != '']" class="validate">
               <label ng-class="{true: 'active', false: ''}[login.username != '']">Username</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <input placeholder="URL" type="text" class="form-control" ng-model="login.url" ng-class="{true: 'active', false: ''}[login.url != '']" class="validate">
               <label ng-class="{true: 'active', false: ''}[login.url != '']">URL</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
-              <input placeholder="Token" type="text" class="form-control" ng-model="login.token" ng-class="{true: 'active', false: ''}[login.token != '']" class="validate">
+              <input id="token" placeholder="Token" type="text" class="form-control" ng-model="login.token" ng-class="{true: 'active', false: ''}[login.token != '']" class="validate">
               <label ng-class="{true: 'active', false: ''}[login.token != '']">Token</label>
             </div>
+            <button class="waves-effect waves-light btn" ng-click="maharaLogin()">Web Login</button>
           </div>
-          <button class="waves-effect waves-light btn" ng-click="maharaLogin()">Login</button>
         </div>
-      </div>
-      <div class="card">
-        <div class="card-content">
-          <div class="row">
-            <span class="card-title grey-text text-darken-4">Extra for experts</span>
-          </div>
-          <div class="row">
+        <div class="card">
+          <div class="card-content">
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Advanced</span>
             <div class="input-field col s12">
               <input placeholder="Upload URI" type="text" class="form-control" ng-model="connection.uploaduri" ng-class="{true: 'active', false: ''}[connection.uploaduri != '']" class="validate" disabled>
               <label ng-class="{true: 'active', false: ''}[connection.uploaduri != '']">Username</label>
             </div>
-          </div>
-          <div class="row">
             <div class="input-field col s12">
               <input placeholder="Sync URI" type="text" class="form-control" ng-model="connection.syncuri" ng-class="{true: 'active', false: ''}[connection.syncuri != '']" class="validate" disabled>
               <label ng-class="{true: 'active', false: ''}[connection.syncuri != '']">URL</label>
             </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <select ng-model="connection.connectiontype" disabled>
-                <option value="Default">Mobile and Wifi</option>
-                <option value="Wifi Only">Wifi Only</option>
-                <option value="Default">Mobile Only</option>
-              </select>
-              <label>Upload preferences</label>
+            <div>
+              <div class="truncate">
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a class='dropdown-button btn' href='javascript:void(0)' id="connection-dropdown" data-activates='connection-dropdown-content'>Connection Type</a>
+                        <ul id='connection-dropdown-content' class='dropdown-content'>
+                          <li ng-repeat="i in [{text:'Mobile and Wifi', id: 1}, {text: 'Wifi only', id: 2}]" ng-click="setConnectionType(i);"><a href="">{{i.text}}</a></li>
+                        </ul>
+                      </td>
+                      <td class="flow-text right">
+                        <p>{{connection.connectiontype}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="divider" style="margin-bottom: 15px"></div>
             </div>
-          </div>
-          <div class="row">
-            <button ng-click="unlock()" class="waves-effect waves-light btn">I need to change these.</button>
+            <button ng-click="unlock()" class="waves-effect waves-light btn right" style="margin-bottom:15px">Unlock</button>
           </div>
         </div>
+        <button class="waves-effect waves-light btn right" ng-click="update(login, connection)">Save</button>
+        <button class="waves-effect waves-light btn red right" ng-click="reset()" style="margin-right:5px; margin-bottom:15px;">Reset</button>
       </div>
-      <button class="waves-effect waves-light btn right" ng-click="reset()">Reset</button>
-      <button class="waves-effect waves-light btn right" ng-click="update(login, connection)" style="margin-right:5px; margin-bottom:15px;">Save</button>
-    </div>
-  </form>
-</div>
+    </form>
+  </div>
 </div>

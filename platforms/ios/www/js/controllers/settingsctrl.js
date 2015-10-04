@@ -1,4 +1,5 @@
 angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, SyncService) {
+
   $scope.pageClass = 'settings';
   $scope.load = function(){
     var settings = JSON.parse(localStorage.getItem('settings'));
@@ -54,30 +55,22 @@ angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, 
   $scope.save = function(settings){
     // cool, we can now update the users login settings
 
-    var savesettings = {
-        'defaultjournalset': settings.defaultjournalset,
-        'defaultjournal': settings.defaultjournal,
-        'uploadfolderset': settings.uploadfolderset,
-        'uploadfolder': settings.uploadfolder,
-        'uploadtagsset': settings.uploadtagsset,
-        'uploadtags': settings.uploadtags,
-        'notification': {
-          'user': settings.notification.user,
-          'feedback': settings.notification.feedback,
-          'posts': settings.notification.posts,
-          'mahara': settings.notification.mahara
-        },
-        'advanced': {
-          'periodicsync': settings.advanced.periodicsync,
-          'lastsynctime': settings.advanced.lastsynctime
-        }
-    };
+    console.log(settings);
 
     // store everything
-    localStorage.setItem('settings', JSON.stringify(savesettings));
-
+    localStorage.setItem('settings', JSON.stringify(settings));
+    
     // sync notifications
     SyncService.sync();
+
+    Materialize.toast('Updated settings', 4000);
+
+    // redirect back to main page when ready
+    _.defer(function() {
+      $scope.$apply(function() {
+        $location.path("/");
+      });
+    });
 
   }
 

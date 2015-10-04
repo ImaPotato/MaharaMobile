@@ -2,10 +2,7 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
   $scope.pending = [];
   $scope.history = [];
-
   $scope.pageClass = 'history';
-//  if(cordova != null)
-//    $scope.device = cordova.platformId;
 
   function checkAllFiles(currentIndex, q) {
     if ($scope.pending.length > currentIndex) {

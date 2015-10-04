@@ -5,7 +5,7 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
   $scope.postStatus = '';
 
   $scope.addObject = function() {
-    
+
     $scope.pageClass = 'camera';
 
     var obj = {

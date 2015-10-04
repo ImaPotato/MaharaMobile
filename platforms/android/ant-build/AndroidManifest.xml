@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='utf-8'?>
+<manifest android:hardwareAccelerated="true" android:versionCode="1" android:versionName="0.0.1" package="nz.net.catalyst" xmlns:android="http://schemas.android.com/apk/res/android">
+    <supports-screens android:anyDensity="true" android:largeScreens="true" android:normalScreens="true" android:resizeable="true" android:smallScreens="true" android:xlargeScreens="true" />
+    <uses-permission android:name="android.permission.INTERNET" />
+    <application android:hardwareAccelerated="true" android:icon="@drawable/icon" android:label="@string/app_name">
+        <activity android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale" android:label="@string/activity_name" android:launchMode="singleTop" android:name="Mahara" android:theme="@android:style/Theme.Black.NoTitleBar" android:windowSoftInputMode="adjustResize">
+            <intent-filter android:label="@string/launcher_name">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <service android:name="de.appplant.cordova.plugin.background.ForegroundService" />
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:hardwareAccelerated="true" android:largeHeap="true" android:name="com.aviary.android.feather.FeatherActivity" android:screenOrientation="unspecified" android:theme="@style/AviaryTheme" />
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:finishOnTaskLaunch="true" android:hardwareAccelerated="true" android:name="com.aviary.android.feather.FeatherActivity" android:process=":standalone" android:screenOrientation="unspecified" android:theme="@style/AviaryTheme" android:uiOptions="splitActionBarWhenNarrow" />
+        <service android:exported="false" android:name="com.aviary.android.feather.cds.AviaryCdsService" android:process=":aviarycds">
+            <intent-filter>
+                <action android:name="aviary.intent.action.CDS_DOWNLOAD_START" />
+                <action android:name="aviary.intent.action.CDS_RESTORE_USER_ITEMS" />
+            </intent-filter>
+        </service>
+        <provider android:authorities="{nz.catalyst.net}.AviaryCdsProvider" android:exported="false" android:name="com.aviary.android.feather.cds.AviaryCdsProvider" android:process=":aviarycds" android:syncable="true" />
+        <receiver android:name="com.aviary.android.feather.cds.AviaryCdsReceiver" android:process=":aviarycds">
+            <intent-filter>
+                <action android:name="android.intent.action.DOWNLOAD_COMPLETE" />
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="com.aviary.android.feather.v1.API_KEY" android:value="dbc1109b282e01c0" />
+        <receiver android:exported="true" android:name="com.aviary.android.feather.library.receivers.AviarySystemReceiver" android:process=":aviary_standalone_system_receiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+    </application>
+    <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+</manifest>

@@ -18,19 +18,6 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
         token: user.login.token,
         url: user.login.url
       };
-
-    } else {
-      // default values
-      $scope.connection = {
-        uploaduri: '/api/mobile/upload.php',
-        syncuri: '/api/mobile/sync.php',
-        connectiontype: 'Mobile and Wifi'
-      };
-      $scope.login = {
-        username: '',
-        token: '',
-        url: ''
-      };
     }
   }
 

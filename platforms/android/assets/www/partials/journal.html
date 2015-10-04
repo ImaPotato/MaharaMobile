@@ -1,6 +1,6 @@
 <div class="section">
   <div class="container">
-    <form novalidate class="simple-form" ng-repeat="obj in objects">
+    <form novalidate class="simple-form my-repeat-animation" ng-repeat="obj in objects">
       <div class="card">
         <div class="card-content">
           <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal' : obj.title}}</span>
@@ -22,27 +22,23 @@
               <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
             </div>
           </div>
-          <div class="row">
-            Allow comments?
-            <div class="switch">
-              <label>
-                No
-                <input type="checkbox" ng-model="obj.comments" />
-                <span class="lever"></span>
-                Yes
-              </label>
-            </div>
+          Allow comments?
+          <div class="switch" style="margin-bottom:15px">
+            <label>
+              No
+              <input type="checkbox" ng-model="obj.comments" />
+              <span class="lever"></span>
+              Yes
+            </label>
           </div>
-          <div class="row">
-            Is draft?
-            <div class="switch">
-              <label>
-                No
-                <input type="checkbox" ng-model="obj.draft" />
-                <span class="lever"></span>
-                Yes
-              </label>
-            </div>
+          Is draft?
+          <div class="switch" style="margin-bottom:15px">
+            <label>
+              No
+              <input type="checkbox" ng-model="obj.draft" />
+              <span class="lever"></span>
+              Yes
+            </label>
           </div>
           <div class="card-action">
             <button class="btn btn-default" ng-click="removeObject(obj.uuid)" ng-hide="objects.length == 1">Remove Journal</button>
@@ -50,15 +46,14 @@
         </div>
       </div>
     </form>
-
-    <div class="fixed-action-btn" style="bottom: 45px; right: 24px;">
-      <button class="btn-floating btn-large red" ng-click="addObject()">
+    <div class="fixed-action-btn" style="bottom: 25px; right: 25px;">
+      <button class="btn-floating btn-large waves-effect red" ng-click="addObject()">
         <i class="material-icons">add</i>
       </button>
     </div>
 
-    <a class="waves-effect waves-light btn col s5 right" ng-click="update()" style="margin-left:5px; margin-bottom:15px;">Save</a>
-    <a class="waves-effect waves-light btn col s5 right" ng-click="reset()">Reset</a>
-    
+    <a class="waves-effect waves-light btn col s5 right" ng-click="update()" style="margin-left:5px; margin-bottom:100px;">Save</a>
+    <a class="waves-effect waves-light btn col s5 red right" ng-click="reset()">Reset</a>
+
   </div>
 </div>

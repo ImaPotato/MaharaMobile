@@ -1,4 +1,5 @@
-angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService, AlertGenerator) {
+angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService) {
+
   $scope.pageClass = 'login';
   $scope.load = function() {
     var user = JSON.parse(localStorage.getItem('user'));
@@ -32,6 +33,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
   $scope.load();
 
   $scope.update = function(login, connection) {
+
+    console.log(login);
+    console.log(connection);
 
     // error checking
     if (login.username == '') {
@@ -78,12 +82,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     localStorage.setItem('user', JSON.stringify(user));
     // sync notifications
     SyncService.sync();
-    // create a new alert, this will be displayed on the next page and then removed
-    var alert = {
-      type: "success",
-      msg: "Settings successfully updated."
-    };
-    AlertGenerator.addAlert(alert);
+
     // redirect back to main page when ready
     _.defer(function() {
       $scope.$apply(function() {
@@ -98,21 +97,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
   }
 
   $scope.maharaLogin = function() {
-    var options = {
-      location: 'yes',
-      clearcache: 'yes',
-      location: 'no',
-      toolbar: 'no'
-    };
 
-    $cordovaInAppBrowser.open('http://10.22.33.121/~potato/mahara/htdocs/api/mobile/login.php', '_blank', options);
-
-    $rootScope.$on('$cordovaInAppBrowser:loadstart', function(e, event) {
-      console.log('started loading');
-    });
-
-    $rootScope.$on('$cordovaInAppBrowser:loadstop', function(e, event) {
-      console.log('finished loading');
+    var win = window.open("http://10.22.33.121/~potato/mahara/htdocs/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=no,clearcache=yes, clearsessioncache=yes");
+    win.addEventListener("loadstop", function() {
 
       var q = $q.defer();
 
@@ -121,38 +108,34 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
         url: "js/controllers/inject/login.js",
         dataType: "text",
         success: function(msg) {
-          $cordovaInAppBrowser.executeScript({
+          win.executeScript({
             code: msg
           });
-
           console.log('Injected code');
-
           q.resolve();
         },
         error: function() {
           console.log("Ajax Error");
-
           q.reject();
         }
       });
 
       q.promise.then(function() {
-        $cordovaInAppBrowser.executeScript({
-          code: 'getLoginStatus()'
+        win.executeScript({
+          code: "getLoginStatus();"
         }, function(values) {
-          var result = values[0];
-          alert(result);
-        }, function() {
-          alert('failed');
+
+          if(values[0].loggedin == 1){
+
+            $scope.login.token = JSON.parse(values[0].token).token;
+            console.log($scope.login.token);
+            $('#token').scope().$apply();
+            win.close();
+          }
+
         });
       });
     });
-
-    $rootScope.$on('$cordovaInAppBrowser:exit', function(e, event) {
-      alert('closed');
-    });
-
-
   }
 
   // reload the user, angular will do the rest for us

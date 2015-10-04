@@ -10,9 +10,21 @@
             </intent-filter>
         </activity>
         <service android:name="de.appplant.cordova.plugin.background.ForegroundService" />
+        <activity android:configChanges="orientation|keyboardHidden|screenSize" android:hardwareAccelerated="true" android:largeHeap="true" android:name="com.aviary.android.feather.FeatherActivity" android:screenOrientation="unspecified" android:theme="@style/AviaryTheme" />
+        <receiver android:exported="true" android:name="com.aviary.android.feather.library.receivers.AviarySystemReceiver" android:process=":aviary_standalone_system_receiver">
+            <intent-filter>
+                <action android:name="android.intent.action.PACKAGE_ADDED" />
+                <action android:name="android.intent.action.PACKAGE_REMOVED" />
+                <action android:name="android.intent.action.PACKAGE_REPLACED" />
+                <data android:scheme="package" />
+            </intent-filter>
+        </receiver>
+        <meta-data android:name="com.aviary.android.feather.v1.API_KEY" android:value="dbc1109b282e01c0" />
     </application>
     <uses-sdk android:minSdkVersion="10" android:targetSdkVersion="19" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 </manifest>

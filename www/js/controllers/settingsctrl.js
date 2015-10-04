@@ -1,6 +1,4 @@
 angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, SyncService) {
-//    if(cordova != null)
-//  $scope.device = cordova.platformId;
 
   $scope.pageClass = 'settings';
 
@@ -20,7 +18,6 @@ angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, 
     console.log($scope.tags);
 
     if (settings != null && settings != '') {
-
       $scope.settings = {};
       $scope.settings.defaultjournalset = settings.defaultjournalset;
       $scope.settings.defaultjournal = settings.defaultjournal;
@@ -40,39 +37,6 @@ angular.module('Mahara').controller('SettingsCtrl', function($scope, $location, 
       $scope.settings.advanced = {};
       $scope.settings.advanced.periodicsync = settings.advanced.periodicsync;
       $scope.settings.advanced.lastsynctime = settings.advanced.lastsynctime;
-
-    } else {
-
-      // init
-
-      $scope.settings = {};
-      $scope.settings.defaultjournalset = false;
-      $scope.settings.defaultjournal = '';
-
-      $scope.settings.uploadfolderset = false;
-      $scope.settings.uploadfolder = '';
-
-      $scope.settings.uploadtagsset = false;
-      $scope.settings.uploadtags = '';
-
-      $scope.settings.notification = {};
-      $scope.settings.notification.user = true;
-      $scope.settings.notification.feedback = true;
-      $scope.settings.notification.posts = true;
-      $scope.settings.notification.mahara = true;
-
-      $scope.settings.advanced = {};
-      $scope.settings.advanced.periodicsync = 15;
-      $scope.settings.advanced.lastsynctime = 0;
-
-      localStorage.setItem('settings', JSON.stringify($scope.settings));
-
-      _.defer(function() {
-        $scope.$apply(function() {
-          $location.path("/login");
-        });
-      });
-
     }
   }
 

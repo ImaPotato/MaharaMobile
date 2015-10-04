@@ -56,13 +56,13 @@ Aviary.prototype = {
             ]);
         };
 
-        /* 
+        /*
             When selecting an image from an image picker and due to my lack of knowledge of iOS the only way I can get this to launch in iOS without the following error is to introduce a slight delay.
 
                 WARNING: Attempt to present AFSDKViewController: 0x9e73470 on MainViewController: 0x9fc9780 while a presentation is in progress!
 
             the problem is discussed further here.
-            http://stackoverflow.com/questions/20793056/cordova-on-ios-attempt-to-present-on-a-controller-while-a-presentation-is-in-pr 
+            http://stackoverflow.com/questions/20793056/cordova-on-ios-attempt-to-present-on-a-controller-while-a-presentation-is-in-pr
         */
 
         if (device.platform.toLowerCase() == "ios") {

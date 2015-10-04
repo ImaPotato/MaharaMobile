@@ -103,6 +103,10 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"ios-package\" value=\"CDVInAppBrowser\" /></feature>",
                             "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Aviary\"><param name=\"ios-package\" value=\"Aviary\" /></feature>",
+                            "count": 1
                         }
                     ]
                 }
@@ -154,6 +158,9 @@
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "org.apache.cordova.inappbrowser": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "com.m1is.aviary": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

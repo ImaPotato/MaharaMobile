@@ -10,51 +10,49 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Post settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Post settings</span>
+            <div style="margin-bottom:15px">
               Journal post by default
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.defaultjournalset" />
-                  <span class="lever"></span>
+                  <span onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.defaultjournalset">
+            <div ng-show="settings.defaultjournalset">
               Default journal
               <input type="text" class="form-control disabled" ng-model="settings.defaultjournal" />
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Upload to a default folder
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.uploadfolderset" />
-                  <span class="lever"></span>
+                  <span onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.uploadfolderset">
+            <div ng-show="settings.uploadfolderset">
               Upload folder
               <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Set tags be default
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.uploadtagsset" />
-                  <span class="lever"></span>
+                  <span onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row" ng-show="settings.uploadtagsset">
+            <div ng-show="settings.uploadtagsset">
               Tags:
               <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
             </div>
@@ -62,49 +60,47 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Notfication settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Notfication settings</span>
+            <div style="margin-bottom:15px">
               User messages
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.notification.user" />
-                  <span class="lever"></span>
+                  <span onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Feedback
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.notification.feedback" />
-                  <span class="lever"></span>
+                  <span  onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               New posts
-              <div class="switch">
+              <div class="switch"  onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.notification.posts" />
-                  <span class="lever"></span>
+                  <span onclick="" class="lever"></span>
                   On
                 </label>
               </div>
             </div>
-            <div class="row">
+            <div style="margin-bottom:15px">
               Mahara messages
-              <div class="switch">
+              <div class="switch" onclick="">
                 <label>
                   Off
                   <input type="checkbox" ng-model="settings.notification.mahara" />
-                  <span class="lever"></span>
+                  <span  onclick="" class="lever"></span>
                   On
                 </label>
               </div>
@@ -113,20 +109,15 @@
         </div>
         <div class="card">
           <div class="card-content">
-            <div class="row">
-              <span class="card-title grey-text text-darken-4">Advanced settings</span>
-            </div>
-            <div class="row">
+            <span class="card-title grey-text text-darken-4">Advanced settings</span>
+            <div>
               Periodic Sync:
-              <input type="text" ng-model="settings.advanced.periodicsync " />
             </div>
-            <div class="row">
-              Last Sync Time:
-              <input type="text" ng-model="settings.advanced.lastsynctime " />
-            </div>
+            <input type="text" ng-model="settings.advanced.periodicsync " /> Last Sync Time:
+            <input type="text" ng-model="settings.advanced.lastsynctime " />
           </div>
         </div>
       </form>
-      <input type="submit " class="waves-effect waves-light btn right" ng-click="save(settings) " value="Save" style="margin-left:5px" />
-      <input type="button " class="waves-effect waves-light btn right" ng-click="reset() " value="Reset" />
+      <button class="waves-effect waves-light btn right" ng-click="save(settings) " style="margin-left:5px">Save</button>
+      <button class="waves-effect waves-light btn right" ng-click="reset()">Reset</button>
     </div>
