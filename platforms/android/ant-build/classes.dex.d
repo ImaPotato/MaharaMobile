@@ -328,6 +328,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/com/aviary/android/feather/widget/VibrationWidget.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/com/hiddentao/cordova/filepath/FilePath.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/com/m1is/aviary/Aviary.class \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/com/megster/cordova/FileChooser.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$1.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$2.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/de/appplant/cordova/plugin/background/BackgroundMode$3.class \
@@ -457,10 +458,3 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/classes/org/ffmpeg/android/R.class \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/classes-932613ba143aa0860aabeb34c94c5bbe.jar \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/classes-56d42e27a161b977e0dc21f980f65659.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/horizontalvariablelistview-953217ce625bed544cd1250ee06ec8f5.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/aviary-library-9f73fa922065385e6f7bd83ff07dfaad.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/android-support-v4-a14a6be55618999d305fbc933ab00864.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/aviary-headless-library-bf2f07eecfdfb65c05a158e7ab251d9b.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/imageviewtouch-9997fcf434de909bbe60a235d5f56afa.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/aviary-tracking-6f6d3ce58180c744dd414f3ab73e901d.jar \
-/Users/Potato/Desktop/Project/MaharaProject/platforms/android/ant-build/dexedLibs/abtest-bea53bf98ce1335c072090c7eb4886ef.jar \

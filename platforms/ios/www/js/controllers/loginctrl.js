@@ -1,85 +1,34 @@
-angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService) {
+angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService, UserService) {
 
   $scope.pageClass = 'login';
+//    if(cordova != null)
+//      $scope.device = cordova.platformId;
   $scope.load = function() {
-    var user = JSON.parse(localStorage.getItem('user'));
-    if (user != null && user != '') {
-      // load user from memory
-      $scope.connection = {
-        uploaduri: user.connection.uploaduri,
-        syncuri: user.connection.syncuri,
-        connectiontype: user.connection.connectiontype
-      };
-      $scope.login = {
-        username: user.login.username,
-        token: user.login.token,
-        url: user.login.url
-      };
-    } else {
-      // default values
-      $scope.connection = {
-        uploaduri: '/api/mobile/upload.php',
-        syncuri: '/api/mobile/sync.php',
-        connectiontype: 'Default'
-      };
-      $scope.login = {
-        username: '',
-        token: '',
-        url: ''
-      };
-    }
+    var user = UserService.getUser();
+    $scope.login = user.login;
   }
 
   $scope.load();
 
-  $scope.update = function(login, connection) {
-
-    console.log(login);
-    console.log(connection);
-
+  $scope.update = function(login) {
     // error checking
     if (login.username == '') {
-
+      Materialize.toast('Check username', 4000);
+      return;
     }
 
     if (login.token == '') {
-
+      Materialize.toast('Check token', 4000);
+      return;
     }
 
     if (login.url == '') {
-
-    } else {
-      // remove http:// | https:// if it exists, we will add this back on later.
-      // login.url = login.url.replace(/^https?:\/\//,'')
+      Materialize.toast('Check url', 4000);
+      return;
     }
 
-    if (connection.uploaduri == '') {
+    UserService.saveUser(login)
 
-    }
-
-    if (connection.syncuri == '') {
-
-    }
-
-    if (connection.connectiontype == '') {
-
-    }
-
-    // cool, we can now update the users login settings
-    var user = {
-      'login': {
-        'username': login.username,
-        'token': login.token.toLowerCase(),
-        'url': login.url
-      },
-      'connection': {
-        'uploaduri': connection.uploaduri,
-        'syncuri': connection.syncuri,
-        'connectiontype': connection.connectiontype
-      }
-    };
-    // store everything
-    localStorage.setItem('user', JSON.stringify(user));
     // sync notifications
     SyncService.sync();
 
@@ -91,48 +40,74 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     });
   };
 
-  // unlocks the sync and upload settings
-  $scope.unlock = function() {
-    $(':disabled').prop('disabled', false);
-  }
-
   $scope.maharaLogin = function() {
+    if ($scope.login.url == null || $scope.login.url == '')
+      return;
+    // test url to make sure it's valid...
 
-    var win = window.open("http://10.22.33.121/~potato/mahara/htdocs/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=no,clearcache=yes, clearsessioncache=yes");
-    win.addEventListener("loadstop", function() {
+    Materialize.toast('Checking URL', 4000);
 
-      var q = $q.defer();
+    var q = $q.defer();
+    $.ajax({
+      type: "GET",
+      url: $scope.login.url + "/api/mobile/test.php",
+      crossDomain: true,
+      dataType: 'jsonp',
+      success: function(msg) {
 
-      $.ajax({
-        type: "GET",
-        url: "js/controllers/inject/login.js",
-        dataType: "text",
-        success: function(msg) {
-          win.executeScript({
-            code: msg
-          });
-          console.log('Injected code');
+        console.log(msg);
+
+        if (msg.valid == 'true') {
           q.resolve();
-        },
-        error: function() {
-          console.log("Ajax Error");
-          q.reject();
         }
-      });
+        q.reject();
+        Materialize.toast('Enter a valid URL', 4000);
+      },
+      error: function() {
+        q.reject();
+        Materialize.toast('Enter a valid URL', 4000);
+      }
+    });
 
-      q.promise.then(function() {
-        win.executeScript({
-          code: "getLoginStatus();"
-        }, function(values) {
-
-          if(values[0].loggedin == 1){
-
-            $scope.login.token = JSON.parse(values[0].token).token;
-            console.log($scope.login.token);
-            $('#token').scope().$apply();
-            win.close();
+    q.promise.then(function() {
+      var win = window.open($scope.login.url + "/api/mobile/login.php", "_system", "EnableViewPortScale=yes,location=no,toolbar=yes,clearcache=yes,clearsessioncache=yes");
+      win.addEventListener("loadstop", function() {
+        var q = $q.defer();
+        $.ajax({
+          type: "GET",
+          url: "js/controllers/inject/login.js",
+          dataType: "text",
+          success: function(msg) {
+            win.executeScript({
+              code: msg
+            });
+            console.log('Injected code');
+            q.resolve();
+          },
+          error: function() {
+            console.log("Ajax Error");
+            q.reject();
           }
+        });
 
+        q.promise.then(function() {
+          win.executeScript({
+            code: "getLoginStatus();"
+          }, function(values) {
+            if (values[0].loggedin == 1) {
+              $scope.login.token = JSON.parse(values[0].token).token;
+              $scope.login.username = JSON.parse(values[0].token).name;
+
+              console.log($scope.login.token);
+              console.log($scope.login.username);
+
+              $('#token').scope().$apply();
+              $('#username').scope().$apply();
+
+              UserService.saveUser($scope.login)
+              win.close();
+            }
+          });
         });
       });
     });

@@ -4,8 +4,36 @@
       <form novalidate class="simple-form">
         <div class="card">
           <div class="card-content">
-            <span class="card-title grey-text text-darken-4">Login details</span>
-            <a href="#/login" class="waves-effect waves-light btn right">Update</a>
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Connection settings</span>
+            <div class="input-field col s12">
+              <input placeholder="Upload URI" type="text" class="form-control" ng-model="settings.connection.uploaduri" ng-class="{true: 'active', false: ''}[settings.connection.uploaduri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[settings.connection.uploaduri != '']">Upload URI</label>
+            </div>
+            <div class="input-field col s12">
+              <input placeholder="Sync URI" type="text" class="form-control" ng-model="settings.connection.syncuri" ng-class="{true: 'active', false: ''}[settings.connection.syncuri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[setting.connection.syncuri != '']">Sync URI</label>
+            </div>
+            <div>
+              <div>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a class='dropdown-button btn' href='javascript:void(0)' id="connection-dropdown" data-activates='connection-dropdown-content'>Connection Type</a>
+                        <ul id='connection-dropdown-content' class='dropdown-content'>
+                          <li ng-repeat="i in [{text:'Mobile and Wifi', id: 1}, {text: 'Wifi only', id: 2}]" ng-click="setConnectionType(i);"><a href="">{{i.text}}</a></li>
+                        </ul>
+                      </td>
+                      <td class="flow-text right">
+                        <p>{{settings.connection.connectiontype}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="divider" style="margin-bottom: 15px"></div>
+            </div>
+            <button ng-click="unlock()" class="waves-effect waves-light btn right" style="margin-bottom:15px">Unlock</button>
           </div>
         </div>
         <div class="card show-overflow">
@@ -24,7 +52,7 @@
             </div>
             <div ng-show="settings.defaultjournalset">
               <div>
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -56,7 +84,7 @@
             </div>
             <div ng-show="settings.uploadfolderset">
               <div style="margin-bottom: 20px">
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -88,7 +116,7 @@
             </div>
             <div ng-show="settings.uploadtagsset">
               <div style="margin-bottom: 20px">
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -164,11 +192,12 @@
             <div>
               Periodic Sync:
             </div>
-            <input type="text" ng-model="settings.advanced.periodicsync " /> Last Sync Time:
-            <input type="text" ng-model="settings.advanced.lastsynctime " />
+            <input type="text" ng-model="settings.advanced.periodicsync " />
+            Last Sync Time:
+            <input type="text" ng-model="settings.advanced.lastsynctime " disabled/>
           </div>
         </div>
       </form>
-      <button class="waves-effect waves-light btn right" ng-click="save(settings) " style="margin-left:5px">Save</button>
-      <button class="waves-effect waves-light btn red right" ng-click="reset()">Reset</button>
+      <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
+      <button class="waves-effect waves-light btn" ng-click="save(settings)">Save</button>
     </div>

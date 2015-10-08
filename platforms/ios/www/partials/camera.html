@@ -1,58 +1,55 @@
 <div class="section">
-    <div class="container">
-<form novalidate class="col s12 my-repeat-animation" ng-repeat="obj in objects">
-  <div class="card">
-    <div class="card-image waves-effect waves-block waves-light">
-      <!-- Don't judge, #noragrets -->
-      <img id="{{obj.uuid}}" src="css/white.jpg" class="activator">
-    </div>
-
-    <div class="card-content">
-      <span class="card-title activator grey-text text-darken-4 truncate">{{obj.title == '' ? 'Enter a image title' : obj.title}}</h3>
-      </span>
-
-      <p class="truncate">{{obj.desc == '' ? 'Enter a description' : obj.desc}}</p>
-      <div class="divider"></div>
-      <div class="section">
-
-        <button class="waves-effect waves-light btn" ng-click="getPictureFromLibrary(obj.uuid);">Library</button>
-        <button class="waves-effect waves-light btn" ng-click="getPicture(obj.uuid);">Camera</button>
-
-      </div>
-    </div>
-
-    <div class="card-reveal">
-      <span class="card-title grey-text text-darken-4 ">{{obj.title == '' ? 'Enter a image title' : obj.title}}</span>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+  <div class="container">
+    <form novalidate class="col s12 my-repeat-animation" ng-repeat="obj in objects">
+      <div class="card" style="overflow: display">
+        <div class="card-image waves-effect waves-block waves-light">
+          <!-- Don't judge, #noragrets -->
+          <img id="{{obj.uuid}}" src="css/white.jpg" class="activator">
+        </div>
+        <div class="card-content">
+          <span class="card-title activator grey-text text-darken-4 truncate">
+            {{obj.title == '' ? 'Enter a image title' : obj.title}}
+          </span>
+          <p class="truncate">{{obj.desc == '' ? 'Enter a description' : obj.desc}}</p>
+          <div class="divider"></div>
+          <div class="section">
+            <button class="waves-effect waves-light btn" ng-click="getPictureFromLibrary(obj.uuid);">Library</button>
+            <button class="waves-effect waves-light btn" ng-click="getPicture(obj.uuid);">Camera</button>
+            <div style="margin-top: 15px">
+              <button class="waves-effect waves-light btn" ng-click="getFile(obj.uuid);">File</button>
+            </div>
+          </div>
+        </div>
+        <div class="card-reveal">
+          <span class="card-title grey-text text-darken-4 ">{{obj.title == '' ? 'Enter a image title' : obj.title}}</span>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Description</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
+            </div>
+          </div>
+          <button id="toggel-options" ng-click="removeObject(obj.uuid)" class="waves-effect waves-light btn" ng-hide="objects.length == 1"> Remove </button>
         </div>
       </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Description</label>
-        </div>
-      </div>
-      <div class="row">
-        <div class="input-field col s12">
-          <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
-          <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
-        </div>
-      </div>
-      <button id="toggel-options" ng-click="removeObject(obj.uuid)" class="waves-effect waves-light btn" ng-hide="objects.length == 1"> Remove </button>
+    </form>
+    <div class="fixed-action-btn" style="bottom: 25px; right: 25px;">
+      <button class="btn-floating btn-large waves-effect red" ng-click="addObject()">
+        <i class="material-icons">add</i>
+      </button>
     </div>
+    <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
+    <button class="waves-effect waves-light btn" ng-click="update()">Save</button>
   </div>
-</form>
-
-<div class="fixed-action-btn" style="bottom: 60px; right: 24px;">
-  <button class="btn-floating btn-large waves-effect red" ng-click="addObject()">
-    <i class="material-icons">add</i>
-  </button>
-</div>
-
-<a class="waves-effect waves-light btn col s5 right" ng-click="update()" style="margin-left:5px; margin-bottom:15px;">Save</a>
-<a class="waves-effect waves-light btn col s5 right" ng-click="reset()">Reset</a>
-</div>
 </div>

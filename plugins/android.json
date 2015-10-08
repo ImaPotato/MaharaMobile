@@ -43,9 +43,11 @@
                         {
                             "xml": "<feature name=\"InAppBrowser\"><param name=\"android-package\" value=\"org.apache.cordova.inappbrowser.InAppBrowser\" /></feature>",
                             "count": 1
-                        },
+                        }
+                    ],
+                    "/widget": [
                         {
-                            "xml": "<feature name=\"Aviary\"><param name=\"android-package\" value=\"com.m1is.aviary.Aviary\" /></feature>",
+                            "xml": "<feature name=\"FileChooser\"><param name=\"android-package\" value=\"com.megster.cordova.FileChooser\" /></feature>",
                             "count": 1
                         }
                     ]
@@ -67,34 +69,9 @@
                         {
                             "xml": "<service android:name=\"de.appplant.cordova.plugin.background.ForegroundService\" />",
                             "count": 1
-                        },
-                        {
-                            "xml": "<activity android:configChanges=\"orientation|keyboardHidden|screenSize\" android:hardwareAccelerated=\"true\" android:largeHeap=\"true\" android:name=\"com.aviary.android.feather.FeatherActivity\" android:screenOrientation=\"unspecified\" android:theme=\"@style/AviaryTheme\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<receiver android:exported=\"true\" android:name=\"com.aviary.android.feather.library.receivers.AviarySystemReceiver\" android:process=\":aviary_standalone_system_receiver\"><intent-filter><action android:name=\"android.intent.action.PACKAGE_ADDED\" /><action android:name=\"android.intent.action.PACKAGE_REMOVED\" /><action android:name=\"android.intent.action.PACKAGE_REPLACED\" /><data android:scheme=\"package\" /></intent-filter></receiver>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<meta-data android:name=\"com.aviary.android.feather.v1.API_KEY\" android:value=\"dbc1109b282e01c0\" />",
-                            "count": 1
                         }
                     ],
-                    "/manifest": [
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.INTERNET\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.WRITE_EXTERNAL_STORAGE\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<uses-permission android:name=\"android.permission.VIBRATE\" />",
-                            "count": 1
-                        }
-                    ]
+                    "/manifest": []
                 }
             },
             "config.xml": {
@@ -144,7 +121,7 @@
         "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "com.m1is.aviary": {
+        "com.megster.cordova.FileChooser": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

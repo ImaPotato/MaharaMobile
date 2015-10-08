@@ -1,74 +1,33 @@
-angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService) {
+angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $location, $cordovaInAppBrowser, $q, SyncService, UserService) {
 
   $scope.pageClass = 'login';
 //    if(cordova != null)
 //      $scope.device = cordova.platformId;
   $scope.load = function() {
-    var user = JSON.parse(localStorage.getItem('user'));
-    if (user != null && user != '') {
-
-      // load user from memory
-      $scope.connection = {
-        uploaduri: user.connection.uploaduri,
-        syncuri: user.connection.syncuri,
-        connectiontype: user.connection.connectiontype
-      };
-      $scope.login = {
-        username: user.login.username,
-        token: user.login.token,
-        url: user.login.url
-      };
-    }
+    var user = UserService.getUser();
+    $scope.login = user.login;
   }
 
   $scope.load();
 
-  $scope.update = function(login, connection) {
-
+  $scope.update = function(login) {
     // error checking
     if (login.username == '') {
+      Materialize.toast('Check username', 4000);
       return;
     }
 
     if (login.token == '') {
+      Materialize.toast('Check token', 4000);
       return;
     }
 
     if (login.url == '') {
-      return;
-    } else {
-      // remove http:// | https:// if it exists, we will add this back on later.
-      // login.url = login.url.replace(/^https?:\/\//,'')
-    }
-
-    if (connection.uploaduri == '') {
+      Materialize.toast('Check url', 4000);
       return;
     }
 
-    if (connection.syncuri == '') {
-      return;
-    }
-
-    if (connection.connectiontype == '') {
-      return;
-    }
-
-    // cool, we can now update the users login settings
-    var user = {
-      'login': {
-        'username': login.username,
-        'token': login.token.toLowerCase(),
-        'url': login.url.toLowerCase()
-      },
-      'connection': {
-        'uploaduri': connection.uploaduri,
-        'syncuri': connection.syncuri,
-        'connectiontype': connection.connectiontype
-      }
-    };
-
-    // store everything
-    localStorage.setItem('user', JSON.stringify(user));
+    UserService.saveUser(login)
 
     // sync notifications
     SyncService.sync();
@@ -81,18 +40,12 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     });
   };
 
-  // unlocks the sync and upload settings
-  $scope.unlock = function() {
-    $(':disabled').prop('disabled', false);
-  }
-
   $scope.maharaLogin = function() {
-
     if ($scope.login.url == null || $scope.login.url == '')
       return;
-
     // test url to make sure it's valid...
 
+    Materialize.toast('Checking URL', 4000);
     var q = $q.defer();
     $.ajax({
       type: "GET",
@@ -100,6 +53,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
       crossDomain: true,
       dataType: 'jsonp',
       success: function(msg) {
+
+        console.log(msg);
+
         if (msg.valid == 'true') {
           q.resolve();
         }
@@ -113,13 +69,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     });
 
     q.promise.then(function() {
-
-      var win = window.open($scope.login.url + "/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=no,clearcache=yes, clearsessioncache=yes");
-
+      var win = window.open($scope.login.url + "/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=yes,clearcache=yes,clearsessioncache=yes");
       win.addEventListener("loadstop", function() {
-
         var q = $q.defer();
-
         $.ajax({
           type: "GET",
           url: "js/controllers/inject/login.js",
@@ -142,9 +94,19 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
             code: "getLoginStatus();"
           }, function(values) {
             if (values[0].loggedin == 1) {
+
+              console.log(values);
+
               $scope.login.token = JSON.parse(values[0].token).token;
+              $scope.login.username = JSON.parse(values[0].token).user;
+
               console.log($scope.login.token);
+              console.log($scope.login.username);
+
               $('#token').scope().$apply();
+              $('#username').scope().$apply();
+
+              UserService.saveUser($scope.login)
               win.close();
             }
           });
@@ -157,43 +119,6 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
   $scope.reset = function() {
     load();
   };
-
-  $scope.setConnectionType = function(type) {
-    $scope.connection.connectiontype = type.text;
-  }
-
-  registerDropdown('connection-dropdown', 'connection-dropdown-content');
-
-  // Sorry.
-  function registerDropdown(dropdown1, dropdown2) {
-    $('#' + dropdown1).on('click', function() {
-      // get the button
-      var button = document.getElementById(dropdown1);
-      var rect = button.getBoundingClientRect();
-      // make the dropdown content visible, and then shift it up the hight of the button that was pressed
-      $('#' + dropdown2).addClass('active');
-      $('#' + dropdown2).css({
-        opacity: '1',
-        display: 'block',
-        position: 'absolute',
-        overflow: 'block',
-        'width': (button.offsetWidth + 1),
-        marginTop: ('-' + (button.offsetHeight) + 'px')
-      });
-      //wait a fraction of a second before add new click handler.
-      setTimeout(function() {
-        $(document.body).click(function() {
-          // hide the things, hopefully the click event triggered and everything is going swimingly.
-          $('#' + dropdown2).removeClass('active');
-          $('#' + dropdown2).css({
-            opacity: '0',
-            display: 'none'
-          });
-          $(document.body).unbind("click");
-        });
-      }, 50);
-    });
-  }
 
   $('select').material_select();
 

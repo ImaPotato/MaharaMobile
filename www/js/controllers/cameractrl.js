@@ -1,16 +1,18 @@
-angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamera, $cordovaLocalNotification, $q, $location, UuidGenerator, MimeGenerator, VideoEditor, SyncService) {
+angular.module('Mahara').controller('CameraCtrl', function(
+  $scope, $cordovaCamera, $cordovaLocalNotification, $q,
+  $location, UuidGenerator, MimeGenerator, VideoEditor,
+  SyncService, FileService) {
 
   $scope.objects = [];
-
+  $scope.pageClass = 'camera';
   $scope.postStatus = '';
 
   $scope.addObject = function() {
 
-    $scope.pageClass = 'camera';
-
     var obj = {
       uuid: UuidGenerator.generate(),
       uri: '//:0',
+      type: 'image',
       title: '',
       tags: '',
       desc: '',
@@ -46,50 +48,21 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     return q.promise;
   }
 
-  $scope.editObject = function(image) {
-    var tools = cordova.plugins.Aviary.Tools;
-    cordova.plugins.Aviary.show({
-      imageURI: image.uri,
-      outputFormat: "JPEG",
-      quality: 90,
-      toolList: [
-        "CROP", "ENHANCE",
-      ],
-      hideExitUnsaveConfirmation: false,
-      enableEffectsPacks: true,
-      enableFramesPacks: true,
-      enableStickersPacks: true,
-      disableVibration: false,
-      folderName: "MyApp",
-      success: function(result) {
-        var editedImageFileName = result.name;
-        var editedImageURI = result.src;
-        alert("File name: " + editedImageFileName + ", Image URI: " + editedImageURI);
-      },
-      error: function(message) {
-        alert(message);
-      }
-    });
-
-  }
-
-  $scope.getPicture = function(id) {
+  $scope.getPicture = function(id, obj) {
 
     var options = {
       destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: Camera.PictureSourceType.CAMERA
+      sourceType: Camera.PictureSourceType.CAMERA,
+      allowEdit : obj.edit
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
-
       $scope.getFileUri(imageData).then(
         function(fileUri) {
           imageData = fileUri;
-
           for (var i = 0; i < $scope.objects.length; i++) {
             if ($scope.objects[i].uuid == id) {
               $scope.objects[i].uri = imageData;
-              $scope.objects[i].edit = true;
             }
           }
 
@@ -107,57 +80,47 @@ angular.module('Mahara').controller('CameraCtrl', function($scope, $cordovaCamer
     });
   };
 
-  $scope.getPictureFromLibrary = function(id) {
+  $scope.getFile = function(id){
+    FileService.GetFile().then(function(uri){
+      $scope.getFileUri(uri).then(function(fileUri){
+        console.log(fileUri);
+        var extensions = ['png', 'jpg', 'jpeg', 'tif'];
+        var fileType = fileUri.substring(fileUri.lastIndexOf('.') + 1, fileUri.length);
+        console.log(fileType);
+        var image = document.getElementById(id);
+        var isImage = false;
+        for (var i = 0; i < extensions.length; i++){
+          if(extensions[i] == fileType){
+            isImage = true;
+          }
+        }
 
-    var options = {
-      destinationType: Camera.DestinationType.FILE_URI,
-      sourceType: Camera.PictureSourceType.PHOTOLIBRARY //,
-        //mediaType: Camera.MediaType.ALLMEDIA
-        // we will worry about video at a later date.
-    };
+        if(isImage){
+          image.src = fileUri;
+        } else {
+          image.src = 'css/folder.png';
+        }
+        image.style.display = 'block';
+        for (var i = 0; i < $scope.objects.length; i++) {
+          if ($scope.objects[i].uuid == id) {
+            $scope.objects[i].uri = 'file://' + fileUri;
+            $scope.objects[i].type = isImage ? 'image' : 'file';
 
-    $cordovaCamera.getPicture(options).then(function(imageData) {
-
-        $scope.getFileUri(imageData).then(
-          function(fileUri) {
-
-            imageData = fileUri;
-
-            console.log(fileUri);
-
-            var image = document.getElementById(id);
-            image.src = imageData;
-            image.style.display = 'block';
-
-            for (var i = 0; i < $scope.objects.length; i++) {
-              if ($scope.objects[i].uuid == id) {
-                $scope.objects[i].uri = image.src;
-                $scope.objects[i].edit = true;
-              }
-            }
-          },
-          function() {
-            console.log('Failed to get file uri');
-          });
-
-      },
-      function(err) {
-        console.log('Failed to take picture');
+            console.log($scope.objects[i].type);
+          }
+        }
       });
-  };
+    });
+  }
 
   $scope.update = function() {
-
     var pending = localStorage.getItem('pending');
-
     pending = (pending != null && pending != '') ? JSON.parse(pending) : [];
-
     for (var i = 0; i < $scope.objects.length; i++) {
-
       if ($scope.objects[i].uri != '//:0') {
         pending.push({
           'uuid': $scope.objects[i].uuid,
-          'type': 'image',
+          'type': $scope.objects[i].type,
           'title': $scope.objects[i].title,
           'desc': $scope.objects[i].desc,
           'tags': $scope.objects[i].tags,

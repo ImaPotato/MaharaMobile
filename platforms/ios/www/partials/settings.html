@@ -4,57 +4,136 @@
       <form novalidate class="simple-form">
         <div class="card">
           <div class="card-content">
-            <span class="card-title grey-text text-darken-4">Login details</span>
-            <a href="#/login" class="waves-effect waves-light btn right">Update</a>
+            <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Connection settings</span>
+            <div class="input-field col s12">
+              <input placeholder="Upload URI" type="text" class="form-control" ng-model="settings.connection.uploaduri" ng-class="{true: 'active', false: ''}[settings.connection.uploaduri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[settings.connection.uploaduri != '']">Upload URI</label>
+            </div>
+            <div class="input-field col s12">
+              <input placeholder="Sync URI" type="text" class="form-control" ng-model="settings.connection.syncuri" ng-class="{true: 'active', false: ''}[settings.connection.syncuri != '']" class="validate" disabled>
+              <label ng-class="{true: 'active', false: ''}[setting.connection.syncuri != '']">Sync URI</label>
+            </div>
+            <div>
+              <div>
+                <table>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <a class='dropdown-button btn' href='javascript:void(0)' id="connection-dropdown" data-activates='connection-dropdown-content'>Connection Type</a>
+                        <ul id='connection-dropdown-content' class='dropdown-content'>
+                          <li ng-repeat="i in [{text:'Mobile and Wifi', id: 1}, {text: 'Wifi only', id: 2}]" ng-click="setConnectionType(i);"><a href="">{{i.text}}</a></li>
+                        </ul>
+                      </td>
+                      <td class="flow-text right">
+                        <p>{{settings.connection.connectiontype}}</p>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <div class="divider" style="margin-bottom: 15px"></div>
+            </div>
+            <button ng-click="unlock()" class="waves-effect waves-light btn right" style="margin-bottom:15px">Unlock</button>
           </div>
         </div>
-        <div class="card">
+        <div class="card show-overflow">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Post settings</span>
             <div style="margin-bottom:15px">
               Journal post by default
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.defaultjournalset" />
-                  <span onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.defaultjournalset">
-              Default journal
-              <input type="text" class="form-control disabled" ng-model="settings.defaultjournal" />
+              <div>
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="journal-dropdown" data-activates='journal-dropdown-content'>Select journal</a>
+                          <ul id='journal-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in blogs" ng-click="setDefaultJournal(i);"><a href="">{{i.blog}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.defaultjournal}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div style="margin-bottom:15px">
               Upload to a default folder
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.uploadfolderset" />
-                  <span onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.uploadfolderset">
-              Upload folder
-              <input type="text" class="form-control disabled" ng-model="settings.uploadfolder" />
+              <div style="margin-bottom: 20px">
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="upload-dropdown" data-activates='upload-dropdown-content'>Select folder</a>
+                          <ul id='upload-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in folder" ng-click="setUploadFolder(i);"><a href="">{{i}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.uploadfolder}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
             <div style="margin-bottom:15px">
-              Set tags be default
+              Set default tag
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.uploadtagsset" />
-                  <span onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
             <div ng-show="settings.uploadtagsset">
-              Tags:
-              <input type="text" class="form-control disabled" ng-model="settings.uploadtags" />
+              <div style="margin-bottom: 20px">
+                <div class="truncate">
+                  <table>
+                    <tbody>
+                      <tr>
+                        <td>
+                          <a class='dropdown-button btn' href='javascript:void(0)' id="tag-dropdown" data-activates='tag-dropdown-content'>Select tag</a>
+                          <ul id='tag-dropdown-content' class='dropdown-content'>
+                            <li ng-repeat="i in tags" ng-click="setDefaultTag(i);"><a href="">{{i.tag}}</a></li>
+                          </ul>
+                        </td>
+                        <td class="flow-text right">
+                          <p>{{settings.uploadtags}}</p>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -65,10 +144,10 @@
               User messages
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.user" />
-                  <span onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
@@ -76,21 +155,21 @@
               Feedback
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.feedback" />
-                  <span  onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
             <div style="margin-bottom:15px">
               New posts
-              <div class="switch"  onclick="">
+              <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.posts" />
-                  <span onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
@@ -98,10 +177,10 @@
               Mahara messages
               <div class="switch" onclick="">
                 <label>
-                  Off
+                  No
                   <input type="checkbox" ng-model="settings.notification.mahara" />
-                  <span  onclick="" class="lever"></span>
-                  On
+                  <span class="lever"></span>
+                  Yes
                 </label>
               </div>
             </div>
@@ -113,11 +192,12 @@
             <div>
               Periodic Sync:
             </div>
-            <input type="text" ng-model="settings.advanced.periodicsync " /> Last Sync Time:
-            <input type="text" ng-model="settings.advanced.lastsynctime " />
+            <input type="text" ng-model="settings.advanced.periodicsync " />
+            Last Sync Time:
+            <input type="text" ng-model="settings.advanced.lastsynctime " disabled/>
           </div>
         </div>
       </form>
-      <button class="waves-effect waves-light btn right" ng-click="save(settings) " style="margin-left:5px">Save</button>
-      <button class="waves-effect waves-light btn right" ng-click="reset()">Reset</button>
+      <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
+      <button class="waves-effect waves-light btn" ng-click="save(settings)">Save</button>
     </div>

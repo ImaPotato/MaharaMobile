@@ -57,7 +57,6 @@
 		FB85EA8D7AF147CBA70F15CA /* CDVCamera.m in Sources */ = {isa = PBXBuildFile; fileRef = 1E83A5F5D3E043CD9973484D /* CDVCamera.m */; };
 		FCFFDF26FB454F6A942E80EC /* MediaPlayer.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02672D1AB29543729BDF0F0B /* MediaPlayer.framework */; };
 		5C6AF99F884F4DE8B8B350F0 /* CDVInAppBrowser.m in Sources */ = {isa = PBXBuildFile; fileRef = 28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */; };
-		1134C1DC60FE455E9ABCB792 /* Aviary.m in Sources */ = {isa = PBXBuildFile; fileRef = E19F2855774C4E3191F11909 /* Aviary.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -156,8 +155,6 @@
 		FBFF4F8427C04AF8BFAE738A /* CDVCamera.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CDVCamera.h; path = "cordova-plugin-camera/CDVCamera.h"; sourceTree = "<group>"; };
 		28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "CDVInAppBrowser.m"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.m"; sourceTree = "<group>"; fileEncoding = 4; };
 		F220190348CD4E058C31F920 /* CDVInAppBrowser.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "CDVInAppBrowser.h"; path = "org.apache.cordova.inappbrowser/CDVInAppBrowser.h"; sourceTree = "<group>"; fileEncoding = 4; };
-		E19F2855774C4E3191F11909 /* Aviary.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "Aviary.m"; path = "com.m1is.aviary/Aviary.m"; sourceTree = "<group>"; fileEncoding = 4; };
-		24A3665A86CC4DECA69744EF /* Aviary.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Aviary.h"; path = "com.m1is.aviary/Aviary.h"; sourceTree = "<group>"; fileEncoding = 4; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -316,8 +313,6 @@
 				BA5E560579A44012B041A54F /* CDVFileTransfer.h */,
 				28CFFFDEFD4B42359A19168C /* CDVInAppBrowser.m */,
 				F220190348CD4E058C31F920 /* CDVInAppBrowser.h */,
-				E19F2855774C4E3191F11909 /* Aviary.m */,
-				24A3665A86CC4DECA69744EF /* Aviary.h */,
 			);
 			name = Plugins;
 			path = Mahara/Plugins;
@@ -532,7 +527,6 @@
 				8678C7A74B284AA9B695F5B4 /* CDVAssetLibraryFilesystem.m in Sources */,
 				54F66656F80B45F28C198236 /* CDVFileTransfer.m in Sources */,
 				5C6AF99F884F4DE8B8B350F0 /* CDVInAppBrowser.m in Sources */,
-				1134C1DC60FE455E9ABCB792 /* Aviary.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

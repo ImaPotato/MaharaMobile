@@ -58,7 +58,4 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
-    <feature name="Aviary">
-        <param name="ios-package" value="Aviary" />
-    </feature>
 </widget>

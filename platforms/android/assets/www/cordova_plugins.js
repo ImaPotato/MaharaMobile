@@ -240,10 +240,10 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/com.m1is.aviary/www/Aviary.js",
-        "id": "com.m1is.aviary.Aviary",
+        "file": "plugins/com.megster.cordova.FileChooser/www/fileChooser.js",
+        "id": "com.megster.cordova.FileChooser.FileChooser",
         "clobbers": [
-            "cordova.plugins.Aviary"
+            "fileChooser"
         ]
     },
     {
@@ -267,7 +267,7 @@ module.exports.metadata =
     "com.hiddentao.cordova.filepath": "1.0.0",
     "cordova-plugin-file-transfer": "1.2.2-dev",
     "org.apache.cordova.inappbrowser": "0.6.0",
-    "com.m1is.aviary": "1.0.0",
+    "com.megster.cordova.FileChooser": "0.0.0",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA
