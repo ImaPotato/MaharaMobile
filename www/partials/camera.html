@@ -8,7 +8,7 @@
         </div>
         <div class="card-content">
           <span class="card-title activator grey-text text-darken-4 truncate">
-            {{obj.title == '' ? 'Enter a image title' : obj.title}}
+            {{obj.title == '' ? 'Enter a title' : obj.title}}
           </span>
           <p class="truncate">{{obj.desc == '' ? 'Enter a description' : obj.desc}}</p>
           <div class="divider"></div>
@@ -24,7 +24,7 @@
           </div>
         </div>
         <div class="card-reveal">
-          <span class="card-title grey-text text-darken-4 ">{{obj.title == '' ? 'Enter a image title' : obj.title}}</span>
+          <span class="card-title grey-text text-darken-4 ">{{obj.title == '' ? 'Enter a title' : obj.title}}</span>
           <div class="row">
             <div class="input-field col s12">
               <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">

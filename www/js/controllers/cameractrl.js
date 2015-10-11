@@ -53,7 +53,7 @@ angular.module('Mahara').controller('CameraCtrl', function(
     var options = {
       destinationType: Camera.DestinationType.FILE_URI,
       sourceType: Camera.PictureSourceType.CAMERA,
-      allowEdit : obj.edit
+      allowEdit: obj.edit
     };
 
     $cordovaCamera.getPicture(options).then(function(imageData) {
@@ -80,22 +80,50 @@ angular.module('Mahara').controller('CameraCtrl', function(
     });
   };
 
-  $scope.getFile = function(id){
-    FileService.GetFile().then(function(uri){
-      $scope.getFileUri(uri).then(function(fileUri){
+  $scope.getPictureFromLibrary = function(id) {
+    var options = {
+      destinationType: Camera.DestinationType.FILE_URI,
+      sourceType: Camera.PictureSourceType.PHOTOLIBRARY
+    };
+    $cordovaCamera.getPicture(options).then(function(imageData) {
+        $scope.getFileUri(imageData).then(
+          function(fileUri) {
+            imageData = fileUri;
+            var image = document.getElementById(id);
+            image.src = imageData;
+            image.style.display = 'block';
+
+            for (var i = 0; i < $scope.objects.length; i++) {
+              if ($scope.objects[i].uuid == id) {
+                $scope.objects[i].uri = image.src;
+                $scope.objects[i].edit = true;
+              }
+            }
+          },
+          function() {
+            console.log('Failed to get file uri');
+          });
+      },
+      function(err) {
+        console.log('Failed to take picture');
+      });
+  };
+
+  $scope.getFile = function(id) {
+    FileService.GetFile().then(function(uri) {
+      $scope.getFileUri(uri).then(function(fileUri) {
         console.log(fileUri);
         var extensions = ['png', 'jpg', 'jpeg', 'tif'];
         var fileType = fileUri.substring(fileUri.lastIndexOf('.') + 1, fileUri.length);
         console.log(fileType);
         var image = document.getElementById(id);
         var isImage = false;
-        for (var i = 0; i < extensions.length; i++){
-          if(extensions[i] == fileType){
+        for (var i = 0; i < extensions.length; i++) {
+          if (extensions[i] == fileType) {
             isImage = true;
           }
         }
-
-        if(isImage){
+        if (isImage) {
           image.src = fileUri;
         } else {
           image.src = 'css/folder.png';
@@ -105,8 +133,6 @@ angular.module('Mahara').controller('CameraCtrl', function(
           if ($scope.objects[i].uuid == id) {
             $scope.objects[i].uri = 'file://' + fileUri;
             $scope.objects[i].type = isImage ? 'image' : 'file';
-
-            console.log($scope.objects[i].type);
           }
         }
       });

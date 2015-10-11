@@ -27,6 +27,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
       return;
     }
 
+    //remove white space
+    login.url = login.url.replace(/ /g,'')
+
     UserService.saveUser(login)
 
     // sync notifications

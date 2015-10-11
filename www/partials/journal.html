@@ -3,7 +3,7 @@
     <form novalidate class="simple-form my-repeat-animation" ng-repeat="obj in objects">
       <div class="card">
         <div class="card-content">
-          <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal' : obj.title}}</span>
+          <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal Entry' : obj.title}}</span>
           <div class="row">
             <div class="input-field col s12">
               <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
@@ -13,7 +13,7 @@
           <div class="row">
             <div class="input-field col s12">
               <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Description</label>
+              <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Entry</label>
             </div>
           </div>
           <div class="row">
@@ -54,6 +54,6 @@
 
     <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
     <button class="waves-effect waves-light btn" ng-click="update()">Save</button>
-  
+
   </div>
 </div>
