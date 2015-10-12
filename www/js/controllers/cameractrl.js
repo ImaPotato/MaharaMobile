@@ -70,6 +70,8 @@ angular.module('Mahara').controller('CameraCtrl', function(
           image.src = imageData;
           image.style.display = 'block';
 
+          $cordovaCamera.cleanup();
+
         },
         function() {
           Materialize.toast('Error getting image', 4000);

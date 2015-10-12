@@ -81,6 +81,7 @@
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/plugins \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/templates \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/folder.png \
+/Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/logo-thing.png \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/logo.png \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/main.css \
 /Users/Potato/Desktop/Project/MaharaProject/platforms/android/assets/www/css/materialize.min.css \
