@@ -5,17 +5,17 @@
         <div class="card">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4" style="margin-bottom: 25px">Login details</span>
-            <div class="section">
+            <div class="section row">
               <div class="input-field col s12">
-                <input placeholder="URL" type="text" class="form-control" ng-model="login.url" ng-class="{true: 'active', false: ''}[login.url != '']" class="validate">
-                <label ng-class="{true: 'active', false: ''}[login.url != '']">URL</label>
+                <input placeholder="URL" type="text" class="form-control" ng-model="settings.connection.maharauri" ng-class="{true: 'active', false: ''}[settings.connection.maharauri != '']" class="validate">
+                <label ng-class="{true: 'active', false: ''}[settings.connection.maharauri != '']">URL</label>
               </div>
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
-            <button class="waves-effect waves-light btn" ng-click="maharaLogin()">Web Login</button>
+            <button class="waves-effect waves-light btn" ng-click="webAuthentication()">Web Login</button>
           </div>
         </div>
         <div>
@@ -23,19 +23,22 @@
       </div>
         <div class="card">
           <div class="card-content">
+                        <div class="section row">
             <div class="input-field col s12">
-              <input id="username" placeholder="Username" type="text" class="form-control" ng-model="login.username" ng-class="{true: 'active', false: ''}[login.username != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[login.username != '']">Username</label>
+              <input id="username" placeholder="Username" type="text" class="form-control" ng-model="settings.connection.username" ng-class="{true: 'active', false: ''}[settings.connection.username != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[settings.connection.username != '']">Username</label>
             </div>
+
             <div class="input-field col s12">
-              <input id="token" placeholder="Token" type="text" class="form-control" ng-model="login.token" ng-class="{true: 'active', false: ''}[login.token != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[login.token != '']">Token</label>
+              <input id="token" placeholder="Token" type="text" class="form-control" ng-model="settings.connection.token" ng-class="{true: 'active', false: ''}[settings.connection.token != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[settings.connection.token != '']">Token</label>
             </div>
           </div>
         </div>
+        </div>
       </div>
       <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
-      <button class="waves-effect waves-light btn" ng-click="update(login)">Save</button>
+      <button class="waves-effect waves-light btn" id="savebutton" ng-click="save()">Save</button>
   </div>
   </form>
 </div>

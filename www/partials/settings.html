@@ -39,165 +39,105 @@
         <div class="card show-overflow">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Post settings</span>
-            <div style="margin-bottom:15px">
-              Journal post by default
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.defaultjournalset" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="journalpostbydefault" ng-model="settings.defaultjournalset" checked="checked" />
+              <label for="journalpostbydefault">Journal post by default</label>
             </div>
             <div ng-show="settings.defaultjournalset">
-              <div>
-                <div class="">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <a class='dropdown-button btn' href='javascript:void(0)' id="journal-dropdown" data-activates='journal-dropdown-content'>Select journal</a>
-                          <ul id='journal-dropdown-content' class='dropdown-content'>
-                            <li ng-repeat="i in blogs" ng-click="setDefaultJournal(i);"><a href="">{{i.blog}}</a></li>
-                          </ul>
-                        </td>
-                        <td class="flow-text right">
-                          <p>{{settings.defaultjournal}}</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a class='dropdown-button btn' href='javascript:void(0)' id="journal-dropdown" data-activates='journal-dropdown-content'>Select journal</a>
+                      <ul id='journal-dropdown-content' class='dropdown-content'>
+                        <li ng-repeat="i in settings.blogs" ng-click="setDefaultJournal(i.blog);"><a href="">{{i.blog}}</a></li>
+                      </ul>
+                    </td>
+                    <td class="flow-text right">
+                      <p>{{settings.defaultjournal}}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div style="margin-bottom:15px">
-              Upload to a default folder
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.uploadfolderset" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="uploadtoadefaultfolder" ng-model="settings.uploadfolderset" checked="checked" />
+              <label for="uploadtoadefaultfolder">Upload to a default folder</label>
             </div>
             <div ng-show="settings.uploadfolderset">
-              <div style="margin-bottom: 20px">
-                <div class="">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <a class='dropdown-button btn' href='javascript:void(0)' id="upload-dropdown" data-activates='upload-dropdown-content'>Select folder</a>
-                          <ul id='upload-dropdown-content' class='dropdown-content'>
-                            <li ng-repeat="i in folder" ng-click="setUploadFolder(i);"><a href="">{{i}}</a></li>
-                          </ul>
-                        </td>
-                        <td class="flow-text right">
-                          <p>{{settings.uploadfolder}}</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a class='dropdown-button btn' href='javascript:void(0)' id="upload-dropdown" data-activates='upload-dropdown-content'>Select folder</a>
+                      <ul id='upload-dropdown-content' class='dropdown-content'>
+                        <li ng-repeat="i in settings.folders" ng-click="setDefaultFolder(i.folder);"><a href="">{{i.folder}}</a></li>
+                      </ul>
+                    </td>
+                    <td class="flow-text right">
+                      <p>{{settings.defaultfolder}}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <div style="margin-bottom:15px">
-              Set default tag
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.uploadtagsset" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="setdefaulttag" ng-model="settings.uploadtagsset" checked="checked" />
+              <label for="setdefaulttag">Set default tag</label>
             </div>
             <div ng-show="settings.uploadtagsset">
-              <div style="margin-bottom: 20px">
-                <div class="">
-                  <table>
-                    <tbody>
-                      <tr>
-                        <td>
-                          <a class='dropdown-button btn' href='javascript:void(0)' id="tag-dropdown" data-activates='tag-dropdown-content'>Select tag</a>
-                          <ul id='tag-dropdown-content' class='dropdown-content'>
-                            <li ng-repeat="i in tags" ng-click="setDefaultTag(i);"><a href="">{{i.tag}}</a></li>
-                          </ul>
-                        </td>
-                        <td class="flow-text right">
-                          <p>{{settings.uploadtags}}</p>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
-              </div>
+              <table>
+                <tbody>
+                  <tr>
+                    <td>
+                      <a class='dropdown-button btn' href='javascript:void(0)' id="tag-dropdown" data-activates='tag-dropdown-content'>Select tag</a>
+                      <ul id='tag-dropdown-content' class='dropdown-content'>
+                        <li ng-repeat="i in settings.tags" ng-click="setDefaultTag(i.tag);"><a href="">{{i.tag}}</a></li>
+                      </ul>
+                    </td>
+                    <td class="flow-text right">
+                      <p>{{settings.defaulttag}}</p>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Notfication settings</span>
-            <div style="margin-bottom:15px">
-              User messages
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.notification.user" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="usermessages" ng-model="settings.notification.user" checked="checked" />
+              <label for="usermessages">User messages</label>
             </div>
-            <div style="margin-bottom:15px">
-              Feedback
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.notification.feedback" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="feedback" ng-model="settings.notification.feedback" checked="checked" />
+              <label for="feedback">Feedback</label>
             </div>
-            <div style="margin-bottom:15px">
-              New posts
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.notification.posts" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="newposts" ng-model="settings.notification.posts" checked="checked" />
+              <label for="newposts">New posts</label>
             </div>
-            <div style="margin-bottom:15px">
-              Mahara messages
-              <div class="switch" onclick="">
-                <label>
-                  No
-                  <input type="checkbox" ng-model="settings.notification.mahara" />
-                  <span class="lever"></span>
-                  Yes
-                </label>
-              </div>
+            <div class="section">
+              <input type="checkbox" id="maharamessages" ng-model="settings.notification.mahara" checked="checked" />
+              <label for="maharamessages">Mahara messages</label>
             </div>
           </div>
         </div>
         <div class="card">
           <div class="card-content">
             <span class="card-title grey-text text-darken-4">Advanced settings</span>
-            <div>
-              Periodic Sync:
-            </div>
-            <input type="text" ng-model="settings.advanced.periodicsync " />
+            <div class="section">
+            Periodic Sync:
+            <input type="text" ng-model="settings.advanced.periodicsync" />
             Last Sync Time:
-            <input type="text" ng-model="settings.advanced.lastsynctime " disabled/>
+            <input type="text" ng-model="utctime" disabled/>
+            <button id='triggersync' class="waves-effect waves-light btn" ng-click='triggerSync()'>Trigger sync</button>
+          </div>
           </div>
         </div>
       </form>
       <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
-      <button class="waves-effect waves-light btn" ng-click="save(settings)">Save</button>
+      <button class="waves-effect waves-light btn" ng-click="save()">Save</button>
     </div>

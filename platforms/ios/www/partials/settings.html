@@ -52,7 +52,7 @@
             </div>
             <div ng-show="settings.defaultjournalset">
               <div>
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -84,7 +84,7 @@
             </div>
             <div ng-show="settings.uploadfolderset">
               <div style="margin-bottom: 20px">
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -116,7 +116,7 @@
             </div>
             <div ng-show="settings.uploadtagsset">
               <div style="margin-bottom: 20px">
-                <div class="truncate">
+                <div class="">
                   <table>
                     <tbody>
                       <tr>
@@ -193,11 +193,11 @@
               Periodic Sync:
             </div>
             <input type="text" ng-model="settings.advanced.periodicsync " />
-            Last Sync Time:
+              Last Sync Time:
             <input type="text" ng-model="settings.advanced.lastsynctime " disabled/>
           </div>
         </div>
       </form>
       <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
-      <button class="waves-effect waves-light btn" ng-click="save(settings)">Save</button>
+      <button class="waves-effect waves-light btn" ng-click="save()">Save</button>
     </div>

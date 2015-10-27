@@ -1,4 +1,5 @@
 angular.module('Mahara').factory('SyncService', ['UuidGenerator', 'MimeGenerator', '$cordovaFile', '$q', '$cordovaFileTransfer', function(UuidGenerator, MimeGenerator, $cordovaFile, $q, $cordovaFileTransfer) {
+
   function parseSync(response, user) {
     response = response.substring(1, response.length - 1);
     var res = JSON.parse(response);
@@ -7,7 +8,6 @@ angular.module('Mahara').factory('SyncService', ['UuidGenerator', 'MimeGenerator
       //somethings gone wrong, show an error and return.
       return false;
     }
-
     // update token
     user.login.token = res.success;
     if (res.sync != null && res.sync.length != 0) {
@@ -48,6 +48,7 @@ angular.module('Mahara').factory('SyncService', ['UuidGenerator', 'MimeGenerator
 
     return q.promise;
   }
+
   return {
     sync: function() {
       var user = JSON.parse(localStorage.getItem('user'));
@@ -206,10 +207,12 @@ angular.module('Mahara').factory('SyncService', ['UuidGenerator', 'MimeGenerator
       return q.promise;
 
     },
+
     sendImage: function(image) {
 
       var q = $q.defer();
       var user = JSON.parse(localStorage.getItem('user'));
+      var settings = JSON.parse(localStorage.getItem('settings'));
       image.uri = image.uri.replace('file://', '');
       $cordovaFileTransfer.upload( user.login.url + settings.connection.uploaduri /*'http://10.22.33.121/~potato/mahara/htdocs/api/mobile/upload.php' */, image.uri, {
 

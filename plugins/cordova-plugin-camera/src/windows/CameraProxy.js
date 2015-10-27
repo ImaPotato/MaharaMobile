@@ -267,12 +267,7 @@ function takePictureFromFileWindows(successCallback, errorCallback, args) {
             else {
                 var storageFolder = getAppData().localFolder;
                 file.copyAsync(storageFolder, file.name, Windows.Storage.NameCollisionOption.replaceExisting).done(function (storageFile) {
-                        if(destinationType == Camera.DestinationType.NATIVE_URI) {
-                            successCallback("ms-appdata:///local/" + storageFile.name);
-                        }
-                        else {
-                            successCallback(URL.createObjectURL(storageFile));
-                        }
+                    successCallback(URL.createObjectURL(storageFile));
                 }, function () {
                     errorCallback("Can't access localStorage folder.");
                 });
@@ -312,7 +307,6 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
         saveToPhotoAlbum = args[9],
         cameraDirection = args[11],
         capturePreview = null,
-        captureTakePhotoButton = null,
         captureCancelButton = null,
         capture = null,
         captureSettings = null,
@@ -320,24 +314,17 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
         sensor = null;
 
     var createCameraUI = function () {
-        // create style for take and cancel buttons
-        var buttonStyle = "width:45%;padding: 10px 16px;font-size: 18px;line-height: 1.3333333;color: #333;background-color: #fff;border-color: #ccc; border: 1px solid transparent;border-radius: 6px; display: block; margin: 20px; z-index: 1000;border-color: #adadad;";
-
         // Create fullscreen preview
+        capturePreview = document.createElement("video");
+
         // z-order style element for capturePreview and captureCancelButton elts
         // is necessary to avoid overriding by another page elements, -1 sometimes is not enough
-        capturePreview = document.createElement("video");
-        capturePreview.style.cssText = "position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 999;";
-
-        // Create capture button
-        captureTakePhotoButton = document.createElement("button");
-        captureTakePhotoButton.innerText = "Take";
-        captureTakePhotoButton.style.cssText = buttonStyle + "position: fixed; left: 0; bottom: 0; margin: 20px; z-index: 1000";
+        capturePreview.style.cssText = "position: fixed; left: 0; top: 0; width: 100%; height: 100%; z-index: 999";
 
         // Create cancel button
         captureCancelButton = document.createElement("button");
         captureCancelButton.innerText = "Cancel";
-        captureCancelButton.style.cssText = buttonStyle + "position: fixed; right: 0; bottom: 0; margin: 20px; z-index: 1000";
+        captureCancelButton.style.cssText = "position: fixed; right: 0; bottom: 0; display: block; margin: 20px; z-index: 1000";
 
         capture = new CaptureNS.MediaCapture();
 
@@ -368,22 +355,6 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
 
             return capture.initializeAsync(captureSettings);
         }).then(function () {
-
-            // create focus control if available
-            var VideoDeviceController = capture.videoDeviceController;
-            var FocusControl = VideoDeviceController.focusControl;
-
-            if (FocusControl.supported == true) {
-                capturePreview.addEventListener('click', function () {
-
-                    var preset = Windows.Media.Devices.FocusPreset.autoNormal;
-
-                    FocusControl.setPresetAsync(preset).done(function () {
-
-                    });
-                });
-            }
-
             // msdn.microsoft.com/en-us/library/windows/apps/hh452807.aspx
             capturePreview.msZoom = true;
             capturePreview.src = URL.createObjectURL(capture);
@@ -394,12 +365,10 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
             if (sensor !== null) {
                 sensor.addEventListener("orientationchanged", onOrientationChange);
             }
-
-            // add click events to take and cancel buttons
-            captureTakePhotoButton.addEventListener('click', captureAction);
+            capturePreview.addEventListener('click', captureAction);
             captureCancelButton.addEventListener('click', function () {
                 destroyCameraPreview();
-                errorCallback('no image selected');
+                errorCallback('Cancelled');
             }, false);
 
             // Change default orientation
@@ -419,9 +388,8 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
                 return;
             }
 
-            // add elements to body
+            // Insert preview frame and controls into page
             document.body.appendChild(capturePreview);
-            document.body.appendChild(captureTakePhotoButton);
             document.body.appendChild(captureCancelButton);
 
             if (aspectRatios.indexOf(DEFAULT_ASPECT_RATIO) > -1) {
@@ -442,8 +410,7 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
         }
         capturePreview.pause();
         capturePreview.src = null;
-        // remove elements from wrapper
-        [capturePreview, captureTakePhotoButton, captureCancelButton].forEach(function (elem) {
+        [capturePreview, captureCancelButton].forEach(function(elem) {
             if (elem /* && elem in document.body.childNodes */) {
                 document.body.removeChild(elem);
             }
@@ -474,33 +441,33 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
                     var photoStream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
                     var finalStream = new Windows.Storage.Streams.InMemoryRandomAccessStream();
                     capture.capturePhotoToStreamAsync(encodingProperties, photoStream)
-                        .then(function() {
-                            return Windows.Graphics.Imaging.BitmapDecoder.createAsync(photoStream);
-                        })
-                        .then(function(dec) {
-                            finalStream.size = 0; // BitmapEncoder requires the output stream to be empty
-                            return Windows.Graphics.Imaging.BitmapEncoder.createForTranscodingAsync(finalStream, dec);
-                        })
-                        .then(function(enc) {
-                            // We need to rotate the photo wrt sensor orientation
-                            enc.bitmapTransform.rotation = orientationToRotation(sensor.getCurrentOrientation());
-                            return enc.flushAsync();
-                        })
-                        .then(function() {
-                            return tempCapturedFile.openAsync(Windows.Storage.FileAccessMode.readWrite);
-                        })
-                        .then(function(fileStream) {
-                            return Windows.Storage.Streams.RandomAccessStream.copyAndCloseAsync(finalStream, fileStream);
-                        })
-                        .done(function() {
-                            photoStream.close();
-                            finalStream.close();
-                            complete(tempCapturedFile);
-                        }, function() {
-                            photoStream.close();
-                            finalStream.close();
-                            throw new Error("An error has occured while capturing the photo.");
-                        });
+                    .then(function() {
+                        return Windows.Graphics.Imaging.BitmapDecoder.createAsync(photoStream);
+                    })
+                    .then(function(dec) {
+                        finalStream.size = 0; // BitmapEncoder requires the output stream to be empty
+                        return Windows.Graphics.Imaging.BitmapEncoder.createForTranscodingAsync(finalStream, dec);
+                    })
+                    .then(function(enc) {
+                        // We need to rotate the photo wrt sensor orientation
+                        enc.bitmapTransform.rotation = orientationToRotation(sensor.getCurrentOrientation());
+                        return enc.flushAsync();
+                    })
+                    .then(function() {
+                        return tempCapturedFile.openAsync(Windows.Storage.FileAccessMode.readWrite);
+                    })
+                    .then(function(fileStream) {
+                        return Windows.Storage.Streams.RandomAccessStream.copyAsync(finalStream, fileStream);
+                    })
+                    .done(function() {
+                        photoStream.close();
+                        finalStream.close();
+                        complete(tempCapturedFile);
+                    }, function() {
+                        photoStream.close();
+                        finalStream.close();
+                        throw new Error("An error has occured while capturing the photo.");
+                    });
                 });
             })
             .done(function(capturedFile) {
@@ -513,8 +480,8 @@ function takePictureFromCameraWP(successCallback, errorCallback, args) {
                     saveToPhotoAlbum: saveToPhotoAlbum
                 }, successCallback, errorCallback);
             }, function(err) {
-                destroyCameraPreview();
-                errorCallback(err);
+                    destroyCameraPreview();
+                    errorCallback(err);
             });
     };
 
@@ -718,7 +685,7 @@ function savePhoto(picture, options, successCallback, errorCallback) {
                 resizeImageBase64(successCallback, errorCallback, picture, options.targetWidth, options.targetHeight);
             } else {
                 fileIO.readBufferAsync(picture).done(function(buffer) {
-                    var strBase64 = encodeToBase64String(buffer);
+                    var strBase64 =encodeToBase64String(buffer);
                     picture.deleteAsync().done(function() {
                         successCallback(strBase64);
                     }, function(err) {

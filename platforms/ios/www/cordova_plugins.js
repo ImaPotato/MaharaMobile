@@ -1,6 +1,20 @@
 cordova.define('cordova/plugin_list', function(require, exports, module) {
 module.exports = [
     {
+        "file": "plugins/com.hiddentao.cordova.filepath/www/FilePath.js",
+        "id": "com.hiddentao.cordova.filepath.FilePath",
+        "clobbers": [
+            "window.FilePath"
+        ]
+    },
+    {
+        "file": "plugins/com.megster.cordova.FileChooser/www/fileChooser.js",
+        "id": "com.megster.cordova.FileChooser.FileChooser",
+        "clobbers": [
+            "fileChooser"
+        ]
+    },
+    {
         "file": "plugins/cordova-plugin-camera/www/CameraConstants.js",
         "id": "cordova-plugin-camera.Camera",
         "clobbers": [
@@ -29,29 +43,6 @@ module.exports = [
         ]
     },
     {
-        "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
-        "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
-        "clobbers": [
-            "cordova.plugins.backgroundMode",
-            "plugin.backgroundMode"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-network-information/www/network.js",
-        "id": "cordova-plugin-network-information.network",
-        "clobbers": [
-            "navigator.connection",
-            "navigator.network.connection"
-        ]
-    },
-    {
-        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
-        "id": "cordova-plugin-network-information.Connection",
-        "clobbers": [
-            "Connection"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-console/www/console-via-logger.js",
         "id": "cordova-plugin-console.console",
         "clobbers": [
@@ -63,20 +54,6 @@ module.exports = [
         "id": "cordova-plugin-console.logger",
         "clobbers": [
             "cordova.logger"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.videoeditor/www/VideoEditor.js",
-        "id": "org.apache.cordova.videoeditor.VideoEditor",
-        "clobbers": [
-            "VideoEditor"
-        ]
-    },
-    {
-        "file": "plugins/org.apache.cordova.videoeditor/www/VideoEditorOptions.js",
-        "id": "org.apache.cordova.videoeditor.VideoEditorOptions",
-        "clobbers": [
-            "VideoEditorOptions"
         ]
     },
     {
@@ -226,13 +203,6 @@ module.exports = [
         "runs": true
     },
     {
-        "file": "plugins/com.hiddentao.cordova.filepath/www/FilePath.js",
-        "id": "com.hiddentao.cordova.filepath.FilePath",
-        "clobbers": [
-            "window.FilePath"
-        ]
-    },
-    {
         "file": "plugins/cordova-plugin-file-transfer/www/FileTransferError.js",
         "id": "cordova-plugin-file-transfer.FileTransferError",
         "clobbers": [
@@ -247,17 +217,33 @@ module.exports = [
         ]
     },
     {
+        "file": "plugins/cordova-plugin-network-information/www/network.js",
+        "id": "cordova-plugin-network-information.network",
+        "clobbers": [
+            "navigator.connection",
+            "navigator.network.connection"
+        ]
+    },
+    {
+        "file": "plugins/cordova-plugin-network-information/www/Connection.js",
+        "id": "cordova-plugin-network-information.Connection",
+        "clobbers": [
+            "Connection"
+        ]
+    },
+    {
+        "file": "plugins/de.appplant.cordova.plugin.background-mode/www/background-mode.js",
+        "id": "de.appplant.cordova.plugin.background-mode.BackgroundMode",
+        "clobbers": [
+            "cordova.plugins.backgroundMode",
+            "plugin.backgroundMode"
+        ]
+    },
+    {
         "file": "plugins/org.apache.cordova.inappbrowser/www/inappbrowser.js",
         "id": "org.apache.cordova.inappbrowser.inappbrowser",
         "clobbers": [
             "window.open"
-        ]
-    },
-    {
-        "file": "plugins/com.megster.cordova.FileChooser/www/fileChooser.js",
-        "id": "com.megster.cordova.FileChooser.FileChooser",
-        "clobbers": [
-            "fileChooser"
         ]
     },
     {
@@ -271,17 +257,15 @@ module.exports = [
 module.exports.metadata = 
 // TOP OF METADATA
 {
-    "cordova-plugin-camera": "1.2.1-dev",
-    "cordova-plugin-websql": "0.0.9",
-    "de.appplant.cordova.plugin.background-mode": "0.6.4",
-    "cordova-plugin-network-information": "1.0.2-dev",
-    "cordova-plugin-console": "1.0.2-dev",
-    "org.apache.cordova.videoeditor": "0.0.3",
-    "cordova-plugin-file": "3.0.1-dev",
     "com.hiddentao.cordova.filepath": "1.0.0",
-    "cordova-plugin-file-transfer": "1.2.2-dev",
-    "org.apache.cordova.inappbrowser": "0.6.0",
     "com.megster.cordova.FileChooser": "0.0.0",
+    "cordova-plugin-camera": "1.2.0",
+    "cordova-plugin-console": "1.0.2-dev",
+    "cordova-plugin-file": "3.0.1-dev",
+    "cordova-plugin-file-transfer": "1.2.2-dev",
+    "cordova-plugin-network-information": "1.0.2-dev",
+    "de.appplant.cordova.plugin.background-mode": "0.6.4",
+    "org.apache.cordova.inappbrowser": "0.6.0",
     "org.apache.cordova.device": "0.3.0"
 }
 // BOTTOM OF METADATA

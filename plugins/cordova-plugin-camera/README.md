@@ -19,6 +19,8 @@
 
 # cordova-plugin-camera
 
+[![Build Status](https://travis-ci.org/apache/cordova-plugin-camera.svg)](https://travis-ci.org/apache/cordova-plugin-camera)
+
 This plugin defines a global `navigator.camera` object, which provides an API for taking pictures and for choosing images from
 the system's image library.
 
@@ -290,6 +292,8 @@ with the Google Plus Photos application.  Other crops may not work.
 - Ignores the `cameraDirection` parameter.
 
 #### iOS Quirks
+
+- Set `quality` below 50 to avoid memory errors on some devices.
 
 - When using `destinationType.FILE_URI`, photos are saved in the application's temporary directory. The contents of the application's temporary directory is deleted when the application ends.
 

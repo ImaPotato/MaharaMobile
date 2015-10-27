@@ -1,17 +1,12 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="nz.net.catalyst" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="AllowInlineMediaPlayback" value="false" />
-    <preference name="AutoHideSplashScreen" value="true" />
     <preference name="BackupWebStorage" value="cloud" />
     <preference name="DisallowOverscroll" value="false" />
     <preference name="EnableViewportScale" value="false" />
-    <preference name="FadeSplashScreen" value="true" />
-    <preference name="FadeSplashScreenDuration" value=".25" />
     <preference name="KeyboardDisplayRequiresUserAction" value="true" />
     <preference name="MediaPlaybackRequiresUserAction" value="false" />
-    <preference name="ShowSplashScreenSpinner" value="true" />
     <preference name="SuppressesIncrementalRendering" value="false" />
-    <preference name="TopActivityIndicator" value="gray" />
     <preference name="GapBetweenPages" value="0" />
     <preference name="PageLength" value="0" />
     <preference name="PaginationBreakingMode" value="page" />
@@ -23,20 +18,8 @@
         <param name="ios-package" value="CDVCamera" />
     </feature>
     <preference name="CameraUsesGeolocation" value="false" />
-    <feature name="Device">
-        <param name="ios-package" value="CDVDevice" />
-    </feature>
-    <feature name="BackgroundMode">
-        <param name="ios-package" value="APPBackgroundMode" />
-    </feature>
-    <feature name="NetworkStatus">
-        <param name="ios-package" value="CDVConnection" />
-    </feature>
     <feature name="Console">
         <param name="ios-package" value="CDVLogger" />
-    </feature>
-    <feature name="VideoEditor">
-        <param name="ios-package" value="VideoEditor" />
     </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <feature name="File">
@@ -45,6 +28,15 @@
     </feature>
     <feature name="FileTransfer">
         <param name="ios-package" value="CDVFileTransfer" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="ios-package" value="CDVConnection" />
+    </feature>
+    <feature name="Device">
+        <param name="ios-package" value="CDVDevice" />
+    </feature>
+    <feature name="BackgroundMode">
+        <param name="ios-package" value="APPBackgroundMode" />
     </feature>
     <feature name="InAppBrowser">
         <param name="ios-package" value="CDVInAppBrowser" />
@@ -58,4 +50,8 @@
     </author>
     <content src="index.html" />
     <access origin="*" />
+    <icon density="ldpi" platform="android" src="www/css/logo-thing.png" />
+    <icon density="mdpi" platform="android" src="www/css/logo-thing.png" />
+    <icon density="hdpi" platform="android" src="www/css/logo-thing.png" />
+    <icon density="xhdpi" platform="android" src="www/css/logo-thing.png" />
 </widget>

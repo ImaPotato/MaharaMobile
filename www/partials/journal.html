@@ -1,59 +1,60 @@
 <div class="section">
   <div class="container">
-    <form novalidate class="simple-form my-repeat-animation" ng-repeat="obj in objects">
+    <form novalidate class="simple-form my-repeat-animation" ng-repeat="journal in journals">
       <div class="card">
         <div class="card-content">
-          <span class="card-title grey-text text-darken-4 left">{{obj.title == '' ? 'Journal Entry' : obj.title}}</span>
+          <span class="card-title grey-text text-darken-4 left">{{journal.title == '' ? 'Journal Entry' : journal.title}}</span>
           <div class="row">
             <div class="input-field col s12">
-              <input placeholder="Title" type="text" class="form-control" ng-model="obj.title" ng-class="{true: 'active', false: ''}[obj.title != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[obj.title != '']">Title</label>
+              <input placeholder="Title" type="text" class="form-control" ng-model="journal.title" ng-class="{true: 'active', false: ''}[journal.title != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[journal.title != '']">Title</label>
             </div>
           </div>
           <div class="row">
             <div class="input-field col s12">
-              <input placeholder="Description" type="text" class="form-control" ng-model="obj.desc" ng-class="{true: 'active', false: ''}[obj.desc != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[obj.desc != '']">Entry</label>
+              <input placeholder="Entry" type="text" class="form-control" ng-model="journal.desc" ng-class="{true: 'active', false: ''}[journal.desc != '']" class="validate">
+              <label ng-class="{true: 'active', false: ''}[journal.desc != '']">Entry</label>
             </div>
           </div>
+
+          <div class="row">
+            <div class="left" style="padding-left:5px" ng-repeat="i in journal.tags">
+              <div class="chip">
+                  {{i}}
+                  <i class="material-icons" ng-click="removeTag(i, journal);">close</i>
+                </div>
+            </div>
+          </div>
+
           <div class="row">
             <div class="input-field col s12">
-              <input placeholder="Tags" type="text" class="form-control" ng-model="obj.tags" ng-class="{true: 'active', false: ''}[obj.tags != '']" class="validate">
-              <label ng-class="{true: 'active', false: ''}[obj.tags != '']">Tags</label>
+              <button class='dropdown-button btn' ng-click="hack('journal-tag-dropdown-' + journal.uuid, 'journal-tag-dropdown-content-' + journal.uuid)" id="journal-tag-dropdown-{{journal.uuid}}" data-activates='journal-tag-dropdown-content-{{journal.uuid}}'>Select tag</button>
+              <ul id='journal-tag-dropdown-content-{{journal.uuid}}' class='dropdown-content'>
+                <li ng-repeat="i in settings.tags" ng-click="addTag(i.tag, journal);"><a href="">{{i.tag}}</a></li>
+              </ul>
             </div>
           </div>
-          Allow comments?
-          <div class="switch" style="margin-bottom:15px">
-            <label>
-              No
-              <input type="checkbox" ng-model="obj.comments" />
-              <span class="lever"></span>
-              Yes
-            </label>
+
+          <div class="section">
+            <input type="checkbox" id="allowcomments-{{journal.uuid}}" ng-model="journal.comments" checked="checked" />
+            <label for="allowcomments-{{journal.uuid}}">Allow comments?</label>
           </div>
-          Is draft?
-          <div class="switch" style="margin-bottom:15px">
-            <label>
-              No
-              <input type="checkbox" ng-model="obj.draft" />
-              <span class="lever"></span>
-              Yes
-            </label>
+          <div class="section">
+            <input type="checkbox" id="isdraft-{{journal.uuid}}" ng-model="journal.draft" checked="checked" />
+            <label for="isdraft-{{journal.uuid}}">Is draft?</label>
           </div>
           <div class="card-action">
-            <button class="btn btn-default" ng-click="removeObject(obj.uuid)" ng-hide="objects.length == 1">Remove Journal</button>
+            <button class="btn btn-default" ng-click="remove(journal)" ng-hide="journals.length == 1">Remove Journal</button>
           </div>
         </div>
       </div>
     </form>
     <div class="fixed-action-btn" style="bottom: 25px; right: 25px;">
-      <button class="btn-floating btn-large waves-effect red" ng-click="addObject()">
+      <button class="btn-floating btn-large waves-effect red" ng-click="addJournal()">
         <i class="material-icons">add</i>
       </button>
     </div>
-
     <button class="waves-effect waves-light btn red" ng-click="reset()" style="margin-right:5px;">Reset</button>
-    <button class="waves-effect waves-light btn" ng-click="update()">Save</button>
-
+    <button class="waves-effect waves-light btn" ng-click="save()">Save</button>
   </div>
 </div>

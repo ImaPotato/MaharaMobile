@@ -50,14 +50,17 @@ angular.module('Mahara').controller('HistoryCtrl', function($scope, $q, SyncServ
 
   function uploadPendingImages() {
     var pending = localStorage.getItem('pending');
+
     if (pending == null || pending == '') {
       return;
     }
 
     pending = JSON.parse(pending);
+
     if (pending.length >= 1) {
       // check again before sending
       var filePromise = checkFileURI(pending[0]);
+      
       filePromise.then(function() {
         // need to check if we're sending a journal or an image
         var promise = (pending[0].type == 'image' || pending[0].type == 'file') ? SyncService.sendImage(pending[0]) : SyncService.sendJournal(pending[0]);

@@ -9,7 +9,23 @@
                 "parents": {
                     "/*": [
                         {
+                            "xml": "<feature name=\"FilePath\"><param name=\"android-package\" value=\"com.hiddentao.cordova.filepath.FilePath\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
                             "xml": "<feature name=\"Camera\"><param name=\"android-package\" value=\"org.apache.cordova.camera.CameraLauncher\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
                             "count": 1
                         },
                         {
@@ -22,22 +38,6 @@
                         },
                         {
                             "xml": "<preference name=\"KeepRunning\" value=\"true\" />",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"android-package\" value=\"org.apache.cordova.networkinformation.NetworkManager\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"File\"><param name=\"android-package\" value=\"org.apache.cordova.file.FileUtils\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"FilePath\"><param name=\"android-package\" value=\"com.hiddentao.cordova.filepath.FilePath\" /><param name=\"onload\" value=\"true\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"FileTransfer\"><param name=\"android-package\" value=\"org.apache.cordova.filetransfer.FileTransfer\" /></feature>",
                             "count": 1
                         },
                         {
@@ -70,17 +70,12 @@
                             "xml": "<service android:name=\"de.appplant.cordova.plugin.background.ForegroundService\" />",
                             "count": 1
                         }
-                    ],
-                    "/manifest": []
+                    ]
                 }
             },
             "config.xml": {
                 "parents": {
                     "/*": [
-                        {
-                            "xml": "<feature name=\"VideoEditor\"><param name=\"android-package\" value=\"org.apache.cordova.videoeditor.VideoEditor\" /></feature>",
-                            "count": 1
-                        },
                         {
                             "xml": "<preference name=\"AndroidPersistentFileLocation\" value=\"Internal\" />",
                             "count": 1
@@ -91,37 +86,31 @@
         }
     },
     "installed_plugins": {
+        "com.hiddentao.cordova.filepath": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "com.megster.cordova.FileChooser": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "cordova-plugin-websql": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "de.appplant.cordova.plugin.background-mode": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "org.apache.cordova.videoeditor": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "com.hiddentao.cordova.filepath": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "org.apache.cordova.inappbrowser": {
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "com.megster.cordova.FileChooser": {
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

@@ -14,10 +14,12 @@
         <p class="truncate"><i>{{pen.desc == '' ? 'No description' : pen.desc}}</i></p>
         <div class="divider"></div>
         <div class="section">
+          <button class="waves-effect waves-light btn red right" ng-click="deleteItem(pen)" style="margin-right:5px;margin-bottom:15px;" ng-click"deleteItem(pen)">delete</button>
         </div>
       </div>
     </div>
   </div>
+  <div class="divider"></div>
   <h3>History</h3>
   <div class="col s12 my-repeat-animation" ng-repeat="his in history">
     <div class="card">

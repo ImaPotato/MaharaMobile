@@ -15,7 +15,7 @@ app.config(['$routeProvider', function($routeProvider) {
     })
     .when("/camera", {
       templateUrl: "partials/camera.html",
-      controller: "CameraCtrl"
+      controller: "FileCtrl"
     })
     .when("/journal", {
       templateUrl: "partials/journal.html",
@@ -42,43 +42,6 @@ app.factory('UuidGenerator', function(uuid4) {
     }
   };
 });
-
-// I wonder if this works?
-app.factory('VideoEditor', ['$q', function($q) {
-
-  return {
-
-    transcode: function(uri, output, quality, filetype, network, duration, save) {
-      var q = $q.defer();
-
-      function errorState() {
-        q.reject();
-      }
-
-      function success() {
-        q.resolve();
-      }
-
-      VideoEditor.transcodeVideo(
-        success, // success cb
-        error, // error cb
-        {
-          fileUri: uri, // the path to the video on the device
-          outputFileName: output, // the file name for the transcoded video
-          quality: quality, // High: 0, Medium: 1, Low: 2
-          outputFileType: filetype, // M4V: 0, MPEG4: 1, M4A: 2, QUICK_TIME: 3
-          optimizeForNetworkUse: network, // Yes: 0, No: 1
-          duration: duration, // optional, specify duration in seconds from start of video
-          saveToLibrary: save // optional, defaults to true
-        }
-      )
-
-      return q.promise;
-
-    }
-  };
-
-}]);
 
 /**
  * Controls all other Pages

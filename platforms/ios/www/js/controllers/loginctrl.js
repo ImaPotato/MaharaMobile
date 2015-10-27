@@ -27,6 +27,9 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
       return;
     }
 
+    //remove white space
+    login.url = login.url.replace(/ /g,'')
+
     UserService.saveUser(login)
 
     // sync notifications
@@ -41,12 +44,12 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
   };
 
   $scope.maharaLogin = function() {
+
     if ($scope.login.url == null || $scope.login.url == '')
       return;
     // test url to make sure it's valid...
 
     Materialize.toast('Checking URL', 4000);
-
     var q = $q.defer();
     $.ajax({
       type: "GET",
@@ -70,7 +73,7 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
     });
 
     q.promise.then(function() {
-      var win = window.open($scope.login.url + "/api/mobile/login.php", "_system", "EnableViewPortScale=yes,location=no,toolbar=yes,clearcache=yes,clearsessioncache=yes");
+      var win = window.open($scope.login.url + "/api/mobile/login.php", "_blank", "EnableViewPortScale=yes,location=no,toolbar=yes,clearcache=yes,clearsessioncache=yes");
       win.addEventListener("loadstop", function() {
         var q = $q.defer();
         $.ajax({
@@ -95,8 +98,11 @@ angular.module('Mahara').controller('LoginCtrl', function($scope, $rootScope, $l
             code: "getLoginStatus();"
           }, function(values) {
             if (values[0].loggedin == 1) {
+
+              console.log(values);
+
               $scope.login.token = JSON.parse(values[0].token).token;
-              $scope.login.username = JSON.parse(values[0].token).name;
+              $scope.login.username = JSON.parse(values[0].token).user;
 
               console.log($scope.login.token);
               console.log($scope.login.username);

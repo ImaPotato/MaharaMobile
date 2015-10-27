@@ -476,7 +476,7 @@
     pictureOptions.encodingType = EncodingTypePNG;
     
     resultData = [self.plugin processImage:originalImage info:@{} options:pictureOptions];
-    XCTAssertEqualObjects([resultData base64EncodedStringWithOptions:0], [originalImageDataPNG base64EncodedStringWithOptions:0]);
+    XCTAssertEqualObjects([resultData base64EncodedString], [originalImageDataPNG base64EncodedString]);
 
     // Original, JPEG, full quality
     
@@ -487,7 +487,7 @@
     pictureOptions.encodingType = EncodingTypeJPEG;
     
     resultData = [self.plugin processImage:originalImage info:@{} options:pictureOptions];
-    XCTAssertEqualObjects([resultData base64EncodedStringWithOptions:0], [originalImageDataJPEG base64EncodedStringWithOptions:0]);
+    XCTAssertEqualObjects([resultData base64EncodedString], [originalImageDataJPEG base64EncodedString]);
     
     // Original, JPEG, with quality value
     
@@ -500,7 +500,7 @@
     
     NSData* originalImageDataJPEGWithQuality = UIImageJPEGRepresentation(originalImage, [pictureOptions.quality floatValue]/ 100.f);
     resultData = [self.plugin processImage:originalImage info:@{} options:pictureOptions];
-    XCTAssertEqualObjects([resultData base64EncodedStringWithOptions:0], [originalImageDataJPEGWithQuality base64EncodedStringWithOptions:0]);
+    XCTAssertEqualObjects([resultData base64EncodedString], [originalImageDataJPEGWithQuality base64EncodedString]);
     
     // TODO: usesGeolocation is not tested
 }

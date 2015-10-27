@@ -22,7 +22,7 @@
   <div class="col s12 my-repeat-animation" ng-repeat="his in history">
     <div class="card">
       <div class="card-image waves-effect waves-block waves-light">
-        <img ng-src="{{his.uri}}" class="activator">
+        <img ng-src="{{his.type == 'file' ? 'css/folder.png' : his.uri}}" class="activator">
       </div>
       <div class="card-content">
         <h3>

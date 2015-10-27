@@ -1,6 +1,0 @@
-# view AndroidManifest.xml #generated:11
--keep class de.appplant.cordova.plugin.background.ForegroundService { <init>(...); }
-
-# view AndroidManifest.xml #generated:5
--keep class nz.net.catalyst.Mahara { <init>(...); }
-

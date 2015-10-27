@@ -2,39 +2,5 @@
   "home": {
     "title": "Open source ePortfolios",
     "description": "[mah-har-rah]: to think, thinking, thought"
-  },
-  "file": {
-    "title" : "Enter a image title",
-    "description" : "Enter a description",
-    "titleHeading" : "Title",
-    "descriptionHeading" : "Description",
-    "tagsHeading" : "Tags",
-    "library" : "Library",
-    "camera" : "Camera",
-    "file" : "File",
-    "reset" : "Reset",
-    "remove" : "Remove",
-    "save" : "Save"
-  },
-  "journal" : {
-    "title" : "Journal",
-    "titleHeading" : "Title",
-    "descriptionHeading" : "Description",
-    "tagsHeading" : "Tags",
-    "comments" : "Allow comments?",
-    "draft" : "Is draft?",
-    "reset" : "Reset",
-    "remove" : "Remove journal",
-    "save" : "Save"
-  },
-  "pending" : {
-    "titlePending" : "pending",
-    "titlePistory" : "history"
-  },
-  "settings" : {
-
-  },
-  "login" : {
-
   }
 }

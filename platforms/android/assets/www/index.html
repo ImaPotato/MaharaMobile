@@ -1,7 +1,6 @@
 <!DOCTYPE html>
 <html class="no-js">
 <head>
-    <!-- Meta-Information -->
     <title>Mahara</title>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
@@ -15,7 +14,7 @@
 
 <!-- Our Website Content Goes Here -->
 <div ng-include='"templates/header.html"'></div>
-<div class="page {{pageClass}}" ng-view><div class="container"></div></div>
+<div class="page" ng-view><div class="container"></div></div>
 <div ng-include='"templates/footer.html"'></div>
 
 <!-- Vendor: Javascripts -->
@@ -37,19 +36,21 @@
 <!-- Our Website Javascripts -->
 <script src="cordova.js"></script>
 <script src="js/main.js"></script>
-<script src="js/controllers/cameractrl.js"></script>
-<script src="js/controllers/historyctrl.js"></script>
-<script src="js/controllers/journalctrl.js"></script>
-<script src="js/controllers/loginctrl.js"></script>
-<script src="js/controllers/settingsctrl.js"></script>
-<script src="js/controllers/homectrl.js"></script>
-<script src="js/factories/mimefactory.js"></script>
-<script src="js/factories/syncfactory.js"></script>
-<script src="js/factories/settingsfactory.js"></script>
-<script src="js/factories/userfactory.js"></script>
-<script src="js/factories/initfactory.js"></script>
-<script src="js/factories/filefactory.js"></script>
-<script src="js/factories/languagefactory.js"></script>
+<script src="js/controller/basectrl.js"></script>
+<script src="js/controller/filectrl.js"></script>
+<script src="js/controller/historyctrl.js"></script>
+<script src="js/controller/journalctrl.js"></script>
+<script src="js/controller/loginctrl.js"></script>
+<script src="js/controller/settingsctrl.js"></script>
+<script src="js/controller/homectrl.js"></script>
+<script src="js/factory/loadservice.js"></script>
+<script src="js/factory/saveservice.js"></script>
+<script src="js/factory/syncservice.js"></script>
+<script src="js/factory/fileservice.js"></script>
+<script src="js/models/file.js"></script>
+<script src="js/models/journal.js"></script>
+<script src="js/models/settings.js"></script>
+<script src="js/models/sync.js"></script>
 
 </body>
 </html>

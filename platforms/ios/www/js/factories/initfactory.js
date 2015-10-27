@@ -2,6 +2,7 @@ angular.module('Mahara').factory('InitService', function() {
   return {
     init: function(){
       var settings = {
+
         'defaultjournalset': false,
         'defaultjournal' : '',
         'uploadfolderset' : false,

@@ -9,49 +9,43 @@
                 "parents": {
                     "ImageIO.framework": [
                         {
-                            "xml": "true",
+                            "xml": true,
                             "count": 1
                         }
                     ],
                     "CoreLocation.framework": [
                         {
-                            "xml": "false",
+                            "xml": false,
                             "count": 1
                         }
                     ],
                     "CoreGraphics.framework": [
                         {
-                            "xml": "false",
+                            "xml": false,
                             "count": 3
                         }
                     ],
                     "AssetsLibrary.framework": [
                         {
-                            "xml": "false",
-                            "count": 4
+                            "xml": false,
+                            "count": 3
                         }
                     ],
                     "MobileCoreServices.framework": [
                         {
-                            "xml": "false",
+                            "xml": false,
                             "count": 2
                         }
                     ],
                     "AVFoundation.framework": [
                         {
-                            "xml": "false",
-                            "count": 2
+                            "xml": false,
+                            "count": 1
                         }
                     ],
                     "SystemConfiguration.framework": [
                         {
-                            "xml": "true",
-                            "count": 1
-                        }
-                    ],
-                    "MediaPlayer.framework": [
-                        {
-                            "xml": "false",
+                            "xml": true,
                             "count": 1
                         }
                     ]
@@ -69,23 +63,7 @@
                             "count": 1
                         },
                         {
-                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"NetworkStatus\"><param name=\"ios-package\" value=\"CDVConnection\" /></feature>",
-                            "count": 1
-                        },
-                        {
                             "xml": "<feature name=\"Console\"><param name=\"ios-package\" value=\"CDVLogger\" /></feature>",
-                            "count": 1
-                        },
-                        {
-                            "xml": "<feature name=\"VideoEditor\"><param name=\"ios-package\" value=\"VideoEditor\" /></feature>",
                             "count": 1
                         },
                         {
@@ -98,6 +76,18 @@
                         },
                         {
                             "xml": "<feature name=\"FileTransfer\"><param name=\"ios-package\" value=\"CDVFileTransfer\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"NetworkStatus\"><param name=\"ios-package\" value=\"CDVConnection\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"Device\"><param name=\"ios-package\" value=\"CDVDevice\" /></feature>",
+                            "count": 1
+                        },
+                        {
+                            "xml": "<feature name=\"BackgroundMode\"><param name=\"ios-package\" value=\"APPBackgroundMode\" /></feature>",
                             "count": 1
                         },
                         {
@@ -126,37 +116,31 @@
         }
     },
     "installed_plugins": {
+        "com.hiddentao.cordova.filepath": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "com.megster.cordova.FileChooser": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
         "cordova-plugin-camera": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "cordova-plugin-websql": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "de.appplant.cordova.plugin.background-mode": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-console": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "org.apache.cordova.videoeditor": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
         "cordova-plugin-file": {
-            "PACKAGE_NAME": "nz.net.catalyst"
-        },
-        "com.hiddentao.cordova.filepath": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
         "cordova-plugin-file-transfer": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "org.apache.cordova.inappbrowser": {
+        "cordova-plugin-network-information": {
             "PACKAGE_NAME": "nz.net.catalyst"
         },
-        "com.megster.cordova.FileChooser": {
+        "de.appplant.cordova.plugin.background-mode": {
+            "PACKAGE_NAME": "nz.net.catalyst"
+        },
+        "org.apache.cordova.inappbrowser": {
             "PACKAGE_NAME": "nz.net.catalyst"
         }
     },

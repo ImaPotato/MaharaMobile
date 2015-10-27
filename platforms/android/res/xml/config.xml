@@ -1,8 +1,22 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="nz.net.catalyst" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <preference name="loglevel" value="DEBUG" />
+    <feature name="FilePath">
+        <param name="android-package" value="com.hiddentao.cordova.filepath.FilePath" />
+        <param name="onload" value="true" />
+    </feature>
     <feature name="Camera">
         <param name="android-package" value="org.apache.cordova.camera.CameraLauncher" />
+    </feature>
+    <feature name="File">
+        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
+        <param name="onload" value="true" />
+    </feature>
+    <feature name="FileTransfer">
+        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
+    </feature>
+    <feature name="NetworkStatus">
+        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
     </feature>
     <feature name="Device">
         <param name="android-package" value="org.apache.cordova.device.Device" />
@@ -11,28 +25,11 @@
         <param name="android-package" value="de.appplant.cordova.plugin.background.BackgroundMode" />
     </feature>
     <preference name="KeepRunning" value="true" />
-    <feature name="NetworkStatus">
-        <param name="android-package" value="org.apache.cordova.networkinformation.NetworkManager" />
-    </feature>
-    <feature name="File">
-        <param name="android-package" value="org.apache.cordova.file.FileUtils" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="FilePath">
-        <param name="android-package" value="com.hiddentao.cordova.filepath.FilePath" />
-        <param name="onload" value="true" />
-    </feature>
-    <feature name="FileTransfer">
-        <param name="android-package" value="org.apache.cordova.filetransfer.FileTransfer" />
-    </feature>
     <feature name="InAppBrowser">
         <param name="android-package" value="org.apache.cordova.inappbrowser.InAppBrowser" />
     </feature>
     <feature name="FileChooser">
         <param name="android-package" value="com.megster.cordova.FileChooser" />
-    </feature>
-    <feature name="VideoEditor">
-        <param name="android-package" value="org.apache.cordova.videoeditor.VideoEditor" />
     </feature>
     <preference name="AndroidPersistentFileLocation" value="Internal" />
     <name>Mahara</name>
